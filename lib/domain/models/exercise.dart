@@ -1,3 +1,4 @@
+//: Data model: Exercises
 import 'package:hive/hive.dart';
 
 part 'exercise.g.dart';
@@ -30,4 +31,21 @@ class Exercise {
       this.equipment,
       this.weighted,
       this.sided});
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+    return o is Exercise &&
+        o.id == id &&
+        o.name == name &&
+        o.difficulty == difficulty &&
+        o.intensity == intensity &&
+        o.target == target &&
+        o.equipment == equipment &&
+        o.weighted == weighted &&
+        o.sided == sided;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

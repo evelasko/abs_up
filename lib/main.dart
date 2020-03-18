@@ -1,9 +1,12 @@
+import 'package:data_setup/domain/repositories/data_repository.dart';
+import 'package:data_setup/domain/state/exercise_store.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:provider/provider.dart';
 
 import 'presentation/pages/main_page.dart';
-import 'data/models/exercise.dart';
+import 'domain/models/exercise.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +38,10 @@ class _AbsAppState extends State<AbsApp> {
               if (snapshot.hasError)
                 return Text(snapshot.error.toString());
               else
-                return MainPage();
+                return Provider(
+                  create: (_) => ExerciseStore(ExerciseDataRepository()),
+                  child: MainPage(),
+                );
             } else {
               return Scaffold(body: CircularProgressIndicator());
             }
