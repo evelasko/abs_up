@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'exercise_store.dart';
+part of 'application_state.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,7 +8,7 @@ part of 'exercise_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$ExerciseStore on _ExerciseStore, Store {
+mixin _$ApplicationStore on _ApplicationStore, Store {
   Computed<List<Exercise>> _$filteredExerciseListComputed;
 
   @override
@@ -21,7 +21,7 @@ mixin _$ExerciseStore on _ExerciseStore, Store {
   StoreState get state =>
       (_$stateComputed ??= Computed<StoreState>(() => super.state)).value;
 
-  final _$exerciseListAtom = Atom(name: '_ExerciseStore.exerciseList');
+  final _$exerciseListAtom = Atom(name: '_ApplicationStore.exerciseList');
 
   @override
   List<Exercise> get exerciseList {
@@ -39,7 +39,7 @@ mixin _$ExerciseStore on _ExerciseStore, Store {
   }
 
   final _$_exerciseListFutureAtom =
-      Atom(name: '_ExerciseStore._exerciseListFuture');
+      Atom(name: '_ApplicationStore._exerciseListFuture');
 
   @override
   ObservableFuture<List<Exercise>> get _exerciseListFuture {
@@ -58,7 +58,24 @@ mixin _$ExerciseStore on _ExerciseStore, Store {
         name: '${_$_exerciseListFutureAtom.name}_set');
   }
 
-  final _$errorMessageAtom = Atom(name: '_ExerciseStore.errorMessage');
+  final _$userSettingsAtom = Atom(name: '_ApplicationStore.userSettings');
+
+  @override
+  UserSettings get userSettings {
+    _$userSettingsAtom.context.enforceReadPolicy(_$userSettingsAtom);
+    _$userSettingsAtom.reportObserved();
+    return super.userSettings;
+  }
+
+  @override
+  set userSettings(UserSettings value) {
+    _$userSettingsAtom.context.conditionallyRunInAction(() {
+      super.userSettings = value;
+      _$userSettingsAtom.reportChanged();
+    }, _$userSettingsAtom, name: '${_$userSettingsAtom.name}_set');
+  }
+
+  final _$errorMessageAtom = Atom(name: '_ApplicationStore.errorMessage');
 
   @override
   String get errorMessage {
@@ -85,7 +102,7 @@ mixin _$ExerciseStore on _ExerciseStore, Store {
   @override
   String toString() {
     final string =
-        'exerciseList: ${exerciseList.toString()},errorMessage: ${errorMessage.toString()},filteredExerciseList: ${filteredExerciseList.toString()},state: ${state.toString()}';
+        'exerciseList: ${exerciseList.toString()},userSettings: ${userSettings.toString()},errorMessage: ${errorMessage.toString()},filteredExerciseList: ${filteredExerciseList.toString()},state: ${state.toString()}';
     return '{$string}';
   }
 }

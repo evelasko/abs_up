@@ -1,29 +1,36 @@
+import 'package:data_setup/domain/repositories/i_hive_facade.dart';
 import 'package:hive/hive.dart';
-
-import '../models/exercise.dart';
 import 'package:mobx/mobx.dart';
-import '../repositories/data_repository.dart';
+
 import '../core/base_enums.dart';
+import '../models/exercise.dart';
+import '../models/user_settings.dart';
+import '../repositories/data_repository.dart';
 
-part 'exercise_store.g.dart';
+part 'application_state.g.dart';
 
-class ExerciseStore extends _ExerciseStore with _$ExerciseStore {
-  ExerciseStore(DataRepository dataRepository) : super(dataRepository);
+class ApplicationStore extends _ApplicationStore with _$ApplicationStore {
+  ApplicationStore(DataRepository dataRepository) : super(dataRepository);
 }
 
-abstract class _ExerciseStore with Store {
+abstract class _ApplicationStore with Store {
   final DataRepository _dataRepository;
 
-  _ExerciseStore(this._dataRepository);
+  _ApplicationStore(this._dataRepository) {
+    print('initializing state');
+    // final userSettingsBox = IHiveFacade().userSettingsBox;
+    // userSettingsBox.
+  }
 
   @observable
   List<Exercise> exerciseList;
-
   @computed
   List<Exercise> get filteredExerciseList {}
-
   @observable
   ObservableFuture<List<Exercise>> _exerciseListFuture;
+
+  @observable
+  UserSettings userSettings;
 
   @computed
   StoreState get state {
@@ -50,9 +57,9 @@ abstract class _ExerciseStore with Store {
       exerciseList = await _exerciseListFuture;
       print(_exerciseListFuture.status);
       print(exerciseList.length);
-      // final exercisesBox = Hive.box<Exercise>('exercises');
-      // await exercisesBox.clear();
-      // await exercisesBox.addAll(exerciseList.map<Exercise>((e) => e));
+      final exercisesBox = Hive.box<Exercise>('exercises');
+      await exercisesBox.clear();
+      await exercisesBox.addAll(exerciseList.map<Exercise>((e) => e));
     } catch (e) {
       print(e);
     }

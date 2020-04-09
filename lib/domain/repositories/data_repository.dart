@@ -20,7 +20,6 @@ class ExerciseDataRepository implements DataRepository {
       }
       loadedExercises = extractedData
           .map((exercise) => Exercise(
-                id: exercise['id'],
                 name: exercise['name'],
                 difficulty: int.parse(exercise['difficulty']),
                 intensity: int.parse(exercise['intensity']),
