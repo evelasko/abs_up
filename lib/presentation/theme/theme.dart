@@ -9,6 +9,7 @@ ThemeData appTheme() => ThemeData(
     textTheme: textTheme(),
 
     /// Color Theme
+    canvasColor: Colors.transparent,
     colorScheme: colorScheme(),
     primaryColor: AppColors.greyDarkest,
     accentColor: AppColors.rudy,

@@ -1,3 +1,4 @@
+import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:flutter/widgets.dart';
 
 class AbsAppIcons {
@@ -7,14 +8,27 @@ class AbsAppIcons {
   static const _kFontPkg = null;
 
   static const Map<String, IconData> equipment = {
-    'barbell': barbell,
-    'physio ball': physio_ball,
-    'cable': cable,
-    'dumbbell': dumbbell,
-    'partner': partner,
-    'hunging bar': hunging_bar,
-    'small ball': small_ball,
-    'elastic band': elastic_band
+    DataValues.equipmentNoneKey: none,
+    DataValues.equipmentBarbellKey: barbell,
+    DataValues.equipmentPhysioBallKey: physio_ball,
+    DataValues.equipmentCableKey: cable,
+    DataValues.equipmentDumbbellKey: dumbbell,
+    DataValues.equipmentPartnerKey: partner,
+    DataValues.equipmentHungingBarKey: hunging_bar,
+    DataValues.equipmentSmallBallKey: small_ball,
+    DataValues.equipmentElasticBandKey: elastic_band
+  };
+
+  static const Map<String, IconData> equipmentIcons = {
+    DataValues.equipmentNoneKey: none,
+    DataValues.equipmentBarbellKey: barbell,
+    DataValues.equipmentPhysioBallKey: physio_ball,
+    DataValues.equipmentCableKey: cable,
+    DataValues.equipmentDumbbellKey: dumbbell,
+    DataValues.equipmentPartnerKey: partner,
+    DataValues.equipmentHungingBarKey: hunging_bar,
+    DataValues.equipmentSmallBallKey: small_ball,
+    DataValues.equipmentElasticBandKey: elastic_band
   };
 
   static const IconData barbell =
@@ -61,10 +75,12 @@ class AbsAppIcons {
       const IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData logo_step_4 =
       const IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData partner =
+  static const IconData none =
       const IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData physio_ball =
+  static const IconData partner =
       const IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData small_ball =
+  static const IconData physio_ball =
       const IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData small_ball =
+      const IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

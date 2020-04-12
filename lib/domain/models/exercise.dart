@@ -1,14 +1,15 @@
 //: Data model: Exercises
+import 'package:data_setup/domain/repositories/data_values.dart';
+import 'package:data_setup/presentation/theme/icons.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'exercise.g.dart';
 
 enum ExerciseTag { exercise, favorited, blacklisted }
 
-@HiveType(typeId: 0, adapterName: 'ExerciseAdapter')
+@HiveType(typeId: 1, adapterName: 'ExerciseAdapter')
 class Exercise extends HiveObject {
-  // @HiveField(0)
-  // final String id;
   @HiveField(0)
   final String name;
   @HiveField(1)
@@ -39,28 +40,39 @@ class Exercise extends HiveObject {
       this.weighted,
       this.sided});
 
+  /// Exercise value getters
+  IconData get equipmentIcon =>
+      AbsAppIcons.equipment[equipment.toLowerCase()] ??
+      AbsAppIcons.logo_outline;
+
+  String get intensityString => DataValues.intensityToString(intensity);
+  String get difficultyString => DataValues.difficultyToString(difficulty);
+
+  /// Comparison checker
   bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>
-      maybeAnExercise.containsKey('name') &&
-      maybeAnExercise.containsKey('difficulty') &&
-      maybeAnExercise.containsKey('intensity') &&
-      maybeAnExercise.containsKey('target') &&
-      maybeAnExercise.containsKey('equipment') &&
-      maybeAnExercise.containsKey('weighted') &&
-      maybeAnExercise.containsKey('sided') &&
-      maybeAnExercise.containsKey('impact') &&
-      maybeAnExercise.containsKey('group');
+      maybeAnExercise.containsKey(DataValues.exerciseNameKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseDifficultyKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseIntensityKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseTargetKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseEquipmentKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseWeightedKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseSidedKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseImpactKey) &&
+      maybeAnExercise.containsKey(DataValues.exerciseGroupKey);
 
+  /// Exercise methods
   Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) => Exercise(
-      name: exerciseMap['name'],
-      difficulty: exerciseMap['difficulty'],
-      intensity: exerciseMap['intensity'],
-      target: exerciseMap['target'],
-      equipment: exerciseMap['equipment'],
-      weighted: exerciseMap['weighted'],
-      sided: exerciseMap['sided'],
-      impact: exerciseMap['impact'],
-      group: exerciseMap['group']);
+      name: exerciseMap[DataValues.exerciseNameKey],
+      difficulty: exerciseMap[DataValues.exerciseDifficultyKey],
+      intensity: exerciseMap[DataValues.exerciseIntensityKey],
+      target: exerciseMap[DataValues.exerciseTargetKey],
+      equipment: exerciseMap[DataValues.exerciseEquipmentKey],
+      weighted: exerciseMap[DataValues.exerciseWeightedKey],
+      sided: exerciseMap[DataValues.exerciseSidedKey],
+      impact: exerciseMap[DataValues.exerciseImpactKey],
+      group: exerciseMap[DataValues.exerciseGroupKey]);
 
+  /// Class overrides
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;

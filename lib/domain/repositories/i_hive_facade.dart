@@ -1,22 +1,38 @@
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:data_setup/domain/models/exercise.dart';
+import 'package:data_setup/domain/models/workout_settings.dart';
 import 'package:hive/hive.dart';
+
+import 'data_values.dart';
 
 class IHiveFacade {
   /// Box names
-  final List<String> hiveBoxNames = ['exercises', 'user_settings'];
-  static final Box<Exercise> exercisesBox = Hive.box<Exercise>('exercises');
-  static final Box userSettingsBox = Hive.box('user_settings');
+  static const List<String> hiveBoxNames = const [
+    DataValues.exerciseBoxName,
+    DataValues.userSettingsBoxName,
+    DataValues.workoutSettingsBoxName
+  ];
+
+  /// Boxes
+  static final Box<Exercise> exercisesBox =
+      Hive.box<Exercise>(DataValues.exerciseBoxName);
+  static final Box userSettingsBox = Hive.box(DataValues.userSettingsBoxName);
+  static final Box<WorkoutSettings> workoutSettingsBox =
+      Hive.box<WorkoutSettings>(DataValues.workoutSettingsBoxName);
 
   /// General methods
-  static void initHiveAndAdapters(
-      String directoryPath, List<TypeAdapter> adapters) {
-    Hive.init(directoryPath);
-    adapters.forEach((adapter) => Hive.registerAdapter(adapter));
-  }
+  static Future<void> initHive() async {
+    final documentsDirectory =
+        await path_provider.getApplicationDocumentsDirectory();
 
-  static Future<bool> openHiveBoxes() async {
-    await Hive.openBox<Exercise>('exercises');
-    await Hive.openBox('user_settings');
-    return true;
+    /// Init Hive
+    Hive.init(documentsDirectory.path);
+    Hive.registerAdapter<Exercise>(ExerciseAdapter());
+    Hive.registerAdapter<WorkoutSettings>(WorkoutSettingsAdapter());
+
+    /// Open Hive Boxes
+    await Hive.openBox<Exercise>(DataValues.exerciseBoxName);
+    await Hive.openBox<WorkoutSettings>(DataValues.workoutSettingsBoxName);
+    await Hive.openBox(DataValues.userSettingsBoxName);
   }
 }

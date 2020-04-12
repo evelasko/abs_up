@@ -1,15 +1,15 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/models/user_settings.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
-import 'package:data_setup/presentation/router/routes.dart';
-import 'package:data_setup/presentation/theme/colors.dart';
-import 'package:data_setup/presentation/widgets/items_exercise.dart';
-import 'package:data_setup/presentation/widgets/lists_empty_feedback.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
-
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../domain/models/exercise.dart';
+import '../../domain/repositories/data_values.dart';
+import '../../domain/repositories/i_hive_facade.dart';
+import '../router/routes.dart';
+import '../theme/colors.dart';
+import '../widgets/items_exercise.dart';
+import '../widgets/lists_empty_feedback.dart';
 
 class ExerciseBlacklistPage extends StatelessWidget {
   @override
@@ -30,10 +30,12 @@ class ExerciseBlacklistPage extends StatelessWidget {
           Expanded(
             child: ValueListenableBuilder(
                 valueListenable: IHiveFacade.userSettingsBox
-                    .listenable(keys: [UserSettings.blacklistExercises]),
+                    .listenable(keys: [DataValues.blacklistExercisesKey]),
+
+                /// Listenable manager
                 builder: (context, Box box, widget) {
                   List<String> blacklist = box.get(
-                      UserSettings.blacklistExercises,
+                      DataValues.blacklistExercisesKey,
                       defaultValue: []).cast<String>();
                   return blacklist.length > 0
                       //= Blacklist exercise items list

@@ -1,14 +1,11 @@
-import 'package:data_setup/presentation/widgets/bottomsheets_main.dart';
-import 'package:data_setup/presentation/widgets/perform_home_section.dart';
 import 'package:flutter/material.dart';
 
-import '../router/routes.dart';
 import '../theme/colors.dart';
 import '../theme/icons.dart';
-import '../widgets/buttons.dart';
-import '../widgets/typography.dart';
+import '../widgets/home_section_menu.dart';
+import '../widgets/home_section_perform.dart';
 
-// Home page...
+/// Home Page
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /// App Bar
       appBar: AppBar(
         elevation: 0,
         title: Icon(
@@ -41,88 +39,24 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {})
         ],
       ),
+
+      /// Body
       body: Container(
-        padding: EdgeInsets.only(top: 15),
-        color: AppColors.greyDarkest,
+        margin: EdgeInsets.only(left: 15, right: 15, bottom: 40),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            /// Exercises Section
-            AppTypography.sectionHeadingLight('exercises'),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  /// Exercise List
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context, FluroRouter.exerciseListLink),
-                      icon: Icons.local_library,
-                      text: 'learn'),
-
-                  /// Exercise Favorites
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context, FluroRouter.exerciseFavoritesLink),
-                      icon: Icons.grade,
-                      text: 'favorites'),
-
-                  /// Exercise Blacklist
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context, FluroRouter.exerciseBlacklistLink),
-                      icon: Icons.not_interested,
-                      text: 'blacklist')
-                ],
-              ),
-            ),
-
-            /// Workouts Section
-            AppTypography.sectionHeadingLight('workouts'),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  /// Workout List
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context, FluroRouter.workoutListLink),
-                      icon: Icons.import_contacts,
-                      text: 'saved'),
-
-                  /// Workout Logs
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context, FluroRouter.workoutLogsLink),
-                      icon: Icons.timeline,
-                      text: 'activity'),
-
-                  /// New Workout
-                  AppButtons.homePageButton(
-                      onTap: () => Navigator.pushNamed(
-                          context,
-                          FluroRouter.getWorkoutDetailsLink(
-                              workoutId: 'WO-123')),
-                      icon: Icons.fitness_center,
-                      text: 'build new')
-                ],
-              ),
-            ),
-
             /// Perform Section
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: PerformWorkoutHomeSection())
+            PerformWorkoutHomeSection(),
+
+            /// Menu Section
+            MenuHomeSection()
           ],
         ),
       ),
 
-      /// Extra widgets
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        showBottomSheet(
-            context: context, builder: (context) => MainBottomSheet());
-      }),
+      /// Design details
+      backgroundColor: AppColors.greyDarkest,
     );
   }
 }

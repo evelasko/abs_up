@@ -1,9 +1,8 @@
-import 'package:data_setup/domain/repositories/i_user_settings_facade.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
+import '../../domain/repositories/i_user_settings_facade.dart';
 import '../theme/colors.dart';
-import '../theme/icons.dart';
 import '../theme/text.dart';
 import 'wrappers.dart';
 
@@ -63,10 +62,15 @@ Widget exerciseItemBody(String key, Exercise exercise) => listItemWrapper(
                                 )),
                           ],
                         )),
-                        Text(
-                            'intensity: ${exercise.intensity}      difficulty: ${exercise.difficulty}'
-                                .toUpperCase(),
-                            style: AppTextStyles.listItemBottomInfo),
+                        Row(
+                          // TODO Implement exercise item intensity level indicator
+                          children: <Widget>[
+                            Text(exercise.intensityString.toUpperCase(),
+                                style: AppTextStyles.listItemBottomInfo),
+                            Text(exercise.difficultyString.toUpperCase(),
+                                style: AppTextStyles.listItemBottomInfo),
+                          ],
+                        ),
                       ],
                     )),
               ),
@@ -76,12 +80,8 @@ Widget exerciseItemBody(String key, Exercise exercise) => listItemWrapper(
                 height: 70,
                 child: Column(
                   children: <Widget>[
-                    Icon(
-                        AbsAppIcons
-                                .equipment[exercise.equipment.toLowerCase()] ??
-                            AbsAppIcons.logo_outline,
-                        color: AppColors.grey,
-                        size: 44.0),
+                    Icon(exercise.equipmentIcon,
+                        color: AppColors.grey, size: 44.0),
                     Expanded(
                       child: RichText(
                           maxLines: 2,

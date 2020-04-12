@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/exercise.dart';
-import '../../domain/models/user_settings.dart';
+import '../../domain/repositories/data_values.dart';
 import '../../domain/repositories/i_hive_facade.dart';
 import '../router/routes.dart';
 import '../theme/colors.dart';
@@ -29,10 +29,10 @@ class ExerciseFavoritesPage extends StatelessWidget {
           Expanded(
             child: ValueListenableBuilder(
                 valueListenable: IHiveFacade.userSettingsBox
-                    .listenable(keys: [UserSettings.favoriteExercises]),
+                    .listenable(keys: [DataValues.favoriteExercisesKey]),
                 builder: (context, Box box, widget) {
                   List<String> favorites =
-                      box.get(UserSettings.favoriteExercises);
+                      box.get(DataValues.favoriteExercisesKey);
                   return favorites.length > 0
                       //= Favorite list items
                       ? ListView(

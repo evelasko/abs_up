@@ -3,6 +3,7 @@ import 'package:data_setup/presentation/theme/text.dart';
 import 'package:flutter/material.dart';
 
 enum ButtonTypes { primary, secondary, other }
+enum ButtonSide { left, center, right }
 
 T buttonTypeCase<T>(
     {@required ButtonTypes type,
@@ -21,7 +22,25 @@ T buttonTypeCase<T>(
   }
 }
 
+T buttonSideCase<T>(
+    {@required ButtonSide side,
+    @required T left,
+    @required T right,
+    @required T center}) {
+  switch (side) {
+    case ButtonSide.left:
+      return left;
+    case ButtonSide.right:
+      return right;
+    case ButtonSide.center:
+      return center;
+    default:
+      return center;
+  }
+}
+
 class AppButtons {
+  /// Main Accent Button
   static Widget accentButton() => Container(
         height: 50.0,
         child: RaisedButton(
@@ -47,12 +66,31 @@ class AppButtons {
         ),
       );
 
-  static Widget homePageButton({Function onTap, IconData icon, String text}) =>
+  /// Home Page Menu Buttons
+  static BoxDecoration homePageButtonDecoration =
+      BoxDecoration(border: Border.all(width: 1, color: AppColors.greyDark));
+
+  static Widget homePageButton(
+          {@required Function onTap,
+          @required IconData icon,
+          @required String text,
+          ButtonSide buttonSide}) =>
       GestureDetector(
         onTap: onTap,
         child: Container(
           width: 100,
           height: 100,
+          decoration: buttonSideCase<BoxDecoration>(
+              side: buttonSide,
+              left: homePageButtonDecoration.copyWith(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20))),
+              right: homePageButtonDecoration.copyWith(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
+              center: homePageButtonDecoration),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[

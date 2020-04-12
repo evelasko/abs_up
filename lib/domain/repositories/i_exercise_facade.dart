@@ -15,6 +15,7 @@ class IExerciseFacade {
     final Map<String, dynamic> localExercises = jsonDecode(await rootBundle
         .loadString("assets/data/exercises.json", cache: false));
     if (IHiveFacade.exercisesBox.isOpen && IHiveFacade.exercisesBox.isEmpty) {
+      print('the box is empty');
       localExercises.forEach((key, value) async =>
           Exercise().hasExerciseKeys(value)
               ? await IHiveFacade.exercisesBox
@@ -23,5 +24,5 @@ class IExerciseFacade {
     }
   }
 
-  Future updateExerciseList() async {}
+  static Future updateExerciseList() async {}
 }

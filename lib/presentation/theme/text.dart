@@ -34,4 +34,12 @@ class AppTextStyles {
       fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.greyLight);
   static const TextStyle emptyListFeedbackBody = const TextStyle(
       fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.greyDarkest);
+
+  /// Current Workout Settings
+  static const TextStyle currentWorkoutSettingsData = const TextStyle(
+      fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.grey);
+
+  /// Chip text
+  static const TextStyle chipText = const TextStyle(
+      fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.greyDarkest);
 }

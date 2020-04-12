@@ -8,7 +8,7 @@ part of 'exercise.dart';
 
 class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
-  final typeId = 0;
+  final typeId = 1;
 
   @override
   Exercise read(BinaryReader reader) {
@@ -17,6 +17,8 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Exercise(
+      impact: fields[7] as bool,
+      group: fields[8] as String,
       name: fields[0] as String,
       difficulty: fields[1] as int,
       intensity: fields[2] as int,
@@ -30,7 +32,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,6 +46,10 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(5)
       ..write(obj.weighted)
       ..writeByte(6)
-      ..write(obj.sided);
+      ..write(obj.sided)
+      ..writeByte(7)
+      ..write(obj.impact)
+      ..writeByte(8)
+      ..write(obj.group);
   }
 }
