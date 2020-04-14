@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Widget listItemWrapper(Widget child) => Container(
       constraints: BoxConstraints.expand(height: 100),
-      padding: EdgeInsets.all(10),
+      // padding: EdgeInsets.all(10),
       child: child,
       decoration: const BoxDecoration(
           border:

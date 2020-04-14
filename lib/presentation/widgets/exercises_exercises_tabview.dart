@@ -13,30 +13,45 @@ class ExercisesExercisesTabView extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: IHiveFacade.exercisesBox.listenable(),
-                builder: (context, Box<Exercise> box, widget) {
-                  final exercises = box.values.toList();
+              child: CustomScrollView(slivers: [
+                /// Sliver Search Bar
+                SliverAppBar(
+                  pinned: false,
+                  expandedHeight: 50.0,
+                  primary: false,
+                  title: Text('Search'),
+                  backgroundColor: Colors.pink,
+                ),
 
-                  // TODO implement the filtering function (check lines below)
-                  // print(exercises[0].key);
-                  // final filtered = box.values
-                  //     .where((exercise) => exercise.name.contains('Raises'));
-                  // print(filtered.length);
+                /// Sliver List
+                ValueListenableBuilder(
+                  valueListenable: IHiveFacade.exercisesBox.listenable(),
+                  builder: (context, Box<Exercise> box, widget) {
+                    final exercises = box.values.toList();
 
-                  // TODO implement ListView being fed with a List<Exercise>
-                  return ListView(
-                      children: box.keys.length > 0
-                          //= Exercise items list
-                          ? box.keys
-                              .map((key) => ExerciseItem(
-                                  key: Key('exerciseList:$key'),
-                                  exercise: box.get(key)))
-                              .toList()
-                          //= Empty exercise list feedback widget
-                          : emptyListFeedbackExercises);
-                },
-              ),
+                    // TODO implement the filtering function (check lines below)
+                    // print(exercises[0].key);
+                    // final filtered = box.values
+                    //     .where((exercise) => exercise.name.contains('Raises'));
+                    // print(filtered.length);
+
+                    // TODO implement ListView being fed with a List<Exercise>
+                    return exercises.length == 0
+                        ? emptyListFeedbackBlacklist
+                        : SliverFixedExtentList(
+                            itemExtent: 90.0,
+                            delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) =>
+                                    ExerciseItem(
+                                      key: Key(
+                                          'exerciseList:${exercises[index].key}'),
+                                      exercise: exercises[index],
+                                    ),
+                                childCount: exercises.length),
+                          );
+                  },
+                ),
+              ]),
             ),
             Container(
               height: 20,
