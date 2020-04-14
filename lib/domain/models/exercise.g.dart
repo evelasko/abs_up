@@ -26,13 +26,14 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       equipment: fields[4] as String,
       weighted: fields[5] as bool,
       sided: fields[6] as bool,
+      tag: fields[9] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -50,6 +51,8 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(7)
       ..write(obj.impact)
       ..writeByte(8)
-      ..write(obj.group);
+      ..write(obj.group)
+      ..writeByte(9)
+      ..write(obj.tag);
   }
 }

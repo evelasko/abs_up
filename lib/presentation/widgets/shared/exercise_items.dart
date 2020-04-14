@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
-import '../../../domain/repositories/i_user_settings_facade.dart';
 import '../../theme/colors.dart';
 import 'exercise_items_body.dart';
-import 'swipable_actions.dart';
 import 'snackbars.dart';
+import 'swipable_actions.dart';
 
 /// Exercise Item Widget Class
 class ExerciseItem extends StatefulWidget {
@@ -19,34 +18,18 @@ class ExerciseItem extends StatefulWidget {
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
-  ExerciseTag exerciseTag = ExerciseTag.exercise;
-
-  @override
-  void initState() {
-    setState(() {
-      exerciseTag = IUserSettingsFacade.getExerciseTag(widget.exercise.key);
-    });
-    super.initState();
-  }
-
-  void _updateState() => setState(() {
-        exerciseTag = IUserSettingsFacade.getExerciseTag(widget.exercise.key);
-      });
-
+  // non dissmisible function:
   Future<bool> _addToFavoriteOrBlacklist(DismissDirection direction) async {
     //= add to favorites
     if (direction == DismissDirection.startToEnd) {
-      await IUserSettingsFacade.addFavorite(widget.exercise.key);
-      _updateState();
+      await widget.exercise.setFavorite();
       Scaffold.of(context).showSnackBar(AppSnackbars.favoriteAdded);
     }
     //= add to blacklist
     else {
-      await IUserSettingsFacade.addBlacklist(widget.exercise.key);
-      _updateState();
+      await widget.exercise.setBlacklist();
       Scaffold.of(context).showSnackBar(AppSnackbars.blacklistAdded);
     }
-    _updateState();
     return false;
   }
 
@@ -58,10 +41,10 @@ class _ExerciseItemState extends State<ExerciseItem> {
     // without dissmising the item from the list
     final isDismissable =
         widget.key.toString().contains(RegExp(r'favoritesList|blacklistList'));
-    switch (exerciseTag) {
+    switch (widget.exercise.tag) {
 
       /// Favorite Exercise Item
-      case ExerciseTag.favorited:
+      case 1:
         return Dismissible(
             key: Key(widget.exercise.key),
             direction: DismissDirection.endToStart,
@@ -70,43 +53,27 @@ class _ExerciseItemState extends State<ExerciseItem> {
             confirmDismiss: (direction) async {
               // if it's not in favorites or blacklist page
               // do the action without dissmising the item
-              if (!isDismissable) {
-                await IUserSettingsFacade.removeFavorite(widget.exercise.key);
-                _updateState();
-              }
+              if (!isDismissable) await widget.exercise.removeTag();
               return isDismissable;
             },
-            onDismissed: (direction) async {
-              await IUserSettingsFacade.removeFavorite(widget.exercise.key);
-            },
+            onDismissed: (direction) async => await widget.exercise.removeTag(),
             child: exerciseItemBody(widget.exercise));
 
       /// Blacklist Exercise Item
-      case ExerciseTag.blacklisted:
+      case 2:
         return Dismissible(
             key: Key(widget.exercise.key),
             direction: DismissDirection.endToStart,
             background: SwipableActions.secondaryBackground(
                 AppColors.brandeis, Icons.thumb_up, 'remove from\nblacklist'),
             confirmDismiss: (direction) async {
-              if (!isDismissable) {
-                await IUserSettingsFacade.removeBlacklist(widget.exercise.key);
-                _updateState();
-              }
+              if (!isDismissable) widget.exercise.removeTag();
               return isDismissable;
             },
-            onDismissed: (direction) async {
-              await IUserSettingsFacade.removeBlacklist(widget.exercise.key);
-            },
+            onDismissed: (direction) async => await widget.exercise.removeTag(),
             child: exerciseItemBody(widget.exercise));
 
       /// Exercise Item
-      case ExerciseTag.exercise:
-        return exerciseItem(
-            key: widget.exercise.key,
-            exercise: widget.exercise,
-            confirmDismiss: _addToFavoriteOrBlacklist);
-
       default:
         return exerciseItem(
             key: widget.exercise.key,

@@ -28,6 +28,8 @@ class Exercise extends HiveObject {
   final bool impact;
   @HiveField(8)
   final String group;
+  @HiveField(9)
+  int tag;
 
   Exercise(
       {this.impact,
@@ -38,7 +40,8 @@ class Exercise extends HiveObject {
       this.target,
       this.equipment,
       this.weighted,
-      this.sided});
+      this.sided,
+      this.tag = 0});
 
   /// Exercise value getters
   IconData get equipmentIcon =>
@@ -47,6 +50,21 @@ class Exercise extends HiveObject {
 
   String get intensityString => DataValues.intensityToString(intensity);
   String get difficultyString => DataValues.difficultyToString(difficulty);
+
+  Future<void> setFavorite() async {
+    this.tag = 1;
+    await this.save();
+  }
+
+  Future<void> setBlacklist() async {
+    this.tag = 2;
+    await this.save();
+  }
+
+  Future<void> removeTag() async {
+    this.tag = 0;
+    await this.save();
+  }
 
   /// Comparison checker
   bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>

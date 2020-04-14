@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
-import '../../../domain/repositories/i_user_settings_facade.dart';
 import '../../theme/colors.dart';
 import '../../theme/text.dart';
 import 'wrappers.dart';
 
-Widget exerciseTag(String key) => IUserSettingsFacade.isFavorite(key)
+Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
     ? Icon(Icons.star, size: 13, color: Colors.limeAccent)
-    : IUserSettingsFacade.isBlacklist(key)
+    : tag == ExerciseTag.blacklisted.index
         ? Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
         : Container();
 
@@ -33,7 +32,7 @@ Widget exerciseItemBody(Exercise exercise) => listItemWrapper(
                     image: AssetImage('assets/exercise_images/_default.jpg'),
                     fit: BoxFit.cover,
                   ),
-                  Positioned(top: 4, left: 4, child: exerciseTag(exercise.key))
+                  Positioned(top: 4, left: 4, child: exerciseTag(exercise.tag))
                 ]),
               ),
               //= Exercise content
