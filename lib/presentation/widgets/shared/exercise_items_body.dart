@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/models/exercise.dart';
-import '../../domain/repositories/i_user_settings_facade.dart';
-import '../theme/colors.dart';
-import '../theme/text.dart';
+import '../../../domain/models/exercise.dart';
+import '../../../domain/repositories/i_user_settings_facade.dart';
+import '../../theme/colors.dart';
+import '../../theme/text.dart';
 import 'wrappers.dart';
 
 Widget exerciseTag(String key) => IUserSettingsFacade.isFavorite(key)
@@ -13,13 +13,13 @@ Widget exerciseTag(String key) => IUserSettingsFacade.isFavorite(key)
         : Container();
 
 /// Renders Exercise List Item Body Content
-Widget exerciseItemBody(String key, Exercise exercise) => listItemWrapper(
+Widget exerciseItemBody(Exercise exercise) => listItemWrapper(
       GestureDetector(
-        onTap: () => print(key),
+        onTap: () => print(exercise.key),
         child: Card(
           color: Colors.transparent,
           elevation: 0,
-          key: Key(key),
+          key: Key('contentItem:${exercise.key}'),
           child: Row(
             children: <Widget>[
               //= Exercise Image
@@ -33,7 +33,7 @@ Widget exerciseItemBody(String key, Exercise exercise) => listItemWrapper(
                     image: AssetImage('assets/exercise_images/_default.jpg'),
                     fit: BoxFit.cover,
                   ),
-                  Positioned(top: 4, left: 4, child: exerciseTag(key))
+                  Positioned(top: 4, left: 4, child: exerciseTag(exercise.key))
                 ]),
               ),
               //= Exercise content

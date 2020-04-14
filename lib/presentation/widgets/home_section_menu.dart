@@ -1,7 +1,8 @@
+import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:flutter/material.dart';
 
 import '../router/routes.dart';
-import 'buttons.dart';
+import 'shared/buttons.dart';
 
 class MenuHomeSection extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class MenuHomeSection extends StatelessWidget {
           /// Exercise List
           AppButtons.homePageButton(
               onTap: () =>
-                  Navigator.pushNamed(context, FluroRouter.exerciseListLink),
+                  Navigator.pushNamed(context, DataValues.exercisesListLink),
               icon: Icons.local_library,
               text: 'exercises',
               buttonSide: ButtonSide.left),
@@ -21,7 +22,7 @@ class MenuHomeSection extends StatelessWidget {
           /// Workout List
           AppButtons.homePageButton(
               onTap: () =>
-                  Navigator.pushNamed(context, FluroRouter.workoutListLink),
+                  Navigator.pushNamed(context, DataValues.workoutListLink),
               icon: Icons.import_contacts,
               text: 'workouts',
               buttonSide: ButtonSide.center),

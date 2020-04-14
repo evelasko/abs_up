@@ -42,4 +42,8 @@ class AppTextStyles {
   /// Chip text
   static const TextStyle chipText = const TextStyle(
       fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.greyDarkest);
+
+  /// Tab Bar Items
+  static const TextStyle tabBarItem =
+      const TextStyle(fontSize: 13, fontWeight: FontWeight.w600);
 }

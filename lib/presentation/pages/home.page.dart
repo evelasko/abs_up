@@ -1,3 +1,4 @@
+import 'package:data_setup/presentation/widgets/home_section_workoutsettings.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/colors.dart';
@@ -42,12 +43,15 @@ class _HomePageState extends State<HomePage> {
 
       /// Body
       body: Container(
-        margin: EdgeInsets.only(left: 15, right: 15, bottom: 40),
+        margin: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             /// Perform Section
-            PerformWorkoutHomeSection(),
+            HomeSectionPerform(),
+
+            /// Workout Settings Panel
+            HomeSectionWorkoutsettings(),
 
             /// Menu Section
             MenuHomeSection()

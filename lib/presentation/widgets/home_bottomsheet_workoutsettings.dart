@@ -1,22 +1,24 @@
-import 'package:data_setup/domain/models/workout_settings.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/equipment.dart';
+import '../../domain/models/workout_settings.dart';
 import '../../domain/repositories/data_values.dart';
+import '../../domain/repositories/i_hive_facade.dart';
 import '../theme/colors.dart';
 import '../theme/text.dart';
-import 'equipment_chips.dart';
+import 'shared/equipment_chips.dart';
 
-class MainBottomSheetContent extends StatefulWidget {
+class HomeBottomSheetWorkoutsettings extends StatefulWidget {
   @override
-  _MainBottomSheetContentState createState() => _MainBottomSheetContentState();
+  _HomeBottomSheetWorkoutsettingsState createState() =>
+      _HomeBottomSheetWorkoutsettingsState();
 }
 
-class _MainBottomSheetContentState extends State<MainBottomSheetContent> {
+class _HomeBottomSheetWorkoutsettingsState
+    extends State<HomeBottomSheetWorkoutsettings> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +71,6 @@ class _MainBottomSheetContentState extends State<MainBottomSheetContent> {
               builder: (context, Box<WorkoutSettings> box, widget) {
                 WorkoutSettings settings =
                     box.get(DataValues.workoutSettingsKey);
-                print(box.keys.length);
                 if (settings == null)
                   return Text('No previous workout settings found...');
                 return Expanded(

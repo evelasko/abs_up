@@ -1,4 +1,11 @@
 class DataValues {
+  /// Route Links
+  static const String homeLink = 'home';
+  static const String exercisesListLink = 'exercises';
+  static const String workoutListLink = 'workout/list';
+  static const String workoutDetailsLink = 'workout/details/';
+  static const String workoutLogsLink = 'workout/logs';
+
   /// Hive Box Names
   static const String exerciseBoxName = 'exercises';
   static const String userSettingsBoxName = 'user_settings';

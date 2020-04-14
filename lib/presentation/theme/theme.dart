@@ -10,17 +10,10 @@ ThemeData appTheme() => ThemeData(
 
     /// Color Theme
     canvasColor: Colors.transparent,
+    scaffoldBackgroundColor: Colors.white,
     colorScheme: colorScheme(),
     primaryColor: AppColors.greyDarkest,
     accentColor: AppColors.rudy,
-    // primaryVariant: Colors.black,
-    // onPrimary: AppColors().grey,
-    // secondary: AppColors().greyLightest,
-    // secondaryVariant: AppColors().greyLight,
-    // onSecondary: AppColors().grey,
-    // surface: Colors.white,
-    // onSurface: AppColors().greyDarkest,
-    // onError: AppColors().rudy,
 
     /// Widgets Theme
     appBarTheme: AppBarTheme(textTheme: textTheme()));

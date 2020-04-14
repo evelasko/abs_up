@@ -2,7 +2,7 @@ import 'package:data_setup/presentation/theme/colors.dart';
 import 'package:data_setup/presentation/theme/text.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/models/equipment.dart';
+import '../../../domain/models/equipment.dart';
 
 FilterChip equipmentChip(
     {@required Equipment equipment, @required void Function(bool) onSelected}) {

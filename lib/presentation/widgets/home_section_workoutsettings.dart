@@ -5,12 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/workout_settings.dart';
 import '../../domain/repositories/i_hive_facade.dart';
-import 'workoutsettings_bottomsheet.dart';
-import 'equipment_row.dart';
-import 'typography.dart';
+import 'home_bottomsheet_workoutsettings.dart';
+import 'shared/equipment_row.dart';
+import 'shared/typography.dart';
 
-class CurrentWorkoutsettingsPanel extends StatelessWidget {
-  const CurrentWorkoutsettingsPanel({Key key}) : super(key: key);
+class HomeSectionWorkoutsettings extends StatelessWidget {
+  const HomeSectionWorkoutsettings({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -43,7 +43,7 @@ class CurrentWorkoutsettingsPanel extends StatelessWidget {
                       PersistentBottomSheetController sheetController =
                           showBottomSheet(
                         context: context,
-                        builder: (context) => MainBottomSheetContent(),
+                        builder: (context) => HomeBottomSheetWorkoutsettings(),
                       );
 
                       sheetController.closed
