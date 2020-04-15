@@ -1,41 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/exercise.dart';
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_hive_facade.dart';
 import 'shared/exercise_items.dart';
 import 'shared/lists_empty_feedback.dart';
 
 class ExercisesFavoritesTabView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => Container(
-          child: Column(children: <Widget>[
-        Expanded(
-          child: ValueListenableBuilder(
-              valueListenable: IHiveFacade.userSettingsBox
-                  .listenable(keys: [DataValues.favoriteExercisesKey]),
+  final Box<Exercise> exerciseBox;
 
-              /// Listenable manager
-              builder: (context, Box box, widget) {
-                List<String> favorites = box.get(
-                    DataValues.favoriteExercisesKey,
-                    defaultValue: []).cast<String>();
-                return favorites.length > 0
-                    //= Favorite list items
-                    ? ListView(
-                        children: favorites.map((key) {
-                        Exercise exercise = IHiveFacade.exercisesBox.get(key);
-                        return Container(
-                          child: ExerciseItem(
-                              key: Key('favoritesList:$key'),
-                              exercise: exercise),
-                        );
-                      }).toList())
-                    //= Favorite empty list feedback widget
-                    : emptyListFeedbackFavorites;
-              }),
-        ),
-      ]));
+  const ExercisesFavoritesTabView(this.exerciseBox, {Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Exercise> exerciseList = exerciseBox.values
+        .where((exercise) => exercise.tag == ExerciseTag.favorited.index)
+        .toList();
+    if (exerciseList.length < 1) return emptyListFeedbackFavorites;
+    return Container(
+        child: Column(children: <Widget>[
+      Expanded(
+          child: ListView.builder(
+              itemCount: exerciseList.length,
+              itemBuilder: (_, index) => ExerciseItem(
+                  key: Key('favoritesList:${exerciseList[index].key}'),
+                  exercise: exerciseList[index]))),
+    ]));
+  }
 }

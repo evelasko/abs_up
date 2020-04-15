@@ -1,42 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/exercise.dart';
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_hive_facade.dart';
 import 'shared/exercise_items.dart';
 import 'shared/lists_empty_feedback.dart';
 
 class ExercisesBlacklistTabView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => Container(
-          child: Column(children: <Widget>[
-        Expanded(
-          child: ValueListenableBuilder(
-              valueListenable: IHiveFacade.userSettingsBox
-                  .listenable(keys: [DataValues.blacklistExercisesKey]),
+  final Box<Exercise> exerciseBox;
 
-              /// Listenable manager
-              builder: (context, Box box, widget) {
-                List<String> blacklist = box.get(
-                    DataValues.blacklistExercisesKey,
-                    defaultValue: []).cast<String>();
-                return blacklist.length > 0
-                    //= Blacklist exercise items list
-                    ? ListView(
-                        children: blacklist.map((key) {
-                        Exercise exercise = IHiveFacade.exercisesBox.get(key);
-                        return Container(
-                          child: ExerciseItem(
-                              key: Key('blacklistList:$key'),
-                              exercise: exercise),
-                        );
-                      }).toList())
-                    //= Empty blacklist feedback widget
-                    : emptyListFeedbackBlacklist;
-              }),
-        ),
-      ]));
+  const ExercisesBlacklistTabView(this.exerciseBox, {Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Exercise> exerciseList = exerciseBox.values
+        .where((exercise) => exercise.tag == ExerciseTag.blacklisted.index)
+        .toList();
+    if (exerciseList.length < 1) return emptyListFeedbackBlacklist;
+    return Container(
+        child: Column(children: <Widget>[
+      Expanded(
+          child: ListView.builder(
+              itemCount: exerciseList.length,
+              itemBuilder: (_, index) => ExerciseItem(
+                  key: Key('blacklistList:${exerciseList[index].key}'),
+                  exercise: exerciseList[index]))),
+    ]));
+  }
 }
