@@ -18,20 +18,53 @@ class ExerciseItem extends StatefulWidget {
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
-  // non dissmisible function:
+  /// Action for non dissmisible list items:
+  /// these actions will be performed by the Dissmissible
+  /// but the items won't be dissmised from the list
   Future<bool> _addToFavoriteOrBlacklist(DismissDirection direction) async {
+    Scaffold.of(context).removeCurrentSnackBar();
+
     //= add to favorites
     if (direction == DismissDirection.startToEnd) {
       await widget.exercise.setFavorite();
       Scaffold.of(context).showSnackBar(AppSnackbars.favoriteAdded);
     }
+
     //= add to blacklist
     else {
       await widget.exercise.setBlacklist();
       Scaffold.of(context).showSnackBar(AppSnackbars.blacklistAdded);
     }
+    // confirmDissmiss requires to return bool
+    // this bool must be false in order to
     return false;
   }
+
+  /// Remove exercise tag (either from favorites or blacklist)
+  /// and show provided snackbar
+  Future<void> removeExerciseTag() async {
+    if (widget.exercise.tag > 0) {
+      await widget.exercise.removeTag();
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(widget.exercise.tag == 1
+          ? AppSnackbars.favoriteRemoved
+          : AppSnackbars.blacklistRemoved);
+    }
+  }
+
+  /// Renders an Exercise list item
+  Widget exerciseItem(
+          {@required String key,
+          @required Exercise exercise,
+          @required Future<bool> Function(DismissDirection) confirmDismiss}) =>
+      Dismissible(
+          key: Key(key),
+          background: SwipableActions.background(
+              Colors.green, Icons.favorite, 'favorite'),
+          secondaryBackground: SwipableActions.secondaryBackground(
+              Colors.red, Icons.not_interested, 'add to\nblacklist'),
+          confirmDismiss: confirmDismiss,
+          child: exerciseItemBody(context, exercise));
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +86,11 @@ class _ExerciseItemState extends State<ExerciseItem> {
             confirmDismiss: (direction) async {
               // if it's not in favorites or blacklist page
               // do the action without dissmising the item
-              if (!isDismissable) await widget.exercise.removeTag();
+              if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => await widget.exercise.removeTag(),
-            child: exerciseItemBody(widget.exercise));
+            onDismissed: (direction) async => await removeExerciseTag(),
+            child: exerciseItemBody(context, widget.exercise));
 
       /// Blacklist Exercise Item
       case 2:
@@ -67,11 +100,11 @@ class _ExerciseItemState extends State<ExerciseItem> {
             background: SwipableActions.secondaryBackground(
                 AppColors.brandeis, Icons.thumb_up, 'remove from\nblacklist'),
             confirmDismiss: (direction) async {
-              if (!isDismissable) widget.exercise.removeTag();
+              if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => await widget.exercise.removeTag(),
-            child: exerciseItemBody(widget.exercise));
+            onDismissed: (direction) async => await removeExerciseTag(),
+            child: exerciseItemBody(context, widget.exercise));
 
       /// Exercise Item
       default:
@@ -82,17 +115,3 @@ class _ExerciseItemState extends State<ExerciseItem> {
     }
   }
 }
-
-/// Renders an Exercise list item
-Widget exerciseItem(
-        {@required String key,
-        @required Exercise exercise,
-        @required Future<bool> Function(DismissDirection) confirmDismiss}) =>
-    Dismissible(
-        key: Key(key),
-        background: SwipableActions.background(
-            Colors.green, Icons.favorite, 'favorite'),
-        secondaryBackground: SwipableActions.secondaryBackground(
-            Colors.red, Icons.not_interested, 'add to\nblacklist'),
-        confirmDismiss: confirmDismiss,
-        child: exerciseItemBody(exercise));

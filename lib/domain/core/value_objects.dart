@@ -1,5 +1,6 @@
 //: Base abstract class for Value Ojects
 import 'package:dartz/dartz.dart';
+import 'package:data_setup/domain/core/errors.dart';
 import 'package:data_setup/domain/core/value_validators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,6 +14,14 @@ abstract class ValueObject<T> {
 
   /// Constructor
   const ValueObject();
+
+  /// Helper methods
+
+  /// Throws [UnexpectedValueError] containing the [ValueFailure]
+  /// or returns the value
+  T getOrCrash() => value.fold((failure) => throw UnexpectedValueError(failure),
+      id // (r) => r , identity functor from dartz
+      );
 
   /// Class overrides
   @override

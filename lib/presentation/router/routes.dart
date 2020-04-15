@@ -1,3 +1,6 @@
+import 'package:data_setup/domain/models/exercise.dart';
+import 'package:data_setup/domain/repositories/i_hive_facade.dart';
+import 'package:data_setup/presentation/pages/exercise_details.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +22,18 @@ class FluroRouter {
   static Handler _exerciseList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           ExercisePage());
+
+  /// Exercise Details
+  static const exerciseDetailsLink =
+      DataValues.exerciseDetailsLink + ':exerciseKey';
+  static String getExerciseDetailsLink({String exerciseKey}) =>
+      exerciseDetailsLink.replaceFirst(':exerciseKey', exerciseKey);
+  static Handler _exerciseDetails =
+      Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    final Exercise exercise =
+        IHiveFacade.exercisesBox.get(params['exerciseKey'][0]);
+    return ExerciseDetailsPage(exercise);
+  });
 
   /// Workout List
   static Handler _workoutList = Handler(
@@ -53,6 +68,8 @@ class FluroRouter {
         handler: _workoutList, transitionType: TransitionType.inFromRight);
     router.define(workoutDetailsLink,
         handler: _workoutDetails, transitionType: TransitionType.inFromRight);
+    router.define(exerciseDetailsLink,
+        handler: _exerciseDetails, transitionType: TransitionType.inFromRight);
     router.define(DataValues.workoutLogsLink,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);
   }

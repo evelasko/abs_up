@@ -46,4 +46,8 @@ class AppTextStyles {
   /// Tab Bar Items
   static const TextStyle tabBarItem =
       const TextStyle(fontSize: 13, fontWeight: FontWeight.w600);
+
+  /// Saved workout title
+  static const TextStyle savedWorkoutTitle = const TextStyle(
+      fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.greyDarkest);
 }

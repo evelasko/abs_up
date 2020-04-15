@@ -1,3 +1,4 @@
+import 'package:data_setup/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
@@ -12,9 +13,11 @@ Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
         : Container();
 
 /// Renders Exercise List Item Body Content
-Widget exerciseItemBody(Exercise exercise) => listItemWrapper(
+Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
+    listItemWrapper(
       GestureDetector(
-        onTap: () => print(exercise.key),
+        onTap: () => Navigator.pushNamed(context,
+            FluroRouter.getExerciseDetailsLink(exerciseKey: exercise.key)),
         child: Card(
           color: Colors.transparent,
           elevation: 0,

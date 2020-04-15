@@ -10,7 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons:
+
+  # Firebase Dependencies
   cloud_firestore:
+  firebase_core:
+  firebase_auth:
+  google_sign_in:
+
   fluro:
   hive: 1.4.1+1
   hive_flutter: 0.3.0+2

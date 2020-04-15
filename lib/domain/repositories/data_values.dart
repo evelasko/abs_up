@@ -2,6 +2,7 @@ class DataValues {
   /// Route Links
   static const String homeLink = 'home';
   static const String exercisesListLink = 'exercises';
+  static const String exerciseDetailsLink = 'exercise/details/';
   static const String workoutListLink = 'workout/list';
   static const String workoutDetailsLink = 'workout/details/';
   static const String workoutLogsLink = 'workout/logs';
