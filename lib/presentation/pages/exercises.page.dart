@@ -16,15 +16,16 @@ class ExercisePage extends StatelessWidget {
       length: 3,
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Exercises'),
+            title: Text('Exercises'.toUpperCase(),
+                style: TextStyle(letterSpacing: 1)),
             actions: <Widget>[
               IconButton(icon: Icon(Icons.filter_list), onPressed: () {})
             ],
             bottom: TabBar(
               tabs: <Widget>[
-                Text('Exercises'.toUpperCase()),
-                Text('Favorites'.toUpperCase()),
-                Text('Blacklist'.toUpperCase())
+                Text('Exercises'.toUpperCase(), style: AppTextStyles.tabHeader),
+                Text('Favorites'.toUpperCase(), style: AppTextStyles.tabHeader),
+                Text('Blacklist'.toUpperCase(), style: AppTextStyles.tabHeader)
               ],
               labelStyle: AppTextStyles.tabBarItem,
               labelPadding: EdgeInsets.only(bottom: 15),

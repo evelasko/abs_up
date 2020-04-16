@@ -30,6 +30,7 @@ dependencies:
   meta: ^1.1.8
   http:
   intl:
+  flutter_markdown: ^0.3.4
 
 dev_dependencies:
   lint:
@@ -47,6 +48,7 @@ flutter:
   assets:
     - assets/data/exercises.json
     - assets/exercise_images/
+    - assets/exercise_details/
 
   fonts:
     - family: AbsAppIcons

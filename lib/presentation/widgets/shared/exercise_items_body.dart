@@ -51,10 +51,12 @@ Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            //= Target
                             Text(
                               exercise.target.toUpperCase(),
                               style: AppTextStyles.listItemUpperTitle,
                             ),
+                            //= Name
                             RichText(
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,

@@ -28,12 +28,9 @@ class FluroRouter {
       DataValues.exerciseDetailsLink + ':exerciseKey';
   static String getExerciseDetailsLink({String exerciseKey}) =>
       exerciseDetailsLink.replaceFirst(':exerciseKey', exerciseKey);
-  static Handler _exerciseDetails =
-      Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    final Exercise exercise =
-        IHiveFacade.exercisesBox.get(params['exerciseKey'][0]);
-    return ExerciseDetailsPage(exercise);
-  });
+  static Handler _exerciseDetails = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          ExerciseDetailsPage(params['exerciseKey'][0]));
 
   /// Workout List
   static Handler _workoutList = Handler(
@@ -69,7 +66,7 @@ class FluroRouter {
     router.define(workoutDetailsLink,
         handler: _workoutDetails, transitionType: TransitionType.inFromRight);
     router.define(exerciseDetailsLink,
-        handler: _exerciseDetails, transitionType: TransitionType.inFromRight);
+        handler: _exerciseDetails, transitionType: TransitionType.inFromBottom);
     router.define(DataValues.workoutLogsLink,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);
   }

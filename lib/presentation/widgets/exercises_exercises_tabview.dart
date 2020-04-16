@@ -70,6 +70,7 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
                   child: TextField(
                     expands: false,
                     maxLines: 1,
+                    // TODO the search mechanismo is not working properly... consider changing the method that triggers the search
                     onChanged: _updateSearchString,
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
