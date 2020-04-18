@@ -54,13 +54,13 @@ class IWorkoutFacade {
         workoutSettingsBox.get(DataValues.workoutSettingsKey);
 
     //= filter exercises
-    Iterable<Exercise> availableExercises = exercisesBox.values
-        .where((exercise) =>
+    Iterable<Exercise> availableExercises = exercisesBox.values.where(
+        (exercise) =>
             intensityFilter(exercise.intensity, settings.intensity) &&
             difficultyFilter(exercise.difficulty, settings.difficulty) &&
             exercise.impact == settings.impact &&
-            settings.equipment.contains(exercise.equipment.toLowerCase()))
-        .where((exercise) => IUserSettingsFacade.isBlacklist(exercise.key));
+            settings.equipment.contains(exercise.equipment.toLowerCase()));
+    // .where((exercise) => IUserSettingsFacade.isBlacklist(exercise.key));
 
     //= distribute exercises
     final Map<String, List<Exercise>> distributedExercises =
