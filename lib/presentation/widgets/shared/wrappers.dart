@@ -9,3 +9,12 @@ Widget listItemWrapper(Widget child) => Container(
           border:
               Border(bottom: BorderSide(color: AppColors.greyLight, width: 1))),
     );
+
+Widget listSmallItemWrapper(Widget child) => Container(
+      constraints: BoxConstraints.expand(height: 60),
+      // padding: EdgeInsets.all(10),
+      child: child,
+      decoration: const BoxDecoration(
+          border:
+              Border(bottom: BorderSide(color: AppColors.greyLight, width: 1))),
+    );

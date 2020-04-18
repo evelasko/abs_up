@@ -11,6 +11,7 @@ class DataValues {
   static const String exerciseBoxName = 'exercises';
   static const String userSettingsBoxName = 'user_settings';
   static const String workoutSettingsBoxName = 'workout_settings';
+  static const String workoutsBoxName = 'workouts';
 
   /// Keys
   //=
@@ -32,6 +33,11 @@ class DataValues {
   static const String difficultyKey = 'difficulty';
   static const String impactKey = 'impact';
   static const String equipmentKey = 'equipment';
+
+  //=
+  //= Workout keys
+  static const String currentWorkoutKey = 'currentWorkout';
+
   //=
   //= Equipment keys
   static const String equipmentNoneKey = 'none';

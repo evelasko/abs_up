@@ -225,4 +225,36 @@ class AppButtons {
           ),
         ),
       );
+
+  static Widget primaryActionButton(
+          {@required Function onTap,
+          @required String text,
+          ButtonTypes buttonType = ButtonTypes.primary}) =>
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        child: GestureDetector(
+          onTap: onTap,
+          child: SizedBox(
+            height: 48,
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: buttonTypeCase<Gradient>(
+                    type: buttonType,
+                    primary: AppColors.primaryGradient,
+                    secondary: AppColors.secondaryGradient,
+                    other: AppColors.primaryGradient,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: Center(
+                child: Text(text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800)),
+              ),
+            ),
+          ),
+        ),
+      );
 }

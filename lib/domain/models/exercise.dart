@@ -1,4 +1,3 @@
-//: Data model: Exercises
 import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:data_setup/presentation/theme/icons.dart';
 import 'package:flutter/material.dart';
