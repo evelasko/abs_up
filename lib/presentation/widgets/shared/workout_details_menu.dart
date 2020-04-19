@@ -1,7 +1,8 @@
-import 'package:data_setup/domain/repositories/i_workout_facade.dart';
 import 'package:flutter/material.dart';
 
+import '../../../domain/repositories/i_workout_facade.dart';
 import '../../theme/colors.dart';
+import '../home_bottomsheet_workoutsettings.dart';
 import 'buttons.dart';
 
 class WorkoutDetailsMenu extends StatelessWidget {
@@ -32,7 +33,16 @@ class WorkoutDetailsMenu extends StatelessWidget {
                 IconButton(
                     icon: Icon(Icons.tune),
                     color: AppColors.greyLight,
-                    onPressed: () {}),
+                    onPressed: () {
+                      PersistentBottomSheetController sheetController =
+                          showBottomSheet(
+                        context: context,
+                        builder: (context) => HomeBottomSheetWorkoutsettings(),
+                      );
+
+                      sheetController.closed.then(
+                          (value) => IWorkoutFacade.generateCurrentWorkout());
+                    }),
                 IconButton(
                     icon: Icon(Icons.add_circle_outline),
                     color: AppColors.greyLight,

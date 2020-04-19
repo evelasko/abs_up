@@ -24,7 +24,9 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
                 exerciseKey: workoutItem.exercise.key)),
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 0, top: 5, bottom: 5),
-          color: Colors.white,
+          color: workoutItem.exercise.name == 'Rest'
+              ? AppColors.greyLight
+              : Colors.white,
           key: Key('contentItem:${workoutItem.exercise.key}'),
           child: Row(
             children: <Widget>[
@@ -32,12 +34,14 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
               Container(
                 width: 70,
                 height: 50,
-                color: Colors.blue,
                 child: Stack(fit: StackFit.expand, children: [
-                  Image(
-                    image: AssetImage('assets/exercise_images/_default.jpg'),
-                    fit: BoxFit.cover,
-                  ),
+                  workoutItem.exercise.name == 'Rest'
+                      ? Container()
+                      : Image(
+                          image:
+                              AssetImage('assets/exercise_images/_default.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                   Center(
                       child: Text(
                     workoutItem.order.toString(),
@@ -108,7 +112,10 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
                 width: 50,
                 height: 50,
                 child: Icon(workoutItem.exercise.equipmentIcon,
-                    color: AppColors.grey, size: 45.0),
+                    color: workoutItem.exercise.name == 'Rest'
+                        ? AppColors.greyLight
+                        : AppColors.grey,
+                    size: 45.0),
               ),
               //= Reorder Handle
               Container(

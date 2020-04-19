@@ -1,7 +1,6 @@
-import 'package:data_setup/domain/models/workout_item.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/models/exercise.dart';
+import '../../../domain/models/workout_item.dart';
 import '../../theme/colors.dart';
 import 'swipable_actions.dart';
 import 'workout_items_body.dart';
@@ -19,13 +18,11 @@ class WorkoutItemWidget extends StatefulWidget {
 
 class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
   @override
-  Widget build(BuildContext context) {
-    return Dismissible(
-        key: Key(widget.workoutItem.exercise.key),
-        background: SwipableActions.background(
-            AppColors.brandeis, Icons.favorite, 'replace\nexercise'),
-        secondaryBackground: SwipableActions.secondaryBackground(
-            Colors.red, Icons.delete, 'remove from\nworkout'),
-        child: workoutItemBody(context, widget.workoutItem));
-  }
+  Widget build(BuildContext context) => Dismissible(
+      key: Key(widget.workoutItem.exercise.key),
+      background: SwipableActions.background(
+          AppColors.brandeis, Icons.favorite, 'replace\nexercise'),
+      secondaryBackground: SwipableActions.secondaryBackground(
+          Colors.red, Icons.delete, 'remove from\nworkout'),
+      child: workoutItemBody(context, widget.workoutItem));
 }

@@ -6,11 +6,14 @@ class SwipableActions {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(icon, color: Colors.white),
+            Icon(icon, size: 22, color: Colors.white),
             Text(
               text.toUpperCase(),
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500),
             )
           ],
         ),

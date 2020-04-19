@@ -1,16 +1,14 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
-import 'package:data_setup/presentation/theme/colors.dart';
-import 'package:data_setup/presentation/widgets/shared/workout_details_menu.dart';
-import 'package:data_setup/presentation/widgets/shared/workout_details_panel.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:data_setup/presentation/widgets/shared/buttons.dart';
-import 'package:data_setup/presentation/widgets/shared/equipment_row.dart';
-import 'package:data_setup/presentation/widgets/shared/workout_items.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../domain/models/workout.dart';
+import '../../domain/repositories/data_values.dart';
+import '../../domain/repositories/i_hive_facade.dart';
+import '../theme/colors.dart';
+import '../widgets/shared/workout_details_menu.dart';
+import '../widgets/shared/workout_details_panel.dart';
+import '../widgets/shared/workout_items.dart';
 
 class WorkoutDetailsPage extends StatefulWidget {
   final String workoutId;
@@ -21,13 +19,6 @@ class WorkoutDetailsPage extends StatefulWidget {
 }
 
 class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
-  /// DUMMY DATA START
-  List<Exercise> workoutItems = IHiveFacade.exercisesBox.values
-      .where((exercise) => exercise.intensity == 1)
-      .toList();
-
-  /// DUMMY DATA END
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +39,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               onPressed: () {})
         ],
       ),
+      //= Workout Listenable
       body: ValueListenableBuilder(
           valueListenable: IHiveFacade.workoutsBox
               .listenable(keys: [DataValues.currentWorkoutKey]),
@@ -59,25 +51,22 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               children: <Widget>[
                 //= Workout Details Panel
                 WorkoutDetailsPanel(
-                  activeEquipment: ['none', 'barbell', 'cable'],
+                  activeEquipment: currentWorkout.equipmentTotal,
                   averageDifficulty: 'extreme',
                   averageIntensity: 'moderate',
-                  totalDuration: '09:30',
+                  totalDuration: currentWorkout.totalDurationString,
                 ),
                 //= Workout Reorderable Items List
                 Expanded(
                     child: ReorderableListView(
                         children: currentWorkout.items
-                            .map((workoutItem) => WorkoutItemWidget(
-                                key: Key(
-                                    'workoutItem:${workoutItem.exercise.key}'),
-                                workoutItem: workoutItem))
+                            .map((item) => WorkoutItemWidget(
+                                key: Key('workoutItem:${item.exercise.key}'),
+                                workoutItem: item))
                             .toList(),
-                        onReorder: (oldIndex, newIndex) => setState(() {
-                              if (newIndex > oldIndex) newIndex -= 1;
-                              final item = workoutItems.removeAt(oldIndex);
-                              workoutItems.insert(newIndex, item);
-                            }))),
+                        onReorder: (oldIndex, newIndex) async =>
+                            await currentWorkout.reorderItems(
+                                oldIndex, newIndex))),
                 //= Menu Buttons
                 WorkoutDetailsMenu()
               ],

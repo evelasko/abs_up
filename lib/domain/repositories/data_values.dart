@@ -92,6 +92,18 @@ class DataValues {
   static const bool impactDefault = false;
   static const String equipmentDefault = equipmentNoneKey;
 
+  /// Workout Generator Values
+  //= Minimum duration for each length
+  static const int minimumDurationShortLength = 360;
+  static const int minimumDurationMediumLength = 660;
+  static const int minimumDurationLongLength = 900;
+  static const int minimumDurationDefault = 420;
+
+  //= Workout items durations
+  static const int workoutItemDurationShort = 30;
+  static const int workoutItemDurationMedium = 43;
+  static const int workoutItemDurationLong = 60;
+
   /// Shared Data Values
   static List<String> lengthStrings = ['Short', 'Medium', 'Long'];
   static List<String> intensityStrings = ['Low', 'Moderate', 'High', 'Extreme'];

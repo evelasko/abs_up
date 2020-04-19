@@ -7,11 +7,11 @@ part 'workout_item.g.dart';
 @HiveType(typeId: 3, adapterName: 'WorkoutItemAdapter')
 class WorkoutItem extends HiveObject {
   @HiveField(0)
-  Exercise exercise;
+  final Exercise exercise;
   @HiveField(1)
   int order;
   @HiveField(2)
-  int duration;
+  final int duration;
   @HiveField(3)
   double weight;
   @HiveField(4)

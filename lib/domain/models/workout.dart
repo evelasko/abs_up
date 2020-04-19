@@ -40,6 +40,35 @@ class Workout extends HiveObject {
     if (this.isInBox) await this.save();
   }
 
+  /// Getters
+  Duration get totalDuration {
+    Duration totalDuration = Duration(seconds: 0);
+    items.forEach((item) => totalDuration += Duration(seconds: item.duration));
+    return totalDuration;
+  }
+
+  String get totalDurationString =>
+      RegExp(r'\d{2}\:\d{2}(?=\.)')
+          .stringMatch(this.totalDuration.toString()) ??
+      '00:00';
+
+  List<String> get equipmentTotal =>
+      Set.from(items.map((item) => item.exercise.equipment.toLowerCase()))
+          .toList()
+          .cast<String>();
+
+  /// Custom methods
+  Future<void> reorderItems(int oldIndex, int newIndex) async {
+    if (newIndex > oldIndex) newIndex -= 1;
+    final item = items.removeAt(oldIndex);
+    items.insert(newIndex, item);
+    refreshOrder();
+    this.save();
+  }
+
+  void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
+      (iterationNumber) => items[iterationNumber - 1].order = iterationNumber);
+
   /// Class overrides
   @override
   bool operator ==(Object o) {

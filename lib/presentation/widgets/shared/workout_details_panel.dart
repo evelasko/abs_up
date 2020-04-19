@@ -29,6 +29,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(bottom: 15),
+            //= Equipment row
             child: equipmentRowContent(
                 activeEquipment: activeEquipment,
                 iconSize: 36,
@@ -44,6 +45,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
+                      //= Intensity
                       Text('intensity'.toUpperCase(),
                           style: TextStyle(
                               color: AppColors.grey,
@@ -58,6 +60,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                   ),
                 ),
                 Text(
+                  //= Total duration
                   totalDuration,
                   style: TextStyle(
                       fontSize: 24,
@@ -69,6 +72,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
+                      //= Difficulty
                       Text('difficulty'.toUpperCase(),
                           style: TextStyle(
                               color: AppColors.grey,
