@@ -1,19 +1,20 @@
-import 'dart:math';
-
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/domain/models/workout_item.dart';
-import 'package:data_setup/domain/models/workout_settings.dart';
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_user_settings_facade.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
+import '../models/exercise.dart';
+import '../models/workout.dart';
+import '../models/workout_item.dart';
+import '../models/workout_settings.dart';
+import 'data_values.dart';
 import 'i_hive_facade.dart';
 
 class IWorkoutFacade {
   static Box workoutSettingsBox = IHiveFacade.workoutSettingsBox;
   static Box<Workout> workoutsBox = IHiveFacade.workoutsBox;
   static Box<Exercise> exercisesBox = IHiveFacade.exercisesBox;
+  static final WorkoutSettings settings =
+      workoutSettingsBox.get(DataValues.workoutSettingsKey);
+  final Workout currentWorkout = workoutsBox.get(DataValues.currentWorkoutKey);
 
   static const List<String> availableTargets = [
     'Core',
@@ -48,9 +49,6 @@ class IWorkoutFacade {
 
   /// Generates a new workout based on current settings
   static Workout generateWorkout() {
-    final WorkoutSettings settings =
-        workoutSettingsBox.get(DataValues.workoutSettingsKey);
-
     //= filter exercises
     Iterable<Exercise> availableExercises = exercisesBox.values.where(
         (exercise) =>
@@ -82,14 +80,12 @@ class IWorkoutFacade {
     }
 
     //= add rest items
-    List<WorkoutItem> workoutItems =
-        addRestItems(exerciseItems, settings.intensity, settings.length);
+    List<WorkoutItem> workoutItems = addRestItems(exerciseItems);
 
     //= set order of items and return final items
     Iterable.generate(workoutItems.length, (x) => x + 1).forEach(
         (iterationNumber) =>
             workoutItems[iterationNumber - 1].order = iterationNumber);
-
     return Workout(items: workoutItems);
   }
 
@@ -98,7 +94,24 @@ class IWorkoutFacade {
   static Future<void> generateCurrentWorkout() async =>
       await workoutsBox.put(DataValues.currentWorkoutKey, generateWorkout());
 
+  static Future<void> saveCurrentWorkoutAs(String name) async {
+    final Workout currentWorkout =
+        workoutsBox.get(DataValues.currentWorkoutKey);
+    workoutsBox.put(
+        generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
+  }
+
   //: Helper Methods_____________________________________________
+
+  static String generateUniqueWorkoutKey() {
+    final uuid = Uuid();
+    final List<String> savedWorkoutKey = workoutsBox.keys;
+    String uniqueKey = uuid.v4();
+    while (savedWorkoutKey.contains(uniqueKey)) {
+      uniqueKey = uuid.v4();
+    }
+    return uniqueKey;
+  }
 
   /// Get minimum workout duration by settings length
   static int get minWorkoutLength {
@@ -173,21 +186,22 @@ class IWorkoutFacade {
   }
 
   /// Returns the exercise items with rest items included
-  static List<WorkoutItem> addRestItems(List<WorkoutItem> exerciseItems,
-      int settingsIntensity, int settingsLength) {
+  static List<WorkoutItem> addRestItems(List<WorkoutItem> exerciseItems) {
     //= base duration of rest items
     const int baseInterval = 15;
 
+    const List<int> intervalMatrix = [4, 3, 2];
+
     //= set rest interval duration
-    final int interval = settingsIntensity != 4
-        ? baseInterval * settingsIntensity
-        : settingsLength == 2
+    final int interval = settings.intensity != 4
+        ? baseInterval * intervalMatrix[settings.intensity - 1]
+        : settings.length == 2
             ? baseInterval * 3
-            : settingsLength == 3 ? baseInterval * 2 : 0;
+            : settings.length == 3 ? baseInterval * 2 : 0;
     //= set frequency of rest intervals
-    final int frequency = settingsIntensity != 4
-        ? settingsLength
-        : settingsLength - 1; //this yields: 1 = 0, 2 = 1, 3 = 2
+    final int frequency = settings.intensity != 4
+        ? settings.length
+        : settings.length - 1; //this yields: 1 = 0, 2 = 1, 3 = 2
 
     //= length 1 intensity 1 has no rest intervals thus returns the same
     if (frequency == 0) return exerciseItems;
@@ -199,7 +213,6 @@ class IWorkoutFacade {
 
     Iterable.generate(frequency, (x) => x + 1).forEach((iterationNumber) {
       final int index = exerciseItems.length - (workBlock * iterationNumber);
-      //-> print('insert at $index');
       exerciseAndRestItems.insert(
           index,
           WorkoutItem(
@@ -208,7 +221,6 @@ class IWorkoutFacade {
                   .first,
               duration: interval));
     });
-
     return exerciseAndRestItems;
   }
 
