@@ -22,21 +22,21 @@ class _HomeBottomSheetWorkoutsettingsState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 0, bottom: 20),
+      padding: const EdgeInsets.only(top: 0, bottom: 20),
       decoration: BoxDecoration(
           color: AppColors.greyLightest,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(
         children: <Widget>[
           ///
           /// Sheet Header
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            margin: EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            margin: const EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
             child: Row(
@@ -48,14 +48,14 @@ class _HomeBottomSheetWorkoutsettingsState
                       color: AppColors.greyDark,
                     ),
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(top: 8, left: 0, bottom: 8),
+                    padding: const EdgeInsets.only(top: 8, left: 0, bottom: 8),
                     onPressed: () => Navigator.pop(context)),
                 Text('shuffle Workout Settings'.toUpperCase()),
                 IconButton(
                     icon: Icon(Icons.settings_backup_restore,
                         color: AppColors.greyDark),
                     alignment: Alignment.centerRight,
-                    padding: EdgeInsets.only(top: 8, left: 0, bottom: 8),
+                    padding: const EdgeInsets.only(top: 8, left: 0, bottom: 8),
                     onPressed: () {})
               ],
             ),
@@ -69,14 +69,15 @@ class _HomeBottomSheetWorkoutsettingsState
 
               /// Listenable manager
               builder: (context, Box<WorkoutSettings> box, widget) {
-                WorkoutSettings settings =
+                final WorkoutSettings settings =
                     box.get(DataValues.workoutSettingsKey);
-                if (settings == null)
-                  return Text('No previous workout settings found...');
+                if (settings == null) {
+                  return const Text('No previous workout settings found...');
+                }
                 return Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    margin: EdgeInsets.only(bottom: 10, top: 10),
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    margin: const EdgeInsets.only(bottom: 10, top: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -106,13 +107,14 @@ class _HomeBottomSheetWorkoutsettingsState
 
                             /// Length Choice
                             Container(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              margin: EdgeInsets.only(bottom: 5),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 5),
                               child: CupertinoSlidingSegmentedControl<String>(
                                 children: Map.fromIterable(
                                     DataValues.lengthStrings,
-                                    key: (key) => key,
-                                    value: (value) => Text(value)),
+                                    key: (key) => key.toString(),
+                                    value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
                                   settings.lengthSetAndSave(newValue);
                                 },
@@ -144,21 +146,22 @@ class _HomeBottomSheetWorkoutsettingsState
                                     padding: EdgeInsets.zero,
                                     icon: Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
-                                    constraints:
-                                        BoxConstraints.tight(Size(32, 32)),
+                                    constraints: BoxConstraints.tight(
+                                        const Size(32, 32)),
                                     onPressed: () {})
                               ],
                             ),
 
                             /// Intensity Choice
                             Container(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              margin: EdgeInsets.only(bottom: 10),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               child: CupertinoSlidingSegmentedControl<String>(
                                 children: Map.fromIterable(
                                     DataValues.intensityStrings,
-                                    key: (key) => key,
-                                    value: (value) => Text(value)),
+                                    key: (key) => key.toString(),
+                                    value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
                                   settings.intensitySetAndSave(newValue);
                                 },
@@ -190,21 +193,22 @@ class _HomeBottomSheetWorkoutsettingsState
                                     padding: EdgeInsets.zero,
                                     icon: Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
-                                    constraints:
-                                        BoxConstraints.tight(Size(32, 32)),
+                                    constraints: BoxConstraints.tight(
+                                        const Size(32, 32)),
                                     onPressed: () {})
                               ],
                             ),
 
                             /// Difficulty Choice
                             Container(
-                              padding: EdgeInsets.only(top: 10, bottom: 5),
-                              margin: EdgeInsets.only(bottom: 10),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 5),
+                              margin: const EdgeInsets.only(bottom: 10),
                               child: CupertinoSlidingSegmentedControl<String>(
                                 children: Map.fromIterable(
                                     DataValues.difficultyStrings,
-                                    key: (key) => key,
-                                    value: (value) => Text(value)),
+                                    key: (key) => key.toString(),
+                                    value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
                                   settings.difficultySetAndSave(newValue);
                                 },
@@ -219,37 +223,35 @@ class _HomeBottomSheetWorkoutsettingsState
 
                         ///
                         /// Impact Section
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              /// Impact Header
-                              Text(
-                                'Include impact',
-                                style: AppTextStyles.currentWorkoutSettingsData
-                                    .copyWith(color: AppColors.greyDarkest),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  /// Impact choice
-                                  Switch.adaptive(
-                                      value: settings.impact,
-                                      onChanged: (value) {
-                                        settings
-                                            .impactSetOrToggleAndSave(value);
-                                      }),
-                                  IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Icon(Icons.help,
-                                          size: 24, color: AppColors.grey),
-                                      constraints:
-                                          BoxConstraints.tight(Size(32, 32)),
-                                      onPressed: () {}),
-                                ],
-                              )
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            /// Impact Header
+                            Text(
+                              'Include impact',
+                              style: AppTextStyles.currentWorkoutSettingsData
+                                  .copyWith(color: AppColors.greyDarkest),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                /// Impact choice
+                                Switch.adaptive(
+                                    value: settings.impact,
+                                    onChanged: (value) {
+                                      settings.impactSetOrToggleAndSave(value);
+                                    }),
+                                IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(Icons.help,
+                                        size: 24, color: AppColors.grey),
+                                    constraints: BoxConstraints.tight(
+                                        const Size(32, 32)),
+                                    onPressed: () {}),
+                              ],
+                            )
+                          ],
                         ),
+
                         Divider(
                           color: AppColors.grey,
                         ),
@@ -273,15 +275,15 @@ class _HomeBottomSheetWorkoutsettingsState
                                     padding: EdgeInsets.zero,
                                     icon: Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
-                                    constraints:
-                                        BoxConstraints.tight(Size(32, 32)),
+                                    constraints: BoxConstraints.tight(
+                                        const Size(32, 32)),
                                     onPressed: () {})
                               ],
                             ),
 
                             /// Equipment Choice
                             Container(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 5),
                               child: Wrap(
                                 alignment: WrapAlignment.center,
                                 spacing: 5,

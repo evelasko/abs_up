@@ -13,7 +13,7 @@ class IWorkoutFacade {
   static Box<Workout> workoutsBox = IHiveFacade.workoutsBox;
   static Box<Exercise> exercisesBox = IHiveFacade.exercisesBox;
   static final WorkoutSettings settings =
-      workoutSettingsBox.get(DataValues.workoutSettingsKey);
+      workoutSettingsBox.get(DataValues.workoutSettingsKey) as WorkoutSettings;
   final Workout currentWorkout = workoutsBox.get(DataValues.currentWorkoutKey);
 
   static const List<String> availableTargets = [
@@ -29,7 +29,7 @@ class IWorkoutFacade {
   //: Getters _________________________________________________
   /// Returns the current workout settings
   static WorkoutSettings get workoutSettings =>
-      workoutSettingsBox.get(DataValues.workoutSettingsKey);
+      workoutSettingsBox.get(DataValues.workoutSettingsKey) as WorkoutSettings;
 
   /// Returns a rough amount exercises to include by the length set in settings
   int get roughtExerciseAmount => IWorkoutFacade.workoutSettings.length <= 1
@@ -62,14 +62,14 @@ class IWorkoutFacade {
     final Map<String, List<Exercise>> distributedExercises =
         distributeByTargets(availableExercises.toList());
     //= randomize by targets
-    List<Exercise> randomizedExercises =
+    final List<Exercise> randomizedExercises =
         randomizeExercises(distributedExercises);
     //= sort randomized exercises by intensity
     randomizedExercises
         .sort((exA, exB) => exA.intensity.compareTo(exB.intensity));
 
     //= build exerciseItems
-    List<WorkoutItem> exerciseItems = [];
+    final List<WorkoutItem> exerciseItems = [];
     int total = 0;
     for (final exercise in randomizedExercises) {
       int duration = 0;
@@ -80,7 +80,7 @@ class IWorkoutFacade {
     }
 
     //= add rest items
-    List<WorkoutItem> workoutItems = addRestItems(exerciseItems);
+    final List<WorkoutItem> workoutItems = addRestItems(exerciseItems);
 
     //= set order of items and return final items
     Iterable.generate(workoutItems.length, (x) => x + 1).forEach(
@@ -103,9 +103,11 @@ class IWorkoutFacade {
 
   //: Helper Methods_____________________________________________
 
+  /// Generates a unique key to save a new workout
   static String generateUniqueWorkoutKey() {
     final uuid = Uuid();
-    final List<String> savedWorkoutKey = workoutsBox.keys;
+    final List<String> savedWorkoutKey =
+        workoutsBox.keys.toList().cast<String>();
     String uniqueKey = uuid.v4();
     while (savedWorkoutKey.contains(uniqueKey)) {
       uniqueKey = uuid.v4();
@@ -155,7 +157,7 @@ class IWorkoutFacade {
   static Map<String, List<Exercise>> distributeByTargets(
           List<Exercise> availableExercises) =>
       Map.fromIterable(availableTargets,
-          key: (target) => target,
+          key: (target) => target as String,
           value: (target) => availableExercises
               .where((exercise) => exercise.target == target)
               .toList());
@@ -163,7 +165,7 @@ class IWorkoutFacade {
   /// Returns random exercises from a list of distributed exercises
   static List<Exercise> randomizeExercises(
       Map<String, List<Exercise>> distributedExercises) {
-    List<Exercise> randomizedExercises = [];
+    final List<Exercise> randomizedExercises = [];
 
     int currentIndex = 0;
 
@@ -171,15 +173,16 @@ class IWorkoutFacade {
     Iterator<String> targetIterator = availableTargets.iterator;
     while (currentIndex <= IWorkoutFacade().roughtExerciseAmount) {
       if (targetIterator.current == null) targetIterator.moveNext();
-      if (distributedExercises[targetIterator.current].length <= 0) continue;
+      if (distributedExercises[targetIterator.current].isEmpty) continue;
 
       // shuffle the targeted list
       distributedExercises[targetIterator.current].shuffle();
       // extract the last exercise and add it to the returned list
       randomizedExercises
           .add(distributedExercises[targetIterator.current].removeLast());
-      if (!targetIterator.moveNext())
+      if (!targetIterator.moveNext()) {
         targetIterator = availableTargets.iterator;
+      }
       currentIndex++;
     }
     return randomizedExercises;

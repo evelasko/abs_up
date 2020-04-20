@@ -15,10 +15,10 @@ class Equipment {
   /// All equipment data
   static Map<String, Equipment> allEquipment = Map.fromIterable(
       DataValues.equipmentDataKeys,
-      key: (key) => key,
+      key: (key) => key.toString(),
       value: (key) => Equipment(
           text: DataValues.equipmentText[key],
-          key: key,
+          key: key.toString(),
           icon: AbsAppIcons.equipmentIcons[key]));
 
   static Equipment equipmentFromKey(String key) => allEquipment[key];

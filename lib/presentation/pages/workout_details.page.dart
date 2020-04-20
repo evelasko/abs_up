@@ -1,5 +1,6 @@
 import 'package:data_setup/domain/models/workout_settings.dart';
 import 'package:data_setup/domain/repositories/i_workout_facade.dart';
+import 'package:data_setup/presentation/widgets/shared/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,15 +22,51 @@ class WorkoutDetailsPage extends StatefulWidget {
 }
 
 class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
+  TextEditingController savedWorkoutNameController = TextEditingController();
+  final GlobalKey<ScaffoldState> workoutDetailsScaffoldKey =
+      GlobalKey<ScaffoldState>(debugLabel: 'workoutDetailsScaffoldKey');
+
+  Future<String> createSaveCurrentWorkoutAsDialog(BuildContext context) {
+    savedWorkoutNameController.clear();
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                'Set Workout Name',
+                style: TextStyle(color: AppColors.greyDark),
+              ),
+              content: TextField(
+                controller: savedWorkoutNameController,
+              ),
+              actions: <Widget>[
+                MaterialButton(
+                  elevation: 0,
+                  color: AppColors.grey,
+                  child: Text('Cancel'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                MaterialButton(
+                  elevation: 0,
+                  color: AppColors.brandeis,
+                  child: Text('Save'),
+                  onPressed: () => Navigator.of(context)
+                      .pop(savedWorkoutNameController.text.toString()),
+                )
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    Workout workout = IHiveFacade.workoutsBox.get(widget.workoutKey);
+    final Workout workout = IHiveFacade.workoutsBox
+        .get(widget.workoutKey ?? DataValues.currentWorkoutKey);
+    final bool isCurrent = widget.workoutKey == DataValues.currentWorkoutKey;
+
     return Scaffold(
+      key: workoutDetailsScaffoldKey,
       appBar: AppBar(
         title: Text(
-          widget.workoutKey != DataValues.currentWorkoutKey
-              ? workout?.name ?? 'Preview Workout'
-              : 'Preview Workout',
+          isCurrent ? 'Preview Workout' : workout?.name ?? 'Preview Workout',
           style: TextStyle(
               color: AppColors.coquelicot, fontWeight: FontWeight.w800),
         ),
@@ -37,21 +74,27 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
           // TODO implement saving the workout at preview window or update an already saved workout being previewed
           IconButton(
               icon: Icon(
-                Icons.save_alt,
+                isCurrent ? Icons.save_alt : Icons.save,
               ),
               iconSize: 30,
               padding: EdgeInsets.only(top: 6),
-              // TODO the workout being retrieved to save is not the last generated...
-              onPressed: () {})
+              onPressed: () => isCurrent
+                  ? createSaveCurrentWorkoutAsDialog(context).then((name) {
+                      if (name == null) return;
+                      IWorkoutFacade.saveCurrentWorkoutAs(name).then((value) =>
+                          workoutDetailsScaffoldKey.currentState
+                              .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
+                    })
+                  : print('update ${widget.workoutKey}'))
         ],
       ),
       //= Workout Listenable
       body: ValueListenableBuilder(
-          valueListenable: IHiveFacade.workoutsBox
-              .listenable(keys: [DataValues.currentWorkoutKey]),
-          builder: (context, Box<Workout> box, widget) {
+          valueListenable: IHiveFacade.workoutsBox.listenable(
+              keys: [widget.workoutKey ?? DataValues.currentWorkoutKey]),
+          builder: (context, Box<Workout> box, _) {
             final Workout currentWorkout =
-                box.get(DataValues.currentWorkoutKey);
+                box.get(widget.workoutKey ?? DataValues.currentWorkoutKey);
             final WorkoutSettings workoutSettings = IWorkoutFacade.settings;
 
             return Column(

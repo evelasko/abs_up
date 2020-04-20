@@ -18,7 +18,7 @@ class WorkoutListPage extends StatelessWidget {
         builder: (context, Box<Workout> box, widget) => Column(
           children: box.values
               .where((workout) => workout.key != DataValues.currentWorkoutKey)
-              .map((workout) => savedWorkoutItem(workout))
+              .map((workout) => savedWorkoutItem(context, workout))
               .toList(),
         ),
       ),

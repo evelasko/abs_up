@@ -79,7 +79,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
       /// Favorite Exercise Item
       case 1:
         return Dismissible(
-            key: Key(widget.exercise.key),
+            key: Key(widget.exercise.key.toString()),
             direction: DismissDirection.endToStart,
             background: SwipableActions.secondaryBackground(AppColors.brandeis,
                 Icons.favorite_border, 'remove from\nfavorites'),
@@ -95,7 +95,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
       /// Blacklist Exercise Item
       case 2:
         return Dismissible(
-            key: Key(widget.exercise.key),
+            key: Key(widget.exercise.key.toString()),
             direction: DismissDirection.endToStart,
             background: SwipableActions.secondaryBackground(
                 AppColors.brandeis, Icons.thumb_up, 'remove from\nblacklist'),
@@ -109,7 +109,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
       /// Exercise Item
       default:
         return exerciseItem(
-            key: widget.exercise.key,
+            key: widget.exercise.key.toString(),
             exercise: widget.exercise,
             confirmDismiss: _addToFavoriteOrBlacklist);
     }

@@ -33,7 +33,7 @@ class WorkoutSettings extends HiveObject {
   String get lengthString => DataValues.lengthToString(length);
   String get impactString => DataValues.impactToString(impact);
 
-  List<Equipment> get equipmentObjectList =>
+  Iterable<Equipment> get equipmentObjectList =>
       equipment.map((equipmentKey) => Equipment(
           key: equipmentKey,
           icon: AbsAppIcons.equipmentIcons[equipmentKey],
@@ -41,25 +41,26 @@ class WorkoutSettings extends HiveObject {
 
   /// Data UI Set & Save
   Future<void> intensitySetAndSave(String newValue) async {
-    this.intensity =
-        DataValues.intensityToInt(newValue ?? DataValues.intensityDefault);
-    await this.save();
+    intensity = DataValues.intensityToInt(
+        newValue ?? DataValues.intensityDefault as String);
+    await save();
   }
 
   Future<void> difficultySetAndSave(String newValue) async {
-    this.difficulty =
-        DataValues.difficultyToInt(newValue ?? DataValues.difficultyDefault);
-    await this.save();
+    difficulty = DataValues.difficultyToInt(
+        newValue ?? DataValues.difficultyDefault as String);
+    await save();
   }
 
   Future<void> lengthSetAndSave(String newValue) async {
-    this.length = DataValues.lengthToInt(newValue ?? DataValues.lengthDefault);
-    await this.save();
+    length =
+        DataValues.lengthToInt(newValue ?? DataValues.lengthDefault as String);
+    await save();
   }
 
   Future<void> impactSetOrToggleAndSave(bool newValue) async {
-    this.impact = newValue ?? !this.impact;
-    await this.save();
+    impact = newValue ?? !impact;
+    await save();
   }
 
   Future<void> addEquipment({String key, Equipment equipment}) async {
@@ -68,7 +69,7 @@ class WorkoutSettings extends HiveObject {
     this.equipment = []
       ..addAll(this.equipment)
       ..add(key);
-    await this.save();
+    await save();
   }
 
   Future<void> removeEquipment({String key, Equipment equipment}) async {
@@ -77,7 +78,7 @@ class WorkoutSettings extends HiveObject {
     this.equipment = []
       ..addAll(this.equipment)
       ..remove(key);
-    await this.save();
+    await save();
   }
 
   /// Default settings

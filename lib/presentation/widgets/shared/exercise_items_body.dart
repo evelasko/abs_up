@@ -16,8 +16,10 @@ Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
 Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
     listItemWrapper(
       GestureDetector(
-        onTap: () => Navigator.pushNamed(context,
-            FluroRouter.getExerciseDetailsLink(exerciseKey: exercise.key)),
+        onTap: () => Navigator.pushNamed(
+            context,
+            FluroRouter.getExerciseDetailsLink(
+                exerciseKey: exercise.key.toString())),
         child: Card(
           color: Colors.transparent,
           elevation: 0,
@@ -41,7 +43,8 @@ Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
               //= Exercise content
               Expanded(
                 child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,

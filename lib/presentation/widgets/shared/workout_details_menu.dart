@@ -1,3 +1,4 @@
+import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/repositories/i_workout_facade.dart';
@@ -6,12 +7,16 @@ import '../home_bottomsheet_workoutsettings.dart';
 import 'buttons.dart';
 
 class WorkoutDetailsMenu extends StatelessWidget {
-  const WorkoutDetailsMenu({
+  final String workoutKey;
+  WorkoutDetailsMenu({
     Key key,
+    this.workoutKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool isCurrent = workoutKey == DataValues.currentWorkoutKey;
+    // TODO disable buttons if the workout being shown is not the current flash workout
     return Container(
       width: double.infinity,
       height: 150,

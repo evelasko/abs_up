@@ -17,7 +17,8 @@ class ExerciseDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(margin: EdgeInsets.all(15), color: AppColors.coquelicot),
+        Container(
+            margin: const EdgeInsets.all(15), color: AppColors.coquelicot),
         dataRow('equipment', exercise.equipment),
         dataRow('intensity', exercise.intensityString),
         dataRow('difficulty', exercise.difficultyString),
@@ -41,12 +42,11 @@ class ExerciseDetailsContent extends StatelessWidget {
             initialData: 'loading details',
             future: rootBundle.loadString("assets/exercise_details/default.md"),
             builder: (context, snapshot) => snapshot.hasData
-                ? Container(
-                    child: MarkdownBody(
-                    data: snapshot.data,
+                ? MarkdownBody(
+                    data: snapshot.data.toString(),
                     styleSheet: markdownStyleSheet(context),
-                  ))
-                : Center(
+                  )
+                : const Center(
                     child: CircularProgressIndicator(),
                   ))
       ],

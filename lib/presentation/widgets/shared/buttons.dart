@@ -48,13 +48,14 @@ class AppButtons {
           onPressed: () {},
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-          padding: EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(0.0),
           child: Ink(
             decoration: BoxDecoration(
                 gradient: AppColors.primaryGradient,
                 borderRadius: BorderRadius.circular(30.0)),
             child: Container(
-              constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
+              constraints:
+                  const BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
               alignment: Alignment.center,
               child: Text(
                 "Login",
@@ -71,7 +72,7 @@ class AppButtons {
       BoxDecoration(border: Border.all(width: 1, color: AppColors.greyDark));
 
   static Widget homePageButton(
-          {@required Function onTap,
+          {@required VoidCallback onTap,
           @required IconData icon,
           @required String text,
           ButtonSide buttonSide}) =>
@@ -83,11 +84,11 @@ class AppButtons {
           decoration: buttonSideCase<BoxDecoration>(
               side: buttonSide,
               left: homePageButtonDecoration.copyWith(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       bottomLeft: Radius.circular(20))),
               right: homePageButtonDecoration.copyWith(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
               center: homePageButtonDecoration),
@@ -106,7 +107,7 @@ class AppButtons {
       );
 
   static Widget boxedBigIconButton(
-          {@required Function onTap,
+          {@required VoidCallback onTap,
           @required IconData icon,
           String text,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
@@ -119,7 +120,7 @@ class AppButtons {
           onPressed: onTap,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           child: Ink(
             decoration: BoxDecoration(
                 gradient: buttonTypeCase<Gradient>(
@@ -132,7 +133,7 @@ class AppButtons {
             child: Container(
               width: 100,
               height: 100,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -158,7 +159,7 @@ class AppButtons {
       );
 
   static Widget boxedSmallIconButton(
-          {@required Function onTap,
+          {@required VoidCallback onTap,
           @required IconData icon,
           String text,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
@@ -170,7 +171,7 @@ class AppButtons {
           onPressed: onTap,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           child: Ink(
             decoration: buttonTypeCase<BoxDecoration>(
                 type: buttonType,
@@ -189,7 +190,7 @@ class AppButtons {
             child: Container(
               width: 68,
               height: 68,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 mainAxisAlignment: text != null
                     ? MainAxisAlignment.spaceEvenly
@@ -227,11 +228,11 @@ class AppButtons {
       );
 
   static Widget primaryActionButton(
-          {@required Function onTap,
+          {@required VoidCallback onTap,
           @required String text,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
       Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: GestureDetector(
           onTap: onTap,
           child: SizedBox(

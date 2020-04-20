@@ -1,4 +1,5 @@
 import 'package:data_setup/domain/models/workout.dart';
+import 'package:data_setup/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';
@@ -7,11 +8,16 @@ import 'equipment_row.dart';
 import 'wrappers.dart';
 
 /// Renders Exercise List Item Body Content
-Widget savedWorkoutItem(Workout workout) => listItemWrapper(
+Widget savedWorkoutItem(BuildContext context, Workout workout) =>
+    listItemWrapper(
       GestureDetector(
-        onTap: () => print(workout.key),
+        onTap: () => Navigator.pushNamed(
+            context,
+            FluroRouter.getWorkoutDetailsLink(
+                workoutKey: workout.key.toString())),
         child: Container(
-          padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 5),
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 5),
           color: Colors.transparent,
           key: Key('contentItem:${workout.key}'),
           child: Row(
@@ -39,7 +45,7 @@ Widget savedWorkoutItem(Workout workout) => listItemWrapper(
                           activeEquipment: workout.equipmentTotal,
                           iconSize: 28,
                           baseColor: AppColors.greyLight,
-                          activeColor: AppColors.rudy),
+                          activeColor: AppColors.coquelicot),
                     ),
 
                     //= Workout intensity & difficulty
@@ -66,18 +72,16 @@ Widget savedWorkoutItem(Workout workout) => listItemWrapper(
                     Text(workout.totalDurationString,
                         style: AppTextStyles.savedWorkoutTitle
                             .copyWith(fontWeight: FontWeight.w800)),
-                    Container(
-                      child: RichText(
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                              text: '1 mont ago',
-                              style: AppTextStyles.savedWorkoutTitle.copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 13,
-                                  color: AppColors.rudy))),
-                    )
+                    RichText(
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                            text: '1 mont ago',
+                            style: AppTextStyles.savedWorkoutTitle.copyWith(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 13,
+                                color: AppColors.rudy))),
                   ],
                 ),
               )

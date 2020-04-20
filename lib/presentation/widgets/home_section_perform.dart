@@ -8,25 +8,23 @@ import 'shared/buttons.dart';
 class HomeSectionPerform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 25, bottom: 35),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            AppButtons.boxedBigIconButton(
-                onTap: () => IWorkoutFacade.generateCurrentWorkout().then(
-                    (value) => Navigator.pushNamed(
-                        context,
-                        FluroRouter.getWorkoutDetailsLink(
-                            workoutKey: DataValues.currentWorkoutKey))),
-                icon: Icons.playlist_play,
-                text: 'preview',
-                buttonType: ButtonTypes.secondary),
-            AppButtons.boxedBigIconButton(
-                onTap: () {}, icon: Icons.play_circle_outline, text: 'start')
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, bottom: 35),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          AppButtons.boxedBigIconButton(
+              onTap: () => IWorkoutFacade.generateCurrentWorkout().then(
+                  (value) => Navigator.pushNamed(
+                      context,
+                      FluroRouter.getWorkoutDetailsLink(
+                          workoutKey: DataValues.currentWorkoutKey))),
+              icon: Icons.playlist_play,
+              text: 'preview',
+              buttonType: ButtonTypes.secondary),
+          AppButtons.boxedBigIconButton(
+              onTap: () {}, icon: Icons.play_circle_outline, text: 'start')
+        ],
       ),
     );
   }

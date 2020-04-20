@@ -21,7 +21,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
         onTap: () => Navigator.pushNamed(
             context,
             FluroRouter.getExerciseDetailsLink(
-                exerciseKey: workoutItem.exercise.key)),
+                exerciseKey: workoutItem.exercise.key.toString())),
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 0, top: 5, bottom: 5),
           color: workoutItem.exercise.name == 'Rest'
@@ -56,7 +56,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
               //= Exercise content
               Expanded(
                 child: Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -19,14 +19,14 @@ class WorkoutItemWidget extends StatefulWidget {
 }
 
 class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
-  removeItem() => IHiveFacade.workoutsBox
+  void removeItem() => IHiveFacade.workoutsBox
       .get(DataValues.currentWorkoutKey)
       .removeItem(widget.workoutItem)
       .then((_) => print('show snackbar'));
 
   @override
   Widget build(BuildContext context) => Dismissible(
-        key: Key(widget.workoutItem.exercise.key),
+        key: Key(widget.workoutItem.exercise.key.toString()),
         background: SwipableActions.background(
             AppColors.brandeis, Icons.favorite, 'replace\nexercise'),
         secondaryBackground: SwipableActions.secondaryBackground(

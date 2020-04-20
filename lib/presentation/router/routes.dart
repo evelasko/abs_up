@@ -1,13 +1,11 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
-import 'package:data_setup/presentation/pages/exercise_details.page.dart';
-import 'package:data_setup/presentation/pages/workout_details.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/repositories/data_values.dart';
+import '../pages/exercise_details.page.dart';
 import '../pages/exercises.page.dart';
 import '../pages/home.page.dart';
+import '../pages/workout_details.page.dart';
 import '../pages/workout_list.page.dart';
 import '../pages/workout_logs.page.dart';
 
@@ -15,41 +13,41 @@ class FluroRouter {
   static Router router = Router();
 
   //= Home
-  static Handler _home = Handler(
+  static final Handler _home = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           HomePage());
 
   //= Exercise List
-  static Handler _exerciseList = Handler(
+  static final Handler _exerciseList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           ExercisePage());
 
   //= Exercise Details
   static const exerciseDetailsLink =
-      DataValues.exerciseDetailsLink + ':exerciseKey';
+      '${DataValues.exerciseDetailsLink}:exerciseKey';
   static String getExerciseDetailsLink({String exerciseKey}) =>
       exerciseDetailsLink.replaceFirst(':exerciseKey', exerciseKey);
-  static Handler _exerciseDetails = Handler(
+  static final Handler _exerciseDetails = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          ExerciseDetailsPage(params['exerciseKey'][0]));
+          ExerciseDetailsPage(params['exerciseKey'][0].toString()));
 
   //= Workout List
-  static Handler _workoutList = Handler(
+  static final Handler _workoutList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutListPage());
 
   //= Workout Details
   static const workoutDetailsLink =
-      DataValues.workoutDetailsLink + ':workoutKey';
+      '${DataValues.workoutDetailsLink}:workoutKey';
   static String getWorkoutDetailsLink({String workoutKey}) =>
       workoutDetailsLink.replaceFirst(':workoutKey', workoutKey);
-  static Handler _workoutDetails = Handler(
+  static final Handler _workoutDetails = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutDetailsPage(params['workoutKey'][0]));
+          WorkoutDetailsPage(params['workoutKey'][0].toString()));
 
   /// Workout Logs
   static const workoutLogsLink = 'workout/logs';
-  static Handler _workoutLogs = Handler(
+  static final Handler _workoutLogs = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutLogsPage());
 

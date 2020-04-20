@@ -51,18 +51,18 @@ class Exercise extends HiveObject {
   String get difficultyString => DataValues.difficultyToString(difficulty);
 
   Future<void> setFavorite() async {
-    this.tag = 1;
-    await this.save();
+    tag = 1;
+    await save();
   }
 
   Future<void> setBlacklist() async {
-    this.tag = 2;
-    await this.save();
+    tag = 2;
+    await save();
   }
 
   Future<void> removeTag() async {
-    this.tag = 0;
-    await this.save();
+    tag = 0;
+    await save();
   }
 
   /// Comparison checker
@@ -79,15 +79,15 @@ class Exercise extends HiveObject {
 
   /// Exercise methods
   Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) => Exercise(
-      name: exerciseMap[DataValues.exerciseNameKey],
-      difficulty: exerciseMap[DataValues.exerciseDifficultyKey],
-      intensity: exerciseMap[DataValues.exerciseIntensityKey],
-      target: exerciseMap[DataValues.exerciseTargetKey],
-      equipment: exerciseMap[DataValues.exerciseEquipmentKey],
-      weighted: exerciseMap[DataValues.exerciseWeightedKey],
-      sided: exerciseMap[DataValues.exerciseSidedKey],
-      impact: exerciseMap[DataValues.exerciseImpactKey],
-      group: exerciseMap[DataValues.exerciseGroupKey]);
+      name: exerciseMap[DataValues.exerciseNameKey] as String,
+      difficulty: exerciseMap[DataValues.exerciseDifficultyKey] as int,
+      intensity: exerciseMap[DataValues.exerciseIntensityKey] as int,
+      target: exerciseMap[DataValues.exerciseTargetKey] as String,
+      equipment: exerciseMap[DataValues.exerciseEquipmentKey] as String,
+      weighted: exerciseMap[DataValues.exerciseWeightedKey] as bool,
+      sided: exerciseMap[DataValues.exerciseSidedKey] as bool,
+      impact: exerciseMap[DataValues.exerciseImpactKey] as bool,
+      group: exerciseMap[DataValues.exerciseGroupKey] as String);
 
   /// Class overrides
   @override
