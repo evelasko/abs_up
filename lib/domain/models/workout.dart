@@ -69,6 +69,16 @@ class Workout extends HiveObject {
   void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
       (iterationNumber) => items[iterationNumber - 1].order = iterationNumber);
 
+  Future<void> removeItem(WorkoutItem item) async {
+    items.removeWhere((workoutItem) => workoutItem == item);
+    refreshOrder();
+    if (isInBox) await this.save();
+  }
+
+  Workout copyWith({String name, List<WorkoutItem> items}) => Workout(
+      name: name ?? this.name + DateTime.now().toIso8601String(),
+      items: items ?? this.items);
+
   /// Class overrides
   @override
   bool operator ==(Object o) {

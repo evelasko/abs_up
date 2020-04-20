@@ -1,3 +1,5 @@
+import 'package:data_setup/domain/models/workout_settings.dart';
+import 'package:data_setup/domain/repositories/i_workout_facade.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,8 +13,8 @@ import '../widgets/shared/workout_details_panel.dart';
 import '../widgets/shared/workout_items.dart';
 
 class WorkoutDetailsPage extends StatefulWidget {
-  final String workoutId;
-  const WorkoutDetailsPage(this.workoutId);
+  final String workoutKey;
+  const WorkoutDetailsPage(this.workoutKey);
 
   @override
   _WorkoutDetailsPageState createState() => _WorkoutDetailsPageState();
@@ -21,10 +23,13 @@ class WorkoutDetailsPage extends StatefulWidget {
 class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    Workout workout = IHiveFacade.workoutsBox.get(widget.workoutKey);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.workoutId,
+          widget.workoutKey != DataValues.currentWorkoutKey
+              ? workout?.name ?? 'Preview Workout'
+              : 'Preview Workout',
           style: TextStyle(
               color: AppColors.coquelicot, fontWeight: FontWeight.w800),
         ),
@@ -36,6 +41,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
               ),
               iconSize: 30,
               padding: EdgeInsets.only(top: 6),
+              // TODO the workout being retrieved to save is not the last generated...
               onPressed: () {})
         ],
       ),
@@ -46,14 +52,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
           builder: (context, Box<Workout> box, widget) {
             final Workout currentWorkout =
                 box.get(DataValues.currentWorkoutKey);
+            final WorkoutSettings workoutSettings = IWorkoutFacade.settings;
 
             return Column(
               children: <Widget>[
                 //= Workout Details Panel
                 WorkoutDetailsPanel(
                   activeEquipment: currentWorkout.equipmentTotal,
-                  averageDifficulty: 'extreme',
-                  averageIntensity: 'moderate',
+                  averageDifficulty: workoutSettings.difficultyString,
+                  averageIntensity: workoutSettings.intensityString,
                   totalDuration: currentWorkout.totalDurationString,
                 ),
                 //= Workout Reorderable Items List

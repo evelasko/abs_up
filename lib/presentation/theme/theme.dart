@@ -13,7 +13,7 @@ ThemeData appTheme() => ThemeData(
     scaffoldBackgroundColor: Colors.white,
     colorScheme: colorScheme(),
     primaryColor: AppColors.greyDarkest,
-    accentColor: AppColors.rudy,
+    accentColor: AppColors.coquelicot,
 
     /// Widgets Theme
     appBarTheme: AppBarTheme(textTheme: textTheme()));

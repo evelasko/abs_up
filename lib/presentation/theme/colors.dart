@@ -48,7 +48,7 @@ ColorScheme colorScheme() => ColorScheme.dark(
       onSecondary: AppColors.grey,
       surface: Colors.white,
       onSurface: AppColors.greyDarkest,
-      onError: AppColors.rudy,
+      onError: AppColors.coquelicot,
     );
 
 int fromHex(String hexString) {

@@ -40,12 +40,12 @@ class FluroRouter {
 
   //= Workout Details
   static const workoutDetailsLink =
-      DataValues.workoutDetailsLink + ':workoutId';
-  static String getWorkoutDetailsLink({String workoutId}) =>
-      workoutDetailsLink.replaceFirst(':workoutId', workoutId);
+      DataValues.workoutDetailsLink + ':workoutKey';
+  static String getWorkoutDetailsLink({String workoutKey}) =>
+      workoutDetailsLink.replaceFirst(':workoutKey', workoutKey);
   static Handler _workoutDetails = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutDetailsPage(params['workoutId'][0]));
+          WorkoutDetailsPage(params['workoutKey'][0]));
 
   /// Workout Logs
   static const workoutLogsLink = 'workout/logs';

@@ -30,7 +30,7 @@ class MenuHomeSection extends StatelessWidget {
           /// New Workout
           AppButtons.homePageButton(
               onTap: () => Navigator.pushNamed(context,
-                  FluroRouter.getWorkoutDetailsLink(workoutId: 'WO-123')),
+                  FluroRouter.getWorkoutDetailsLink(workoutKey: 'WO-123')),
               icon: Icons.fitness_center,
               text: 'build new',
               buttonSide: ButtonSide.right),

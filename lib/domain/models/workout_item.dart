@@ -23,4 +23,19 @@ class WorkoutItem extends HiveObject {
       this.duration,
       this.weight = 0,
       this.progress = 0});
+
+  /// Class overrides
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+    return o is WorkoutItem &&
+        o.exercise == exercise &&
+        o.order == order &&
+        o.duration == duration &&
+        o.weight == weight &&
+        o.progress == progress;
+  }
+
+  @override
+  int get hashCode => exercise.name.hashCode;
 }

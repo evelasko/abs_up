@@ -29,7 +29,7 @@ class ExercisePage extends StatelessWidget {
               ],
               labelStyle: AppTextStyles.tabBarItem,
               labelPadding: EdgeInsets.only(bottom: 15),
-              indicatorColor: AppColors.rudy,
+              indicatorColor: AppColors.coquelicot,
               indicatorWeight: 4,
             ),
           ),

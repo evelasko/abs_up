@@ -1,3 +1,4 @@
+import 'package:data_setup/domain/models/workout.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';
@@ -6,13 +7,13 @@ import 'equipment_row.dart';
 import 'wrappers.dart';
 
 /// Renders Exercise List Item Body Content
-Widget savedWorkoutItem(Map<String, dynamic> workout) => listItemWrapper(
+Widget savedWorkoutItem(Workout workout) => listItemWrapper(
       GestureDetector(
-        onTap: () => print(workout['key']),
+        onTap: () => print(workout.key),
         child: Container(
           padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 5),
           color: Colors.transparent,
-          key: Key('contentItem:${workout['key']}'),
+          key: Key('contentItem:${workout.key}'),
           child: Row(
             children: <Widget>[
               //= Saved workout content
@@ -26,7 +27,7 @@ Widget savedWorkoutItem(Map<String, dynamic> workout) => listItemWrapper(
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         text: TextSpan(
-                          text: workout['name'],
+                          text: workout.name,
                           style: AppTextStyles.savedWorkoutTitle
                               .copyWith(fontFamily: 'Montserrat'),
                         )),
@@ -35,7 +36,7 @@ Widget savedWorkoutItem(Map<String, dynamic> workout) => listItemWrapper(
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: equipmentRowContent(
-                          activeEquipment: ['none'],
+                          activeEquipment: workout.equipmentTotal,
                           iconSize: 28,
                           baseColor: AppColors.greyLight,
                           activeColor: AppColors.rudy),
@@ -62,7 +63,7 @@ Widget savedWorkoutItem(Map<String, dynamic> workout) => listItemWrapper(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('08:30',
+                    Text(workout.totalDurationString,
                         style: AppTextStyles.savedWorkoutTitle
                             .copyWith(fontWeight: FontWeight.w800)),
                     Container(

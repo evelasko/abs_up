@@ -17,7 +17,7 @@ class ExerciseDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(margin: EdgeInsets.all(15), color: AppColors.rudy),
+        Container(margin: EdgeInsets.all(15), color: AppColors.coquelicot),
         dataRow('equipment', exercise.equipment),
         dataRow('intensity', exercise.intensityString),
         dataRow('difficulty', exercise.difficultyString),
@@ -27,12 +27,12 @@ class ExerciseDetailsContent extends StatelessWidget {
               Container(
                 width: 120,
                 height: 120,
-                color: AppColors.rudy,
+                color: AppColors.coquelicot,
               ),
               Container(
                 width: 120,
                 height: 120,
-                color: AppColors.rudy,
+                color: AppColors.coquelicot,
               )
             ])
           ],

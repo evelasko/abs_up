@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 TextTheme textTheme() => TextTheme(
-    headline1: TextStyle(color: AppColors.rudy),
+    headline1: TextStyle(color: AppColors.coquelicot),
     headline2: TextStyle(color: Colors.pink),
     headline3: TextStyle(color: Colors.purple),
     headline4: TextStyle(color: Colors.green),
@@ -30,7 +30,7 @@ class AppTextStyles {
       fontWeight: FontWeight.w600,
       color: AppColors.greyDarkest);
   static const TextStyle listItemTitleAccent = const TextStyle(
-      fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.rudy);
+      fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.coquelicot);
   static const TextStyle listItemBottomInfo = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 9,

@@ -1,6 +1,7 @@
 //: Data model: Workout Settings
 import 'package:data_setup/domain/models/equipment.dart';
 import 'package:data_setup/domain/repositories/data_values.dart';
+import 'package:data_setup/domain/repositories/i_hive_facade.dart';
 import 'package:data_setup/presentation/theme/icons.dart';
 import 'package:hive/hive.dart';
 
@@ -18,16 +19,6 @@ class WorkoutSettings extends HiveObject {
   bool impact;
   @HiveField(4)
   List<String> equipment;
-
-  // /// Main user settings box
-  // static Box<dynamic> box = IHiveFacade.userSettingsBox;
-
-  /// Current user settings from box or defaults
-  // int length = box.get(DataValues.lengthKey, defaultValue: DataValues.lengthDefault);
-  // int intensity  = box.get(DataValues.intensityKey, defaultValue: DataValues.intensityDefault);
-  // int difficulty  = box.get(DataValues.difficultyKey, defaultValue: DataValues.difficultyDefault);
-  // bool impact  = box.get(DataValues.impactKey, defaultValue: DataValues.impactDefault);
-  // List<String> equipment  = box.get(DataValues.equipmentKey, defaultValue: DataValues.equipmentDefault);
 
   WorkoutSettings(
       {this.length = DataValues.lengthDefault,
@@ -97,23 +88,6 @@ class WorkoutSettings extends HiveObject {
     DataValues.impactKey: DataValues.impactDefault,
     DataValues.equipmentKey: [DataValues.equipmentDefault]
   };
-
-  /// Returns a map with the provided values updated; it does not updates the instance
-  /// nor returns new instance with updated values.
-  /// This is only to feed the box key (workoutSettings) with updated values.
-  // Map<String, dynamic> saveWith(
-  //         {int length,
-  //         int intensity,
-  //         int difficulty,
-  //         bool impact,
-  //         List<String> equipment}) =>
-  //     {
-  //       DataValues.lengthKey: length ?? this.length,
-  //       DataValues.intensityKey: intensity ?? this.intensity,
-  //       DataValues.difficultyKey: difficulty ?? this.difficulty,
-  //       DataValues.impactKey: impact ?? this.impact,
-  //       DataValues.equipmentKey: equipment ?? this.equipment
-  //     };
 
   /// Comparison checker
   bool hasWorkoutSettingsKeys(Map<String, dynamic> maybeWorkoutSettings) =>
