@@ -1,13 +1,16 @@
-import 'package:data_setup/domain/core/errors.dart';
-import 'package:data_setup/domain/core/value_objects.dart';
-import 'package:data_setup/domain/core/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:data_setup/domain/repositories/i_auth_facade.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 
+import '../domain/core/failures.dart';
+import '../domain/core/value_objects.dart';
+import '../domain/repositories/i_auth_facade.dart';
+
+@lazySingleton
+@RegisterAs(IAuthFacade)
 class FirebaseAuthFacade implements IAuthFacade {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
@@ -25,10 +28,12 @@ class FirebaseAuthFacade implements IAuthFacade {
           email: emailAddressStr, password: passwordStr);
       return right(unit);
     } on PlatformException catch (e) {
-      if (e.code == 'ERROR_WRONG_PASSWORD' || e.code == 'ERROR_USER_NOT_FOUND')
+      if (e.code == 'ERROR_WRONG_PASSWORD' ||
+          e.code == 'ERROR_USER_NOT_FOUND') {
         return left(const AuthFailure.invalidCredentials());
-      else
+      } else {
         return left(const AuthFailure.serverError());
+      }
     }
   }
 
@@ -36,7 +41,7 @@ class FirebaseAuthFacade implements IAuthFacade {
   Future<Either<AuthFailure, Unit>> loginWithGoogle() async {
     try {
       final googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return left(AuthFailure.cancelledByUser());
+      if (googleUser == null) return left(const AuthFailure.cancelledByUser());
       final googleAuthentication = await googleUser.authentication;
       final authCredential = GoogleAuthProvider.getCredential(
           idToken: googleAuthentication.idToken,
@@ -60,10 +65,11 @@ class FirebaseAuthFacade implements IAuthFacade {
           email: emailAddressStr, password: passwordStr);
       return right(unit);
     } on PlatformException catch (e) {
-      if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE')
+      if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
         return left(const AuthFailure.emailAlreadyInUse());
-      else
+      } else {
         return left(const AuthFailure.serverError());
+      }
     }
   }
 }

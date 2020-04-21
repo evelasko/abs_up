@@ -1,14 +1,19 @@
-import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 
+import 'domain/repositories/data_values.dart';
 import 'domain/repositories/i_application_facade.dart';
 import 'domain/repositories/i_hive_facade.dart';
+import 'injection.dart';
 import 'presentation/router/routes.dart';
 import 'presentation/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // = configure dependency injections
+  configureInjection(Environment.prod);
 
   // = init Hive
   IHiveFacade.initHive();
