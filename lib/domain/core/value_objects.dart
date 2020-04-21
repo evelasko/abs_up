@@ -38,22 +38,24 @@ abstract class ValueObject<T> {
 
 //: EmailAddress
 class EmailAddress extends ValueObject<String> {
+  @override
   final Either<ValueFailure<String>, String> value;
-  const EmailAddress._(this.value);
 
   factory EmailAddress(String input) {
     assert(input != null);
     return EmailAddress._(validateEmailAddress(input));
   }
+  const EmailAddress._(this.value);
 }
 
 //: Password
 class Password extends ValueObject<String> {
+  @override
   final Either<ValueFailure<String>, String> value;
-  const Password._(this.value);
 
   factory Password(String input) {
     assert(input != null);
     return Password._(validatePassword(input));
   }
+  const Password._(this.value);
 }

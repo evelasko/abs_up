@@ -22,6 +22,7 @@ class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
   void removeItem() => IHiveFacade.workoutsBox
       .get(DataValues.currentWorkoutKey)
       .removeItem(widget.workoutItem)
+      // TODO show snackbar when deletting a saved workout item
       .then((_) => print('show snackbar'));
 
   @override
@@ -31,7 +32,7 @@ class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
             AppColors.brandeis, Icons.favorite, 'replace\nexercise'),
         secondaryBackground: SwipableActions.secondaryBackground(
             Colors.red, Icons.delete, 'remove from\nworkout'),
-        child: workoutItemBody(context, widget.workoutItem),
         onDismissed: (direction) => removeItem(),
+        child: workoutItemBody(context, widget.workoutItem),
       );
 }

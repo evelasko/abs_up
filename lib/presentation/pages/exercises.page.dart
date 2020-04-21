@@ -17,7 +17,7 @@ class ExercisePage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             title: Text('Exercises'.toUpperCase(),
-                style: TextStyle(letterSpacing: 1)),
+                style: const TextStyle(letterSpacing: 1)),
             actions: <Widget>[
               IconButton(icon: Icon(Icons.filter_list), onPressed: () {})
             ],
@@ -28,7 +28,7 @@ class ExercisePage extends StatelessWidget {
                 Text('Blacklist'.toUpperCase(), style: AppTextStyles.tabHeader)
               ],
               labelStyle: AppTextStyles.tabBarItem,
-              labelPadding: EdgeInsets.only(bottom: 15),
+              labelPadding: const EdgeInsets.only(bottom: 15),
               indicatorColor: AppColors.coquelicot,
               indicatorWeight: 4,
             ),

@@ -17,15 +17,14 @@ class ExercisesBlacklistTabView extends StatelessWidget {
     final List<Exercise> exerciseList = exerciseBox.values
         .where((exercise) => exercise.tag == ExerciseTag.blacklisted.index)
         .toList();
-    if (exerciseList.length < 1) return emptyListFeedbackBlacklist;
-    return Container(
-        child: Column(children: <Widget>[
+    if (exerciseList.isEmpty) return emptyListFeedbackBlacklist;
+    return Column(children: <Widget>[
       Expanded(
           child: ListView.builder(
               itemCount: exerciseList.length,
               itemBuilder: (_, index) => ExerciseItem(
                   key: Key('blacklistList:${exerciseList[index].key}'),
                   exercise: exerciseList[index]))),
-    ]));
+    ]);
   }
 }

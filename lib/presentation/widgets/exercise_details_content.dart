@@ -1,9 +1,10 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/presentation/theme/colors.dart';
-import 'package:data_setup/presentation/theme/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+
+import '../../domain/models/exercise.dart';
+import '../theme/colors.dart';
+import '../theme/text.dart';
 
 class ExerciseDetailsContent extends StatelessWidget {
   final Exercise exercise;

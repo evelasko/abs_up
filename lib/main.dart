@@ -9,6 +9,7 @@ import 'injection.dart';
 import 'presentation/router/routes.dart';
 import 'presentation/theme/theme.dart';
 
+// ignore: avoid_void_async
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

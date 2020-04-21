@@ -20,11 +20,9 @@ class SwipableActions {
       );
   static Widget background(Color color, IconData icon, String text) =>
       Container(
-        child: Container(
-          alignment: Alignment.centerLeft,
-          color: color,
-          child: actionButton(icon, text),
-        ),
+        alignment: Alignment.centerLeft,
+        color: color,
+        child: actionButton(icon, text),
       );
   static Widget secondaryBackground(Color color, IconData icon, String text) =>
       Container(

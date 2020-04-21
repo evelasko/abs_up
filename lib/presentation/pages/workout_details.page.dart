@@ -42,15 +42,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                 MaterialButton(
                   elevation: 0,
                   color: AppColors.grey,
-                  child: Text('Cancel'),
                   onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
                 ),
                 MaterialButton(
                   elevation: 0,
                   color: AppColors.brandeis,
-                  child: Text('Save'),
                   onPressed: () => Navigator.of(context)
                       .pop(savedWorkoutNameController.text.toString()),
+                  child: const Text('Save'),
                 )
               ],
             ));
@@ -77,7 +77,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                 isCurrent ? Icons.save_alt : Icons.save,
               ),
               iconSize: 30,
-              padding: EdgeInsets.only(top: 6),
+              padding: const EdgeInsets.only(top: 6),
               onPressed: () => isCurrent
                   ? createSaveCurrentWorkoutAsDialog(context).then((name) {
                       if (name == null) return;
@@ -109,16 +109,16 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
                 //= Workout Reorderable Items List
                 Expanded(
                     child: ReorderableListView(
-                        children: currentWorkout.items
-                            .map((item) => WorkoutItemWidget(
-                                key: Key('workoutItem:${item.exercise.key}'),
-                                workoutItem: item))
-                            .toList(),
-                        onReorder: (oldIndex, newIndex) async =>
-                            await currentWorkout.reorderItems(
-                                oldIndex, newIndex))),
+                  onReorder: (oldIndex, newIndex) async =>
+                      currentWorkout.reorderItems(oldIndex, newIndex),
+                  children: currentWorkout.items
+                      .map((item) => WorkoutItemWidget(
+                          key: Key('workoutItem:${item.exercise.key}'),
+                          workoutItem: item))
+                      .toList(),
+                )),
                 //= Menu Buttons
-                WorkoutDetailsMenu()
+                const WorkoutDetailsMenu()
               ],
             );
           }),

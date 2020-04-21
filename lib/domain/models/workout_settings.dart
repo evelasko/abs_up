@@ -1,7 +1,6 @@
 //: Data model: Workout Settings
 import 'package:data_setup/domain/models/equipment.dart';
 import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
 import 'package:data_setup/presentation/theme/icons.dart';
 import 'package:hive/hive.dart';
 
@@ -64,20 +63,16 @@ class WorkoutSettings extends HiveObject {
   }
 
   Future<void> addEquipment({String key, Equipment equipment}) async {
-    key = key ?? equipment.key;
-    if (this.equipment.contains(key)) return;
-    this.equipment = []
-      ..addAll(this.equipment)
-      ..add(key);
+    final String _key = key ?? equipment.key;
+    if (this.equipment.contains(_key)) return;
+    this.equipment = [...this.equipment, _key];
     await save();
   }
 
   Future<void> removeEquipment({String key, Equipment equipment}) async {
-    key = key ?? equipment.key;
-    if (!this.equipment.contains(key)) return;
-    this.equipment = []
-      ..addAll(this.equipment)
-      ..remove(key);
+    final String _key = key ?? equipment.key;
+    if (!this.equipment.contains(_key)) return;
+    this.equipment = [...this.equipment]..remove(_key);
     await save();
   }
 

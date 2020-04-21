@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {}),
         actions: <Widget>[
           IconButton(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               icon: Icon(
                 Icons.person,
               ),
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
 
       /// Body
       body: Container(
-        margin: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 40),
+        margin: const EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
             HomeSectionPerform(),
 
             /// Workout Settings Panel
-            HomeSectionWorkoutsettings(),
+            const HomeSectionWorkoutsettings(),
 
             /// Menu Section
             MenuHomeSection()

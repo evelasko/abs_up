@@ -33,7 +33,7 @@ Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
                 height: 70,
                 color: Colors.blue,
                 child: Stack(fit: StackFit.expand, children: [
-                  Image(
+                  const Image(
                     image: AssetImage('assets/exercise_images/_default.jpg'),
                     fit: BoxFit.cover,
                   ),

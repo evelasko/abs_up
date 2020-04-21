@@ -1,8 +1,8 @@
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_workout_facade.dart';
-import 'package:data_setup/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/repositories/data_values.dart';
+import '../../domain/repositories/i_workout_facade.dart';
+import '../router/routes.dart';
 import 'shared/buttons.dart';
 
 class HomeSectionPerform extends StatelessWidget {
@@ -23,7 +23,12 @@ class HomeSectionPerform extends StatelessWidget {
               text: 'preview',
               buttonType: ButtonTypes.secondary),
           AppButtons.boxedBigIconButton(
-              onTap: () {}, icon: Icons.play_circle_outline, text: 'start')
+              onTap: () async => Navigator.pushNamed(
+                  context,
+                  FluroRouter.getWorkoutPerformLink(
+                      workoutKey: await IWorkoutFacade.performWorkout())),
+              icon: Icons.play_circle_outline,
+              text: 'start')
         ],
       ),
     );

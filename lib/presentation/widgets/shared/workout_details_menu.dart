@@ -8,7 +8,7 @@ import 'buttons.dart';
 
 class WorkoutDetailsMenu extends StatelessWidget {
   final String workoutKey;
-  WorkoutDetailsMenu({
+  const WorkoutDetailsMenu({
     Key key,
     this.workoutKey,
   }) : super(key: key);
@@ -21,13 +21,14 @@ class WorkoutDetailsMenu extends StatelessWidget {
       width: double.infinity,
       height: 150,
       decoration: BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
-        BoxShadow(color: Colors.black45, offset: Offset(0, 0), blurRadius: 20)
+        BoxShadow(
+            color: Colors.black45, offset: const Offset(0, 0), blurRadius: 20)
       ]),
       child: Column(
         children: <Widget>[
           //= Menu Buttons
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -39,7 +40,7 @@ class WorkoutDetailsMenu extends StatelessWidget {
                     icon: Icon(Icons.tune),
                     color: AppColors.greyLight,
                     onPressed: () {
-                      PersistentBottomSheetController sheetController =
+                      final PersistentBottomSheetController sheetController =
                           showBottomSheet(
                         context: context,
                         builder: (context) => HomeBottomSheetWorkoutsettings(),

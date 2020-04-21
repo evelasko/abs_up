@@ -1,3 +1,4 @@
+import 'package:data_setup/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ import '../pages/workout_details.page.dart';
 import '../pages/workout_list.page.dart';
 import '../pages/workout_logs.page.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class FluroRouter {
   static Router router = Router();
 
@@ -45,7 +47,16 @@ class FluroRouter {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutDetailsPage(params['workoutKey'][0].toString()));
 
-  /// Workout Logs
+  //= Workout Perform
+  static const workoutPerformLink =
+      '${DataValues.workoutPerformLink}:workoutKey';
+  static String getWorkoutPerformLink({String workoutKey}) =>
+      workoutPerformLink.replaceFirst(':workoutKey', workoutKey);
+  static final Handler _workoutPerform = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          WorkoutPerformPage(params['workoutKey'][0].toString()));
+
+  //= Workout Logs
   static const workoutLogsLink = 'workout/logs';
   static final Handler _workoutLogs = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
@@ -68,6 +79,9 @@ class FluroRouter {
     //= Workout Details
     router.define(workoutDetailsLink,
         handler: _workoutDetails, transitionType: TransitionType.inFromRight);
+    //= Workout Perform
+    router.define(workoutPerformLink,
+        handler: _workoutPerform, transitionType: TransitionType.inFromRight);
     //= Workout Logs
     router.define(DataValues.workoutLogsLink,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);

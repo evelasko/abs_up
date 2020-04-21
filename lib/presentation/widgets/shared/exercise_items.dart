@@ -89,7 +89,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => await removeExerciseTag(),
+            onDismissed: (direction) async => removeExerciseTag(),
             child: exerciseItemBody(context, widget.exercise));
 
       /// Blacklist Exercise Item
@@ -103,7 +103,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => await removeExerciseTag(),
+            onDismissed: (direction) async => removeExerciseTag(),
             child: exerciseItemBody(context, widget.exercise));
 
       /// Exercise Item

@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'package:data_setup/domain/repositories/data_values.dart';
 import 'package:flutter/widgets.dart';
 

@@ -12,9 +12,11 @@ class IWorkoutFacade {
   static Box workoutSettingsBox = IHiveFacade.workoutSettingsBox;
   static Box<Workout> workoutsBox = IHiveFacade.workoutsBox;
   static Box<Exercise> exercisesBox = IHiveFacade.exercisesBox;
+  static Box<Workout> workoutLogsBox = IHiveFacade.workoutLogsBox;
   static final WorkoutSettings settings =
       workoutSettingsBox.get(DataValues.workoutSettingsKey) as WorkoutSettings;
   final Workout currentWorkout = workoutsBox.get(DataValues.currentWorkoutKey);
+  static final Uuid uuid = Uuid();
 
   static const List<String> availableTargets = [
     'Core',
@@ -50,7 +52,7 @@ class IWorkoutFacade {
   /// Generates a new workout based on current settings
   static Workout generateWorkout() {
     //= filter exercises
-    Iterable<Exercise> availableExercises = exercisesBox.values.where(
+    final Iterable<Exercise> availableExercises = exercisesBox.values.where(
         (exercise) =>
             intensityFilter(exercise.intensity, settings.intensity) &&
             difficultyFilter(exercise.difficulty, settings.difficulty) &&
@@ -92,7 +94,7 @@ class IWorkoutFacade {
   /// Generates a new workout based on current settings
   /// and saves it into the currentWorkout key of the workouts box
   static Future<void> generateCurrentWorkout() async =>
-      await workoutsBox.put(DataValues.currentWorkoutKey, generateWorkout());
+      workoutsBox.put(DataValues.currentWorkoutKey, generateWorkout());
 
   static Future<void> saveCurrentWorkoutAs(String name) async {
     final Workout currentWorkout =
@@ -101,11 +103,20 @@ class IWorkoutFacade {
         generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
   }
 
+  /// Generates a new workout log entry to perform.
+  /// If no workout is specified it uses the workout at currentWorkout.
+  static Future<String> performWorkout({String workoutKey}) async {
+    final String _workoutKey = workoutKey ?? DataValues.currentWorkoutKey;
+    final currentWorkout = workoutsBox.get(_workoutKey);
+    final workoutToPerformKey = uuid.v4();
+    await workoutLogsBox.put(workoutToPerformKey, currentWorkout.copy());
+    return workoutToPerformKey;
+  }
+
   //: Helper Methods_____________________________________________
 
   /// Generates a unique key to save a new workout
   static String generateUniqueWorkoutKey() {
-    final uuid = Uuid();
     final List<String> savedWorkoutKey =
         workoutsBox.keys.toList().cast<String>();
     String uniqueKey = uuid.v4();
@@ -209,7 +220,7 @@ class IWorkoutFacade {
     //= length 1 intensity 1 has no rest intervals thus returns the same
     if (frequency == 0) return exerciseItems;
 
-    List<WorkoutItem> exerciseAndRestItems = [...exerciseItems];
+    final List<WorkoutItem> exerciseAndRestItems = [...exerciseItems];
 
     final int workBlock =
         (exerciseItems.length / (frequency + 1)).floorToDouble().toInt();

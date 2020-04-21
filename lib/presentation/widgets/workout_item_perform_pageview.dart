@@ -1,3 +1,4 @@
+import 'package:data_setup/domain/models/workout_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
@@ -5,17 +6,16 @@ import '../theme/colors.dart';
 import '../theme/text.dart';
 import 'exercise_details_content.dart';
 
-class ExerciseDetailsPageView extends StatelessWidget {
-  final Exercise exercise;
+class WorkoutItemPerformPageView extends StatelessWidget {
+  final WorkoutItem item;
   final PageController pageController;
 
-  const ExerciseDetailsPageView(this.exercise,
+  const WorkoutItemPerformPageView(this.item,
       {Key key, @required this.pageController})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 50),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
@@ -36,7 +36,7 @@ class ExerciseDetailsPageView extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 text: TextSpan(
-                    text: exercise.name.toUpperCase(),
+                    text: item.exercise.name.toUpperCase(),
                     style: AppTextStyles.listItemTitle),
               ),
               IconButton(
@@ -53,7 +53,8 @@ class ExerciseDetailsPageView extends StatelessWidget {
             color: AppColors.greyLightest,
             child: CustomScrollView(
               slivers: <Widget>[
-                SliverToBoxAdapter(child: ExerciseDetailsContent(exercise)),
+                SliverToBoxAdapter(
+                    child: ExerciseDetailsContent(item.exercise)),
               ],
             ),
           ))

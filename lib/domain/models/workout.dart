@@ -18,7 +18,7 @@ class Workout extends HiveObject {
     this.name = 'untitled',
     this.items,
   }) {
-    this.createdAt = DateTime.now();
+    createdAt = DateTime.now();
   }
 
   Future<void> updateWorkoutItem(int index,
@@ -27,7 +27,7 @@ class Workout extends HiveObject {
       int duration,
       double weight,
       int progress}) async {
-    WorkoutItem oldItem = this.items[index];
+    final WorkoutItem oldItem = items[index];
     if (oldItem == null) return;
     items.replaceRange(index, index + 1, [
       WorkoutItem(
@@ -37,19 +37,20 @@ class Workout extends HiveObject {
           weight: weight ?? oldItem.weight,
           progress: progress ?? oldItem.progress)
     ]);
-    if (this.isInBox) await this.save();
+    if (isInBox) await save();
   }
 
   /// Getters
   Duration get totalDuration {
-    Duration totalDuration = Duration(seconds: 0);
-    items.forEach((item) => totalDuration += Duration(seconds: item.duration));
+    Duration totalDuration = const Duration(seconds: 0);
+    for (final item in items) {
+      totalDuration += Duration(seconds: item.duration);
+    }
     return totalDuration;
   }
 
   String get totalDurationString =>
-      RegExp(r'\d{2}\:\d{2}(?=\.)')
-          .stringMatch(this.totalDuration.toString()) ??
+      RegExp(r'\d{2}\:\d{2}(?=\.)').stringMatch(totalDuration.toString()) ??
       '00:00';
 
   List<String> get equipmentTotal =>
@@ -59,11 +60,11 @@ class Workout extends HiveObject {
 
   /// Custom methods
   Future<void> reorderItems(int oldIndex, int newIndex) async {
-    if (newIndex > oldIndex) newIndex -= 1;
+    final int _index = newIndex > oldIndex ? newIndex - 1 : newIndex;
     final item = items.removeAt(oldIndex);
-    items.insert(newIndex, item);
+    items.insert(_index, item);
     refreshOrder();
-    this.save();
+    save();
   }
 
   void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
@@ -72,12 +73,14 @@ class Workout extends HiveObject {
   Future<void> removeItem(WorkoutItem item) async {
     items.removeWhere((workoutItem) => workoutItem == item);
     refreshOrder();
-    if (isInBox) await this.save();
+    if (isInBox) await save();
   }
 
   Workout copyWith({String name, List<WorkoutItem> items}) => Workout(
       name: name ?? this.name + DateTime.now().toIso8601String(),
       items: items ?? this.items);
+
+  Workout copy() => Workout(name: name, items: items);
 
   /// Class overrides
   @override

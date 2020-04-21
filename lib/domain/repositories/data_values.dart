@@ -5,6 +5,7 @@ class DataValues {
   static const String exerciseDetailsLink = 'exercise/details/';
   static const String workoutListLink = 'workout/list';
   static const String workoutDetailsLink = 'workout/details/';
+  static const String workoutPerformLink = 'workout/perform/';
   static const String workoutLogsLink = 'workout/logs';
 
   /// Hive Box Names
@@ -12,6 +13,7 @@ class DataValues {
   static const String userSettingsBoxName = 'user_settings';
   static const String workoutSettingsBoxName = 'workout_settings';
   static const String workoutsBoxName = 'workouts';
+  static const String workoutLogsBoxName = 'workout_logs';
 
   /// Keys
   //=

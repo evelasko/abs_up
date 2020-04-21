@@ -15,6 +15,8 @@ class IHiveFacade {
   static final Box<WorkoutSettings> workoutSettingsBox =
       Hive.box<WorkoutSettings>(DataValues.workoutSettingsBoxName);
   static final Box<Workout> workoutsBox = Hive.box(DataValues.workoutsBoxName);
+  static final Box<Workout> workoutLogsBox =
+      Hive.box(DataValues.workoutLogsBoxName);
 
   /// General methods
   static Future<void> initHive() async {
@@ -33,5 +35,6 @@ class IHiveFacade {
     await Hive.openBox<WorkoutSettings>(DataValues.workoutSettingsBoxName);
     await Hive.openBox(DataValues.userSettingsBoxName);
     await Hive.openBox<Workout>(DataValues.workoutsBoxName);
+    await Hive.openBox<Workout>(DataValues.workoutLogsBoxName);
   }
 }

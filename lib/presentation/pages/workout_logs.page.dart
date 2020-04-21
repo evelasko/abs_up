@@ -5,9 +5,9 @@ class WorkoutLogsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workout Logs Page'),
+        title: const Text('Workout Logs Page'),
       ),
-      body: Center(child: Text('You are in the Workout Logs page!')),
+      body: const Center(child: Text('You are in the Workout Logs page!')),
     );
   }
 }

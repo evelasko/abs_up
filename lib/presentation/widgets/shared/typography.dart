@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class AppTypography {
   static Widget sectionHeadingLight(String text) => Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: AppColors.greyLight,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
       height: 20,
       child: Center(
         child: Text(text.toUpperCase(),
@@ -16,8 +16,8 @@ class AppTypography {
       ));
 
   static Widget settingsDataRow(String header, String value) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-        padding: EdgeInsets.only(bottom: 7),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        padding: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(color: AppColors.greyDark, width: 1))),

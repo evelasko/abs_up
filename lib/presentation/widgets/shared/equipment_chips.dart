@@ -6,7 +6,7 @@ import '../../../domain/models/equipment.dart';
 
 FilterChip equipmentChip(
     {@required Equipment equipment, @required void Function(bool) onSelected}) {
-  bool status = equipment.status;
+  final bool status = equipment.status;
   return FilterChip(
     label: Text(equipment.text,
         style: status
@@ -15,7 +15,7 @@ FilterChip equipmentChip(
     avatar: Container(
       width: 22,
       height: 22,
-      margin: EdgeInsets.only(left: 5),
+      margin: const EdgeInsets.only(left: 5),
       child: Icon(
         equipment.icon,
         size: 22,
@@ -29,6 +29,6 @@ FilterChip equipmentChip(
     selected: status,
     showCheckmark: false,
     selectedColor: Colors.white,
-    backgroundColor: Color(0x1e767680),
+    backgroundColor: const Color(0x1e767680),
   );
 }

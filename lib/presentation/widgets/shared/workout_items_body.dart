@@ -23,7 +23,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
             FluroRouter.getExerciseDetailsLink(
                 exerciseKey: workoutItem.exercise.key.toString())),
         child: Container(
-          padding: EdgeInsets.only(left: 10, right: 0, top: 5, bottom: 5),
+          padding: const EdgeInsets.only(left: 10, right: 0, top: 5, bottom: 5),
           color: workoutItem.exercise.name == 'Rest'
               ? AppColors.greyLight
               : Colors.white,
@@ -35,9 +35,10 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
                 width: 70,
                 height: 50,
                 child: Stack(fit: StackFit.expand, children: [
+                  // ignore: prefer_if_elements_to_conditional_expressions
                   workoutItem.exercise.name == 'Rest'
                       ? Container()
-                      : Image(
+                      : const Image(
                           image:
                               AssetImage('assets/exercise_images/_default.jpg'),
                           fit: BoxFit.cover,
@@ -120,7 +121,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
               //= Reorder Handle
               Container(
                 width: 24,
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 child: Center(
                     child: Icon(Icons.drag_handle, color: AppColors.greyDark)),
               )

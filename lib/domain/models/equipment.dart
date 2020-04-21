@@ -24,7 +24,7 @@ class Equipment {
   static Equipment equipmentFromKey(String key) => allEquipment[key];
 
   bool get status {
-    WorkoutSettings settings = IHiveFacade.workoutSettingsBox
+    final WorkoutSettings settings = IHiveFacade.workoutSettingsBox
         .get(DataValues.workoutSettingsKey, defaultValue: WorkoutSettings());
     return settings.equipment.contains(key);
   }

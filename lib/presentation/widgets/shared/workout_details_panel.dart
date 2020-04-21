@@ -20,15 +20,16 @@ class WorkoutDetailsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 0, left: 15, right: 15, bottom: 10),
+      padding: const EdgeInsets.only(top: 0, left: 15, right: 15, bottom: 10),
       height: 100,
       decoration: BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
-        BoxShadow(color: Colors.black26, offset: Offset(0, 0), blurRadius: 20)
+        BoxShadow(
+            color: Colors.black26, offset: const Offset(0, 0), blurRadius: 20)
       ]),
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 15),
+            margin: const EdgeInsets.only(bottom: 15),
             //= Equipment row
             child: equipmentRowContent(
                 activeEquipment: activeEquipment,

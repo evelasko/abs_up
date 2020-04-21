@@ -25,14 +25,14 @@ class IUserSettingsFacade {
   }
 
   // TODO the expression below should only set the default workout settings...
-  Future<void> setWorkoutSettings() async => await userSettingsBox.put(
+  Future<void> setWorkoutSettings() => userSettingsBox.put(
       DataValues.workoutSettingsKey, WorkoutSettings.defaultSettingsMap);
 
   /// User data and settings
   String get userId => userSettingsBox.get(DataValues.userIdKey,
       defaultValue: DataValues.userIdKey) as String;
-  Future<void> setUserId(String userId) async =>
-      await userSettingsBox.put(DataValues.userIdKey, userId);
+  Future<void> setUserId(String userId) =>
+      userSettingsBox.put(DataValues.userIdKey, userId);
 
   String get firstName => userSettingsBox.get(DataValues.firstNameKey,
       defaultValue: DataValues.firstNameKey) as String;
@@ -42,8 +42,8 @@ class IUserSettingsFacade {
 
   bool get presentationWatched => userSettingsBox
       .get(DataValues.presentationWatchedKey, defaultValue: false) as bool;
-  Future<void> setPresentationWatched(bool watched) async =>
-      await userSettingsBox.put(DataValues.presentationWatchedKey, watched);
+  Future<void> setPresentationWatched(bool watched) =>
+      userSettingsBox.put(DataValues.presentationWatchedKey, watched);
 
   DateTime get progressStartDate =>
       userSettingsBox.get(DataValues.progressStartDateKey,
