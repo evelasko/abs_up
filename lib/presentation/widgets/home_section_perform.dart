@@ -26,7 +26,7 @@ class HomeSectionPerform extends StatelessWidget {
               onTap: () async => Navigator.pushNamed(
                   context,
                   FluroRouter.getWorkoutPerformLink(
-                      workoutKey: await IWorkoutFacade.performWorkout())),
+                      workoutLogKey: await IWorkoutFacade.performWorkout())),
               icon: Icons.play_circle_outline,
               text: 'start')
         ],

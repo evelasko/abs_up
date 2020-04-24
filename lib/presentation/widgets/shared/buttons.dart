@@ -167,6 +167,7 @@ class AppButtons {
         width: 68,
         height: 68,
         child: RaisedButton(
+          color: Colors.transparent,
           elevation: 0,
           onPressed: onTap,
           shape:
@@ -180,11 +181,11 @@ class AppButtons {
                   borderRadius: BorderRadius.circular(6.0),
                 ),
                 secondary: BoxDecoration(
-                  border: Border.all(color: AppColors.rudy, width: 2),
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
+                    border: Border.all(color: AppColors.rudy, width: 2),
+                    borderRadius: BorderRadius.circular(6.0),
+                    color: Colors.transparent),
                 other: BoxDecoration(
-                  color: AppColors.greyLightest,
+                  color: AppColors.greyLight,
                   borderRadius: BorderRadius.circular(6.0),
                 )),
             child: Container(

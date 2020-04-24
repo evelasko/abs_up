@@ -49,12 +49,12 @@ class FluroRouter {
 
   //= Workout Perform
   static const workoutPerformLink =
-      '${DataValues.workoutPerformLink}:workoutKey';
-  static String getWorkoutPerformLink({String workoutKey}) =>
-      workoutPerformLink.replaceFirst(':workoutKey', workoutKey);
+      '${DataValues.workoutPerformLink}:workoutLogKey';
+  static String getWorkoutPerformLink({String workoutLogKey}) =>
+      workoutPerformLink.replaceFirst(':workoutLogKey', workoutLogKey);
   static final Handler _workoutPerform = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutPerformPage(params['workoutKey'][0].toString()));
+          WorkoutPerformPage(params['workoutLogKey'][0].toString()));
 
   //= Workout Logs
   static const workoutLogsLink = 'workout/logs';
