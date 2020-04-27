@@ -1,4 +1,5 @@
 import 'package:data_setup/domain/repositories/data_values.dart';
+import 'package:data_setup/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/repositories/i_workout_facade.dart';
@@ -20,9 +21,8 @@ class WorkoutDetailsMenu extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 150,
-      decoration: BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
-        BoxShadow(
-            color: Colors.black45, offset: const Offset(0, 0), blurRadius: 20)
+      decoration: const BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
+        BoxShadow(color: Colors.black45, offset: Offset(0, 0), blurRadius: 20)
       ]),
       child: Column(
         children: <Widget>[
@@ -33,11 +33,11 @@ class WorkoutDetailsMenu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 IconButton(
-                    icon: Icon(Icons.shuffle),
+                    icon: const Icon(Icons.shuffle),
                     color: AppColors.greyLight,
                     onPressed: () => IWorkoutFacade.generateCurrentWorkout()),
                 IconButton(
-                    icon: Icon(Icons.tune),
+                    icon: const Icon(Icons.tune),
                     color: AppColors.greyLight,
                     onPressed: () {
                       final PersistentBottomSheetController sheetController =
@@ -50,17 +50,19 @@ class WorkoutDetailsMenu extends StatelessWidget {
                           (value) => IWorkoutFacade.generateCurrentWorkout());
                     }),
                 IconButton(
-                    icon: Icon(Icons.add_circle_outline),
+                    icon: const Icon(Icons.add_circle_outline),
                     color: AppColors.greyLight,
+                    // TODO add exercise to workout in workout details view
                     onPressed: () {})
               ],
             ),
           ),
           //= Primary Action
           AppButtons.primaryActionButton(
-              onTap: () {
-                print('start workout');
-              },
+              onTap: () async => Navigator.pushNamed(
+                  context,
+                  FluroRouter.getWorkoutPerformLink(
+                      sourceWorkoutKey: workoutKey)),
               text: 'Start Workout'),
         ],
       ),

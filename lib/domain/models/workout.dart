@@ -13,14 +13,14 @@ class Workout extends HiveObject {
   List<WorkoutItem> items;
   @HiveField(2)
   DateTime createdAt;
+  @HiveField(3)
+  String sourceWorkout;
 
-  Workout({
-    this.name = 'untitled',
-    this.items,
-  }) {
+  Workout({this.name = 'untitled', this.items, this.sourceWorkout}) {
     createdAt = DateTime.now();
   }
 
+  /// Update workout item
   Future<void> updateWorkoutItem(int index,
       {Exercise exercise,
       int order,

@@ -7,6 +7,10 @@ class DataValues {
   static const String workoutDetailsLink = 'workout/details/';
   static const String workoutPerformLink = 'workout/perform/';
   static const String workoutLogsLink = 'workout/logs';
+  static const String settingsLink = 'settings';
+  static const String aboutLink = 'about';
+  static const String feedbackLink = 'feedback';
+  static const String supportLink = 'support';
 
   /// Hive Box Names
   static const String exerciseBoxName = 'exercises';

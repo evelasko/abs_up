@@ -231,6 +231,7 @@ class AppButtons {
   static Widget primaryActionButton(
           {@required VoidCallback onTap,
           @required String text,
+          IconData icon,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -247,14 +248,78 @@ class AppButtons {
                     other: AppColors.primaryGradient,
                   ),
                   borderRadius: BorderRadius.circular(30.0)),
-              child: Center(
-                child: Text(text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800)),
-              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    icon != null
+                        ? Icon(
+                            icon,
+                            size: 24,
+                            color: Colors.white,
+                          )
+                        : Container(),
+                    icon != null
+                        ? const Padding(padding: EdgeInsets.only(right: 5))
+                        : Container(),
+                    Text(text,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800)),
+                  ]),
+            ),
+          ),
+        ),
+      );
+
+  static Widget secondaryActionButton(
+          {@required VoidCallback onTap,
+          @required String text,
+          IconData icon,
+          ButtonTypes buttonType = ButtonTypes.primary}) =>
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        child: GestureDetector(
+          onTap: onTap,
+          child: SizedBox(
+            height: 48,
+            child: Container(
+              decoration: BoxDecoration(
+                  border: buttonType == ButtonTypes.secondary
+                      ? Border.all(color: Colors.white, width: 2)
+                      : null,
+                  color: buttonTypeCase<Color>(
+                    type: buttonType,
+                    primary: Colors.white,
+                    secondary: Colors.transparent,
+                    other: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(30.0)),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    icon != null
+                        ? Icon(icon,
+                            size: 24,
+                            color: buttonType != ButtonTypes.secondary
+                                ? AppColors.coquelicot
+                                : Colors.white)
+                        : Container(),
+                    icon != null
+                        ? const Padding(padding: EdgeInsets.only(right: 15))
+                        : Container(),
+                    Text(text,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: buttonType != ButtonTypes.secondary
+                                ? AppColors.coquelicot
+                                : Colors.white,
+                            fontWeight: FontWeight.w800)),
+                  ]),
             ),
           ),
         ),

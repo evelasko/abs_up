@@ -7,6 +7,7 @@ class IApplicationFacade {
     await IExerciseFacade().fetchLocalExercises();
     await IUserSettingsFacade.initUserSettings();
     await IWorkoutFacade.initWorkoutSettings();
+    await IWorkoutFacade.generateCurrentWorkout();
     return true;
   }
 }

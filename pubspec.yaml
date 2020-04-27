@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons:
+  flutter_tts: ^1.0.0
 
   # Firebase Dependencies
   cloud_firestore:
@@ -24,7 +25,7 @@ dependencies:
   path_provider:
   mobx:
   flutter_mobx:
-  provider: ^3.2.0
+  provider: ^4.0.5
   dartz:
   freezed_annotation: ^0.7.1
   json_annotation: ^3.0.1
@@ -33,7 +34,7 @@ dependencies:
   intl:
   get_it:
   injectable:
-  flutter_markdown: ^0.3.4
+  flutter_markdown: ^0.3.5
 
 dev_dependencies:
   lint:

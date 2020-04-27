@@ -1,3 +1,4 @@
+import 'package:data_setup/presentation/widgets/drawer.dart';
 import 'package:data_setup/presentation/widgets/home_section_workoutsettings.dart';
 import 'package:flutter/material.dart';
 
@@ -13,26 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+
       /// App Bar
       appBar: AppBar(
         elevation: 0,
-        title: Icon(
+        title: const Icon(
           AbsAppIcons.logo_fill,
           color: AppColors.greyLight,
           size: 32,
         ),
         leading: IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             iconSize: 32,
             color: AppColors.greyLight,
-            onPressed: () {}),
+            onPressed: () => _scaffoldKey.currentState.openDrawer()),
         actions: <Widget>[
           IconButton(
               padding: const EdgeInsets.only(top: 8),
-              icon: Icon(
+              icon: const Icon(
                 Icons.person,
               ),
               iconSize: 32,
@@ -40,6 +44,9 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {})
         ],
       ),
+
+      /// Drawer
+      drawer: const AppDrawer(),
 
       /// Body
       body: Container(

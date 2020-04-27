@@ -1,37 +1,36 @@
-import 'package:data_setup/domain/state/perform_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/models/workout.dart';
 import '../../domain/models/workout_item.dart';
 import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_hive_facade.dart';
+import '../../domain/repositories/i_speech_facade.dart';
+import '../../domain/state/perform_store.dart';
 import '../theme/colors.dart';
+import '../widgets/shared/buttons.dart';
+import '../widgets/shared/modal_dialog.dart';
 import '../widgets/workout_item_perform_pageview.dart';
 
 /// Interface class to provide PerformStore
 class WorkoutPerformPage extends StatelessWidget {
-  final String workoutLogKey;
+  final String sourceWorkoutKey;
   const WorkoutPerformPage(
-    this.workoutLogKey, {
+    this.sourceWorkoutKey, {
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Provider(
-        create: (_) => PerformStore(),
-        child: WorkoutPerformLayout(workoutLogKey),
+        create: (_) => PerformStore(ISpeechFacade()),
+        child: WorkoutPerformLayout(sourceWorkoutKey),
       );
 }
 
 /// Main layout class
 class WorkoutPerformLayout extends StatefulWidget {
-  final String workoutLogKey;
-  const WorkoutPerformLayout(this.workoutLogKey);
+  final String sourceWorkoutKey;
+  const WorkoutPerformLayout(this.sourceWorkoutKey);
   @override
   _WorkoutPerformLayoutState createState() => _WorkoutPerformLayoutState();
 }
@@ -46,21 +45,79 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
     super.initState();
     _pageController = PageController(initialPage: 0);
     _pageController.addListener(focusLocalizer);
+    _performStore ??= Provider.of<PerformStore>(context);
+    _performStore.initNew(widget.sourceWorkoutKey);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _performStore ??= Provider.of<PerformStore>(context);
-    _performStore.initNew(widget.workoutLogKey);
+    // _performStore ??= Provider.of<PerformStore>(context);
+    // _performStore.initNew(widget.sourceWorkoutKey);
+    when(
+        (_) =>
+            _performStore.currentItemIsLast &&
+            _performStore.currentItemStatus == WorkoutItemStatus.performed,
+        _finishWorkout);
   }
 
   void focusLocalizer() {
     final int current = _pageController.page.round();
     if (currentPage != current) {
       setState(() => currentPage = current);
-      _performStore.updateCurrentItem(current);
+      _performStore.switchCurrentItem(current);
     }
+  }
+
+  Future<bool> _finishWorkout() async =>
+      (await showDialog(
+          context: context,
+          builder: (context) => AbsAppModalDialog(
+                title: 'WORKOUT\nFINISHED',
+                decoration:
+                    const BoxDecoration(gradient: AppColors.primaryGradient),
+                buttons: <Widget>[
+                  AppButtons.secondaryActionButton(
+                      text: 'Home',
+                      icon: Icons.home,
+                      onTap: () => _performStore.saveWorkoutLogEntry().then(
+                          (value) => Navigator.popAndPushNamed(
+                              context, DataValues.homeLink))),
+                  AppButtons.secondaryActionButton(
+                      buttonType: ButtonTypes.secondary,
+                      text: 'Share progress',
+                      icon: Icons.share,
+                      onTap: () =>
+                          _performStore.saveWorkoutLogEntry().then((value) {
+                            // TODO implement sharing progress when finishing workout
+                            Navigator.popAndPushNamed(
+                                context, DataValues.homeLink);
+                          }))
+                ],
+              ))) ??
+      false;
+
+  Future<bool> _onWillPop() async {
+    _performStore.stopCurrentTimer();
+    await _performStore.prepareToAbandonWorkout(silently: true);
+    return (await showDialog(
+            context: context,
+            builder: (context) => AbsAppModalDialog(
+                  title: 'EXIT\nWORKOUT',
+                  buttons: <Widget>[
+                    AppButtons.secondaryActionButton(
+                        text: 'Yes! Take me out',
+                        onTap: () {
+                          _performStore.abandonWorkout();
+                          Navigator.of(context).pop(true);
+                        }),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+                    AppButtons.primaryActionButton(
+                        text: 'No! Keep me in',
+                        onTap: () => Navigator.of(context).pop(false)),
+                  ],
+                ))) ??
+        false;
   }
 
   @override
@@ -70,74 +127,121 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Performing workout'),
-          flexibleSpace: Container(),
-        ),
-        backgroundColor: AppColors.greyDarkest,
-        body: Column(
-          children: <Widget>[
-            // = General Progress Indicator
-            Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(
-                      left: 20, right: 20, top: 0, bottom: 0),
-                  height: 10,
-                  child: Row(
-                    children: [
-                      for (final item in _performStore.workoutItems)
-                        item.exercise.name == 'Rest'
-                            ? Container(
-                                width: 10,
-                                color: item.order - 1 == currentPage
-                                    ? AppColors.brandeis
-                                    : Colors.transparent)
-                            : Expanded(
-                                child: Container(
-                                    color: item.order - 1 == currentPage
-                                        ? AppColors.coquelicot
-                                        : item.progress == 0
-                                            ? AppColors.greyDark
-                                            : AppColors.grey),
-                              ),
-                    ],
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: _onWillPop,
+        child: Observer(
+          builder: (context) => Scaffold(
+              appBar: AppBar(
+                title: const Text('Performing workout'),
+                // = General workout controller (pause/fforward/resume)
+                actions: <Widget>[
+                  _performStore.performing
+                      ? IconButton(
+                          icon: const Icon(Icons.pause),
+                          onPressed: () => _performStore.stopCurrentTimer())
+                      : _performStore.currentItemStatus ==
+                              WorkoutItemStatus.presenting
+                          ? IconButton(
+                              icon: const Icon(Icons.fast_forward),
+                              onPressed: () {
+                                _performStore.stopSpeech();
+                                _performStore.currentItemStatus =
+                                    WorkoutItemStatus.ready;
+                              },
+                            )
+                          : IconButton(
+                              icon: const Icon(Icons.play_arrow),
+                              onPressed: () =>
+                                  _performStore.performCurrentItem(),
+                            ),
+                ],
+              ),
+              backgroundColor: AppColors.greyDarkest,
+              body: Column(
+                children: <Widget>[
+                  // = General Progress Indicator
+                  WorkoutPerformGeneralIndicator(
+                    workoutItems: _performStore.workoutItems,
+                    currentPage: currentPage,
+                    timeRemainingString: _performStore.timeRemainingString,
                   ),
-                ),
-                Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('total time remaining'.toUpperCase(),
-                            style: TextStyle(
-                                color: AppColors.grey,
-                                fontWeight: FontWeight.w600)),
-                        Observer(builder: (_) {
-                          return Text(
-                            _performStore.timeRemainingString,
-                            style: TextStyle(
-                                color: AppColors.greyLight,
-                                fontWeight: FontWeight.w800),
-                          );
-                        })
-                      ],
-                    ))
-              ],
-            ),
-            Expanded(
-              child: _performStore.workoutItems.isEmpty
-                  ? const CircularProgressIndicator()
-                  : PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      controller: _pageController,
-                      itemCount: _performStore.workoutItems.length,
-                      itemBuilder: (context, index) =>
-                          WorkoutItemPerformPageView(pageIndex: index)),
-            ),
-          ],
+                  // = Workout Items Page View
+                  Expanded(
+                    child: _performStore.workoutItems.isEmpty
+                        ? const CircularProgressIndicator()
+                        : PageView.builder(
+                            scrollDirection: Axis.horizontal,
+                            controller: _pageController,
+                            itemCount: _performStore.workoutItems.length,
+                            itemBuilder: (context, index) =>
+                                WorkoutItemPerformPageView(
+                                  pageIndex: index,
+                                  pageController: _pageController,
+                                )),
+                  ),
+                ],
+              )),
         ),
       );
+}
+
+/// General Workout Indicator
+class WorkoutPerformGeneralIndicator extends StatelessWidget {
+  final List<WorkoutItem> workoutItems;
+  final String timeRemainingString;
+  final int currentPage;
+
+  const WorkoutPerformGeneralIndicator({
+    Key key,
+    @required this.workoutItems,
+    @required this.currentPage,
+    @required this.timeRemainingString,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
+          height: 10,
+          child: Row(
+            children: [
+              for (final item in workoutItems)
+                item.exercise.name == 'Rest'
+                    ? Container(
+                        width: 12,
+                        color: item.order - 1 == currentPage
+                            ? AppColors.brandeis
+                            : Colors.transparent)
+                    : Expanded(
+                        child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 1),
+                            color: item.order - 1 == currentPage
+                                ? AppColors.coquelicot
+                                : item.progress == 0
+                                    ? AppColors.greyDark
+                                    : AppColors.grey),
+                      ),
+            ],
+          ),
+        ),
+        Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('total time remaining'.toUpperCase(),
+                    style: TextStyle(
+                        color: AppColors.grey, fontWeight: FontWeight.w600)),
+                Text(
+                  timeRemainingString,
+                  style: TextStyle(
+                      color: AppColors.greyLight, fontWeight: FontWeight.w800),
+                )
+              ],
+            ))
+      ],
+    );
+  }
 }

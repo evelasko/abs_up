@@ -37,5 +37,19 @@ class WorkoutItem extends HiveObject {
   }
 
   @override
+  WorkoutItem copyWith(
+          {Exercise exercise,
+          int order,
+          int duration,
+          double weight,
+          int progress}) =>
+      WorkoutItem(
+          exercise: exercise ?? this.exercise,
+          order: order ?? this.order,
+          duration: duration ?? this.duration,
+          weight: weight ?? this.weight,
+          progress: progress ?? this.progress);
+
+  @override
   int get hashCode => exercise.name.hashCode;
 }

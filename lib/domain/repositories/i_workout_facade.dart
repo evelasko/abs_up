@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
@@ -52,20 +53,16 @@ class IWorkoutFacade {
   /// Generates a new workout based on current settings
   static Workout generateWorkout() {
     //= filter exercises
-    final Iterable<Exercise> availableExercises = exercisesBox.values.where(
-        (exercise) =>
-            intensityFilter(exercise.intensity, settings.intensity) &&
-            difficultyFilter(exercise.difficulty, settings.difficulty) &&
-            exercise.impact == settings.impact &&
-            settings.equipment.contains(exercise.equipment.toLowerCase()) &&
-            exercise.tag != ExerciseTag.blacklisted.index);
+    final List<Exercise> availableExercises = getAvailableExercises();
 
     //= distribute exercises
     final Map<String, List<Exercise>> distributedExercises =
-        distributeByTargets(availableExercises.toList());
+        distributeByTargets(availableExercises);
+
     //= randomize by targets
     final List<Exercise> randomizedExercises =
         randomizeExercises(distributedExercises);
+
     //= sort randomized exercises by intensity
     randomizedExercises
         .sort((exA, exB) => exA.intensity.compareTo(exB.intensity));
@@ -103,15 +100,16 @@ class IWorkoutFacade {
         generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
   }
 
-  /// Generates a new workout log entry to perform.
-  /// If no workout is specified it uses the workout at currentWorkout.
-  static Future<String> performWorkout({String workoutKey}) async {
-    final String _workoutKey = workoutKey ?? DataValues.currentWorkoutKey;
-    final currentWorkout = workoutsBox.get(_workoutKey);
-    final workoutToPerformKey = uuid.v4();
-    await workoutLogsBox.put(workoutToPerformKey, currentWorkout.copy());
-    return workoutToPerformKey;
-  }
+  static Future<void> saveNewWorkoutLogEntry(
+          {@required List<WorkoutItem> items,
+          @required String sourceWorkout}) async =>
+      workoutLogsBox.put(
+          uuid.v4(),
+          Workout(
+            name: 'log entry',
+            items: items,
+            sourceWorkout: sourceWorkout,
+          ));
 
   //: Helper Methods_____________________________________________
 
@@ -163,6 +161,17 @@ class IWorkoutFacade {
         return short;
     }
   }
+
+  /// Filter exercises base on current workout settings
+  static List<Exercise> getAvailableExercises() => exercisesBox.values
+      .where((exercise) =>
+          intensityFilter(exercise.intensity, settings.intensity) &&
+          difficultyFilter(exercise.difficulty, settings.difficulty) &&
+          exercise.impact == settings.impact &&
+          settings.equipment.contains(exercise.equipment.toLowerCase()) &&
+          exercise.tag != ExerciseTag.blacklisted.index &&
+          exercise.name != 'Rest')
+      .toList();
 
   /// Distributes available exercises into lists based in their targets
   static Map<String, List<Exercise>> distributeByTargets(

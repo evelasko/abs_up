@@ -1,3 +1,7 @@
+import 'package:data_setup/presentation/pages/about.page.dart';
+import 'package:data_setup/presentation/pages/feedback_contact.page.dart';
+import 'package:data_setup/presentation/pages/help_support.page.dart';
+import 'package:data_setup/presentation/pages/settings.page.dart';
 import 'package:data_setup/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -49,18 +53,39 @@ class FluroRouter {
 
   //= Workout Perform
   static const workoutPerformLink =
-      '${DataValues.workoutPerformLink}:workoutLogKey';
-  static String getWorkoutPerformLink({String workoutLogKey}) =>
-      workoutPerformLink.replaceFirst(':workoutLogKey', workoutLogKey);
+      '${DataValues.workoutPerformLink}:sourceWorkoutKey';
+  static String getWorkoutPerformLink(
+          {String sourceWorkoutKey = DataValues.currentWorkoutKey}) =>
+      workoutPerformLink.replaceFirst(':sourceWorkoutKey', sourceWorkoutKey);
   static final Handler _workoutPerform = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutPerformPage(params['workoutLogKey'][0].toString()));
+          WorkoutPerformPage(params['sourceWorkoutKey'][0].toString()));
 
   //= Workout Logs
   static const workoutLogsLink = 'workout/logs';
   static final Handler _workoutLogs = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutLogsPage());
+
+  //= Settings Page
+  static final Handler _settings = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          SettingsPage());
+
+  //= About Page
+  static final Handler _about = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          AboutPage());
+
+  //= Feedback - Contact Page
+  static final Handler _feedback = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          FeedbackContactPage());
+
+  //= Help - Support Page
+  static final Handler _support = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          HelpSupportPage());
 
   /// Router Setup
   static void setupRouter() {
@@ -85,5 +110,17 @@ class FluroRouter {
     //= Workout Logs
     router.define(DataValues.workoutLogsLink,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);
+    //= Settings
+    router.define(DataValues.settingsLink,
+        handler: _settings, transitionType: TransitionType.inFromRight);
+    //= About
+    router.define(DataValues.aboutLink,
+        handler: _about, transitionType: TransitionType.inFromRight);
+    //= Feedback
+    router.define(DataValues.feedbackLink,
+        handler: _feedback, transitionType: TransitionType.inFromRight);
+    //= Support
+    router.define(DataValues.supportLink,
+        handler: _support, transitionType: TransitionType.inFromRight);
   }
 }

@@ -13,6 +13,7 @@ class HomeSectionPerform extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+          // = Preview Workout
           AppButtons.boxedBigIconButton(
               onTap: () => IWorkoutFacade.generateCurrentWorkout().then(
                   (value) => Navigator.pushNamed(
@@ -22,11 +23,10 @@ class HomeSectionPerform extends StatelessWidget {
               icon: Icons.playlist_play,
               text: 'preview',
               buttonType: ButtonTypes.secondary),
+          // = Perform Workout
           AppButtons.boxedBigIconButton(
               onTap: () async => Navigator.pushNamed(
-                  context,
-                  FluroRouter.getWorkoutPerformLink(
-                      workoutLogKey: await IWorkoutFacade.performWorkout())),
+                  context, FluroRouter.getWorkoutPerformLink()),
               icon: Icons.play_circle_outline,
               text: 'start')
         ],
