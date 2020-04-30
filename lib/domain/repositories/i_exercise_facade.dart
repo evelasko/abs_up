@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
+import 'package:abs_up/domain/repositories/i_hive_facade.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import '../models/exercise.dart';
 

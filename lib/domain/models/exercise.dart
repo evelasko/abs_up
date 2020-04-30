@@ -1,5 +1,5 @@
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/presentation/theme/icons.dart';
+import 'package:abs_up/domain/repositories/data_values.dart';
+import 'package:abs_up/presentation/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

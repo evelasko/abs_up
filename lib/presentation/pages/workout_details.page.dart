@@ -1,6 +1,6 @@
-import 'package:data_setup/domain/models/workout_settings.dart';
-import 'package:data_setup/domain/repositories/i_workout_facade.dart';
-import 'package:data_setup/presentation/widgets/shared/snackbars.dart';
+import 'package:abs_up/domain/models/workout_settings.dart';
+import 'package:abs_up/domain/repositories/i_workout_facade.dart';
+import 'package:abs_up/presentation/widgets/shared/snackbars.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';

@@ -1,4 +1,4 @@
-import 'package:data_setup/domain/models/workout_item.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:hive/hive.dart';
 
 import 'exercise.dart';

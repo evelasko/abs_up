@@ -1,7 +1,7 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
-import 'package:data_setup/presentation/theme/colors.dart';
-import 'package:data_setup/presentation/widgets/exercise_details_pageview.dart';
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/repositories/i_hive_facade.dart';
+import 'package:abs_up/presentation/theme/colors.dart';
+import 'package:abs_up/presentation/widgets/exercise_details_pageview.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseDetailsPage extends StatefulWidget {

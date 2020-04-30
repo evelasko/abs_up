@@ -1,4 +1,4 @@
-import 'package:data_setup/domain/core/failures.dart';
+import 'package:abs_up/domain/core/failures.dart';
 
 class UnexpectedValueError extends Error {
   final ValueFailure valueFailure;

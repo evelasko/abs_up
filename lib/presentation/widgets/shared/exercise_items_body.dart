@@ -1,4 +1,4 @@
-import 'package:data_setup/presentation/router/routes.dart';
+import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';

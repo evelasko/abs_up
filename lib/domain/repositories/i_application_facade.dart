@@ -1,6 +1,6 @@
-import 'package:data_setup/domain/repositories/i_exercise_facade.dart';
-import 'package:data_setup/domain/repositories/i_user_settings_facade.dart';
-import 'package:data_setup/domain/repositories/i_workout_facade.dart';
+import 'package:abs_up/domain/repositories/i_exercise_facade.dart';
+import 'package:abs_up/domain/repositories/i_user_settings_facade.dart';
+import 'package:abs_up/domain/repositories/i_workout_facade.dart';
 
 class IApplicationFacade {
   Future<bool> initApplication() async {

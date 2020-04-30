@@ -1,5 +1,5 @@
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/presentation/router/routes.dart';
+import 'package:abs_up/domain/repositories/data_values.dart';
+import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/repositories/i_workout_facade.dart';

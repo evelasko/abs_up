@@ -1,8 +1,8 @@
-import 'package:data_setup/presentation/pages/about.page.dart';
-import 'package:data_setup/presentation/pages/feedback_contact.page.dart';
-import 'package:data_setup/presentation/pages/help_support.page.dart';
-import 'package:data_setup/presentation/pages/settings.page.dart';
-import 'package:data_setup/presentation/pages/workout_perform.page.dart';
+import 'package:abs_up/presentation/pages/about.page.dart';
+import 'package:abs_up/presentation/pages/feedback_contact.page.dart';
+import 'package:abs_up/presentation/pages/help_support.page.dart';
+import 'package:abs_up/presentation/pages/settings.page.dart';
+import 'package:abs_up/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 

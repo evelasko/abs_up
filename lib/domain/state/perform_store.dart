@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/repositories/i_speech_facade.dart';
-import 'package:data_setup/domain/repositories/i_workout_facade.dart';
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/repositories/i_speech_facade.dart';
+import 'package:abs_up/domain/repositories/i_workout_facade.dart';
 import 'package:mobx/mobx.dart';
 
 import '../models/workout.dart';

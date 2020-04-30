@@ -1,7 +1,7 @@
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
-import 'package:data_setup/presentation/widgets/shared/savedworkout_items.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/domain/repositories/data_values.dart';
+import 'package:abs_up/domain/repositories/i_hive_facade.dart';
+import 'package:abs_up/presentation/widgets/shared/savedworkout_items.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';

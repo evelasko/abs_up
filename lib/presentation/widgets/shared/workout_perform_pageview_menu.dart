@@ -1,4 +1,4 @@
-import 'package:data_setup/presentation/widgets/shared/buttons.dart';
+import 'package:abs_up/presentation/widgets/shared/buttons.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutPerformPageViewMenu extends StatelessWidget {

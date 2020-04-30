@@ -1,5 +1,5 @@
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/presentation/router/routes.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';

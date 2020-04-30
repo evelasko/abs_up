@@ -1,8 +1,8 @@
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/domain/models/workout_item.dart';
-import 'package:data_setup/domain/repositories/data_values.dart';
-import 'package:data_setup/domain/repositories/i_hive_facade.dart';
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
+import 'package:abs_up/domain/repositories/data_values.dart';
+import 'package:abs_up/domain/repositories/i_hive_facade.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';

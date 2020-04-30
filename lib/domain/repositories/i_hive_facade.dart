@@ -1,8 +1,8 @@
-import 'package:data_setup/domain/models/workout.dart';
-import 'package:data_setup/domain/models/workout_item.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:data_setup/domain/models/exercise.dart';
-import 'package:data_setup/domain/models/workout_settings.dart';
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/workout_settings.dart';
 import 'package:hive/hive.dart';
 
 import 'data_values.dart';

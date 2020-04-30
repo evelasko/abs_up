@@ -1,4 +1,4 @@
-import 'package:data_setup/presentation/theme/colors.dart';
+import 'package:abs_up/presentation/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 

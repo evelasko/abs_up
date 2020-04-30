@@ -1,7 +1,7 @@
 //: Base abstract class for Value Ojects
 import 'package:dartz/dartz.dart';
-import 'package:data_setup/domain/core/errors.dart';
-import 'package:data_setup/domain/core/value_validators.dart';
+import 'package:abs_up/domain/core/errors.dart';
+import 'package:abs_up/domain/core/value_validators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
