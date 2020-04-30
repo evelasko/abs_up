@@ -45,15 +45,13 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
     super.initState();
     _pageController = PageController(initialPage: 0);
     _pageController.addListener(focusLocalizer);
-    _performStore ??= Provider.of<PerformStore>(context);
-    _performStore.initNew(widget.sourceWorkoutKey);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // _performStore ??= Provider.of<PerformStore>(context);
-    // _performStore.initNew(widget.sourceWorkoutKey);
+    _performStore ??= Provider.of<PerformStore>(context);
+    _performStore.initNew(widget.sourceWorkoutKey);
     when(
         (_) =>
             _performStore.currentItemIsLast &&

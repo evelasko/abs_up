@@ -1,11 +1,12 @@
-import 'package:data_setup/presentation/widgets/drawer.dart';
-import 'package:data_setup/presentation/widgets/home_section_workoutsettings.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/colors.dart';
 import '../theme/icons.dart';
+import '../widgets/drawer.dart';
 import '../widgets/home_section_menu.dart';
 import '../widgets/home_section_perform.dart';
+import '../widgets/home_section_workoutsettings.dart';
+import '../widgets/login_dialog.dart';
 
 /// Home Page
 class HomePage extends StatefulWidget {
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +43,9 @@ class _HomePageState extends State<HomePage> {
               ),
               iconSize: 32,
               color: AppColors.greyLight,
-              onPressed: () {})
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => LoginDialog()))
         ],
       ),
 
