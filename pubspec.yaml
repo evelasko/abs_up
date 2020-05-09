@@ -11,41 +11,42 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   flutter_tts: ^1.0.0
+  flutter_unity_widget: ^0.1.6+8
 
   # Firebase Dependencies
-  cloud_firestore:
-  firebase_core:
-  firebase_auth:
-  google_sign_in:
+  cloud_firestore: ^0.13.5
+  firebase_core: ^0.4.4+3
+  firebase_auth: ^0.16.0
+  google_sign_in: ^4.4.4
 
-  uuid:
-  fluro:
+  uuid: ^2.0.4
+  fluro: ^1.6.3
   hive: 1.4.1+1
   hive_flutter: 0.3.0+2
   path_provider:
-  mobx:
-  flutter_mobx:
+  mobx: ^1.1.1
+  flutter_mobx: ^1.1.0
   provider: ^4.0.5
-  dartz:
+  dartz: ^0.9.1
   freezed_annotation: ^0.7.1
   json_annotation: ^3.0.1
   meta: ^1.1.8
-  http:
+  http: ^0.12.1
   intl:
-  get_it:
-  injectable:
+  get_it: ^4.0.2
+  injectable: ^0.3.0
   flutter_markdown: ^0.3.5
 
 dev_dependencies:
-  lint:
+  lint: ^1.2.0
   #flutter_test:
   #  sdk: flutter
   hive_generator: ^0.7.0+2
-  mobx_codegen:
-  build_runner:
-  freezed:
+  mobx_codegen: ^1.0.3
+  build_runner: ^1.9.0
+  freezed: ^0.10.8
   json_serializable: ^3.2.5
-  injectable_generator:
+  injectable_generator: ^0.3.5
 
 flutter:
   uses-material-design: true
