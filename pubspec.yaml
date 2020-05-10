@@ -11,7 +11,6 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   flutter_tts: ^1.0.0
-  flutter_unity_widget: ^0.1.6+8
 
   # Firebase Dependencies
   cloud_firestore: ^0.13.5
