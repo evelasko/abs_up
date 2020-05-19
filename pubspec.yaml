@@ -3,6 +3,16 @@ description: Abs Up from the Misfit Coach
 
 version: 1.0.0+1
 
+# to update application ip change here and run:
+# flutter pub run flutter_application_id:main -f pubspec.yaml
+flutter_application_id:
+  android:
+    id: "com.misfitcoders.absup"
+    #name: Abs Up"
+  ios:
+    id: "com.misfitcoders.absup"
+    #name: "Abs Up"
+
 environment:
   sdk: ">=2.6.0 <3.0.0"
 
@@ -15,6 +25,7 @@ dependencies:
   # Firebase Dependencies
   cloud_firestore: ^0.13.5
   firebase_core: ^0.4.4+3
+  firebase_analytics: ^5.0.11
   firebase_auth: ^0.16.0
   google_sign_in: ^4.4.4
 
@@ -37,15 +48,16 @@ dependencies:
   flutter_markdown: ^0.3.5
 
 dev_dependencies:
+  # flutter_test:
+  #   sdk: flutter
   lint: ^1.2.0
-  #flutter_test:
-  #  sdk: flutter
   hive_generator: ^0.7.0+2
   mobx_codegen: ^1.0.3
   build_runner: ^1.9.0
   freezed: ^0.10.8
   json_serializable: ^3.2.5
   injectable_generator: ^0.3.5
+  flutter_application_id: "^1.0.0"
 
 flutter:
   uses-material-design: true

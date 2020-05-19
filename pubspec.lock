@@ -190,6 +190,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.1"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   firebase:
     dependency: transitive
     description:
@@ -197,6 +204,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.2.1"
+  firebase_analytics:
+    dependency: "direct main"
+    description:
+      name: firebase_analytics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.11"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -258,6 +272,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_application_id:
+    dependency: "direct dev"
+    description:
+      name: flutter_application_id
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -736,7 +757,7 @@ packages:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.2.1"
 sdks:
   dart: ">=2.8.0-dev.16.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"

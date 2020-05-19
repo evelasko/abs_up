@@ -1,4 +1,3 @@
-//: Base abstract class for Value Ojects
 import 'package:dartz/dartz.dart';
 import 'package:abs_up/domain/core/errors.dart';
 import 'package:abs_up/domain/core/value_validators.dart';
@@ -9,19 +8,17 @@ import 'failures.dart';
 
 @immutable
 abstract class ValueObject<T> {
-  /// Class fields
   Either<ValueFailure<T>, T> get value;
-
-  /// Constructor
   const ValueObject();
-
-  /// Helper methods
 
   /// Throws [UnexpectedValueError] containing the [ValueFailure]
   /// or returns the value
   T getOrCrash() => value.fold((failure) => throw UnexpectedValueError(failure),
       id // (r) => r , identity functor from dartz
       );
+
+  /// Validation bool
+  bool isValid() => value.isRight();
 
   /// Class overrides
   @override
@@ -36,7 +33,6 @@ abstract class ValueObject<T> {
   String toString() => 'Value($value)';
 }
 
-//: EmailAddress
 class EmailAddress extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
@@ -48,7 +44,6 @@ class EmailAddress extends ValueObject<String> {
   const EmailAddress._(this.value);
 }
 
-//: Password
 class Password extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;

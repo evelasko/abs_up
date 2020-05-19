@@ -7,33 +7,7 @@ part of 'failures.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$ValueFailure<T> {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result invalidEmail(@required String failedValue),
-    @required Result insecurePassword(@required String fieldValue),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result invalidEmail(@required String failedValue),
-    Result insecurePassword(@required String fieldValue),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result insecurePassword(InsecurePassword<T> value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result invalidEmail(InvalidEmail<T> value),
-    Result insecurePassword(InsecurePassword<T> value),
-    @required Result orElse(),
-  });
-}
+T _$identity<T>(T value) => value;
 
 class _$ValueFailureTearOff {
   const _$ValueFailureTearOff();
@@ -51,7 +25,76 @@ class _$ValueFailureTearOff {
   }
 }
 
+// ignore: unused_element
 const $ValueFailure = _$ValueFailureTearOff();
+
+mixin _$ValueFailure<T> {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result invalidEmail(String failedValue),
+    @required Result insecurePassword(String fieldValue),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result invalidEmail(String failedValue),
+    Result insecurePassword(String fieldValue),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result invalidEmail(InvalidEmail<T> value),
+    @required Result insecurePassword(InsecurePassword<T> value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result invalidEmail(InvalidEmail<T> value),
+    Result insecurePassword(InsecurePassword<T> value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $ValueFailureCopyWith<T, $Res> {
+  factory $ValueFailureCopyWith(
+          ValueFailure<T> value, $Res Function(ValueFailure<T>) then) =
+      _$ValueFailureCopyWithImpl<T, $Res>;
+}
+
+class _$ValueFailureCopyWithImpl<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  _$ValueFailureCopyWithImpl(this._value, this._then);
+
+  final ValueFailure<T> _value;
+  // ignore: unused_field
+  final $Res Function(ValueFailure<T>) _then;
+}
+
+abstract class $InvalidEmailCopyWith<T, $Res> {
+  factory $InvalidEmailCopyWith(
+          InvalidEmail<T> value, $Res Function(InvalidEmail<T>) then) =
+      _$InvalidEmailCopyWithImpl<T, $Res>;
+  $Res call({String failedValue});
+}
+
+class _$InvalidEmailCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $InvalidEmailCopyWith<T, $Res> {
+  _$InvalidEmailCopyWithImpl(
+      InvalidEmail<T> _value, $Res Function(InvalidEmail<T>) _then)
+      : super(_value, (v) => _then(v as InvalidEmail<T>));
+
+  @override
+  InvalidEmail<T> get _value => super._value as InvalidEmail<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(InvalidEmail<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as String,
+    ));
+  }
+}
 
 class _$InvalidEmail<T> implements InvalidEmail<T> {
   const _$InvalidEmail({@required this.failedValue})
@@ -79,20 +122,14 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
 
   @override
-  _$InvalidEmail<T> copyWith({
-    Object failedValue = freezed,
-  }) {
-    return _$InvalidEmail<T>(
-      failedValue:
-          failedValue == freezed ? this.failedValue : failedValue as String,
-    );
-  }
+  $InvalidEmailCopyWith<T, InvalidEmail<T>> get copyWith =>
+      _$InvalidEmailCopyWithImpl<T, InvalidEmail<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result invalidEmail(@required String failedValue),
-    @required Result insecurePassword(@required String fieldValue),
+    @required Result invalidEmail(String failedValue),
+    @required Result insecurePassword(String fieldValue),
   }) {
     assert(invalidEmail != null);
     assert(insecurePassword != null);
@@ -102,8 +139,8 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result invalidEmail(@required String failedValue),
-    Result insecurePassword(@required String fieldValue),
+    Result invalidEmail(String failedValue),
+    Result insecurePassword(String fieldValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -144,8 +181,35 @@ abstract class InvalidEmail<T> implements ValueFailure<T> {
       _$InvalidEmail<T>;
 
   String get failedValue;
+  $InvalidEmailCopyWith<T, InvalidEmail<T>> get copyWith;
+}
 
-  InvalidEmail<T> copyWith({String failedValue});
+abstract class $InsecurePasswordCopyWith<T, $Res> {
+  factory $InsecurePasswordCopyWith(
+          InsecurePassword<T> value, $Res Function(InsecurePassword<T>) then) =
+      _$InsecurePasswordCopyWithImpl<T, $Res>;
+  $Res call({String fieldValue});
+}
+
+class _$InsecurePasswordCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $InsecurePasswordCopyWith<T, $Res> {
+  _$InsecurePasswordCopyWithImpl(
+      InsecurePassword<T> _value, $Res Function(InsecurePassword<T>) _then)
+      : super(_value, (v) => _then(v as InsecurePassword<T>));
+
+  @override
+  InsecurePassword<T> get _value => super._value as InsecurePassword<T>;
+
+  @override
+  $Res call({
+    Object fieldValue = freezed,
+  }) {
+    return _then(InsecurePassword<T>(
+      fieldValue:
+          fieldValue == freezed ? _value.fieldValue : fieldValue as String,
+    ));
+  }
 }
 
 class _$InsecurePassword<T> implements InsecurePassword<T> {
@@ -174,20 +238,14 @@ class _$InsecurePassword<T> implements InsecurePassword<T> {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(fieldValue);
 
   @override
-  _$InsecurePassword<T> copyWith({
-    Object fieldValue = freezed,
-  }) {
-    return _$InsecurePassword<T>(
-      fieldValue:
-          fieldValue == freezed ? this.fieldValue : fieldValue as String,
-    );
-  }
+  $InsecurePasswordCopyWith<T, InsecurePassword<T>> get copyWith =>
+      _$InsecurePasswordCopyWithImpl<T, InsecurePassword<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result invalidEmail(@required String failedValue),
-    @required Result insecurePassword(@required String fieldValue),
+    @required Result invalidEmail(String failedValue),
+    @required Result insecurePassword(String fieldValue),
   }) {
     assert(invalidEmail != null);
     assert(insecurePassword != null);
@@ -197,8 +255,8 @@ class _$InsecurePassword<T> implements InsecurePassword<T> {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result invalidEmail(@required String failedValue),
-    Result insecurePassword(@required String fieldValue),
+    Result invalidEmail(String failedValue),
+    Result insecurePassword(String fieldValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -239,44 +297,7 @@ abstract class InsecurePassword<T> implements ValueFailure<T> {
       _$InsecurePassword<T>;
 
   String get fieldValue;
-
-  InsecurePassword<T> copyWith({String fieldValue});
-}
-
-mixin _$AuthFailure {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result cancelledByUser(),
-    @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result invalidCredentials(),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result cancelledByUser(),
-    Result serverError(),
-    Result emailAlreadyInUse(),
-    Result invalidCredentials(),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result cancelledByUser(CancelledByUser value),
-    @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result invalidCredentials(InvalidCredentials value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result cancelledByUser(CancelledByUser value),
-    Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result invalidCredentials(InvalidCredentials value),
-    @required Result orElse(),
-  });
+  $InsecurePasswordCopyWith<T, InsecurePassword<T>> get copyWith;
 }
 
 class _$AuthFailureTearOff {
@@ -299,7 +320,72 @@ class _$AuthFailureTearOff {
   }
 }
 
+// ignore: unused_element
 const $AuthFailure = _$AuthFailureTearOff();
+
+mixin _$AuthFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result cancelledByUser(),
+    @required Result serverError(),
+    @required Result emailAlreadyInUse(),
+    @required Result invalidCredentials(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result cancelledByUser(),
+    Result serverError(),
+    Result emailAlreadyInUse(),
+    Result invalidCredentials(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result cancelledByUser(CancelledByUser value),
+    @required Result serverError(ServerError value),
+    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
+    @required Result invalidCredentials(InvalidCredentials value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result cancelledByUser(CancelledByUser value),
+    Result serverError(ServerError value),
+    Result emailAlreadyInUse(EmailAlreadyInUse value),
+    Result invalidCredentials(InvalidCredentials value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $AuthFailureCopyWith<$Res> {
+  factory $AuthFailureCopyWith(
+          AuthFailure value, $Res Function(AuthFailure) then) =
+      _$AuthFailureCopyWithImpl<$Res>;
+}
+
+class _$AuthFailureCopyWithImpl<$Res> implements $AuthFailureCopyWith<$Res> {
+  _$AuthFailureCopyWithImpl(this._value, this._then);
+
+  final AuthFailure _value;
+  // ignore: unused_field
+  final $Res Function(AuthFailure) _then;
+}
+
+abstract class $CancelledByUserCopyWith<$Res> {
+  factory $CancelledByUserCopyWith(
+          CancelledByUser value, $Res Function(CancelledByUser) then) =
+      _$CancelledByUserCopyWithImpl<$Res>;
+}
+
+class _$CancelledByUserCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res>
+    implements $CancelledByUserCopyWith<$Res> {
+  _$CancelledByUserCopyWithImpl(
+      CancelledByUser _value, $Res Function(CancelledByUser) _then)
+      : super(_value, (v) => _then(v as CancelledByUser));
+
+  @override
+  CancelledByUser get _value => super._value as CancelledByUser;
+}
 
 class _$CancelledByUser implements CancelledByUser {
   const _$CancelledByUser();
@@ -382,6 +468,22 @@ class _$CancelledByUser implements CancelledByUser {
 
 abstract class CancelledByUser implements AuthFailure {
   const factory CancelledByUser() = _$CancelledByUser;
+}
+
+abstract class $ServerErrorCopyWith<$Res> {
+  factory $ServerErrorCopyWith(
+          ServerError value, $Res Function(ServerError) then) =
+      _$ServerErrorCopyWithImpl<$Res>;
+}
+
+class _$ServerErrorCopyWithImpl<$Res> extends _$AuthFailureCopyWithImpl<$Res>
+    implements $ServerErrorCopyWith<$Res> {
+  _$ServerErrorCopyWithImpl(
+      ServerError _value, $Res Function(ServerError) _then)
+      : super(_value, (v) => _then(v as ServerError));
+
+  @override
+  ServerError get _value => super._value as ServerError;
 }
 
 class _$ServerError implements ServerError {
@@ -467,6 +569,23 @@ abstract class ServerError implements AuthFailure {
   const factory ServerError() = _$ServerError;
 }
 
+abstract class $EmailAlreadyInUseCopyWith<$Res> {
+  factory $EmailAlreadyInUseCopyWith(
+          EmailAlreadyInUse value, $Res Function(EmailAlreadyInUse) then) =
+      _$EmailAlreadyInUseCopyWithImpl<$Res>;
+}
+
+class _$EmailAlreadyInUseCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res>
+    implements $EmailAlreadyInUseCopyWith<$Res> {
+  _$EmailAlreadyInUseCopyWithImpl(
+      EmailAlreadyInUse _value, $Res Function(EmailAlreadyInUse) _then)
+      : super(_value, (v) => _then(v as EmailAlreadyInUse));
+
+  @override
+  EmailAlreadyInUse get _value => super._value as EmailAlreadyInUse;
+}
+
 class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   const _$EmailAlreadyInUse();
 
@@ -548,6 +667,23 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
 
 abstract class EmailAlreadyInUse implements AuthFailure {
   const factory EmailAlreadyInUse() = _$EmailAlreadyInUse;
+}
+
+abstract class $InvalidCredentialsCopyWith<$Res> {
+  factory $InvalidCredentialsCopyWith(
+          InvalidCredentials value, $Res Function(InvalidCredentials) then) =
+      _$InvalidCredentialsCopyWithImpl<$Res>;
+}
+
+class _$InvalidCredentialsCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res>
+    implements $InvalidCredentialsCopyWith<$Res> {
+  _$InvalidCredentialsCopyWithImpl(
+      InvalidCredentials _value, $Res Function(InvalidCredentials) _then)
+      : super(_value, (v) => _then(v as InvalidCredentials));
+
+  @override
+  InvalidCredentials get _value => super._value as InvalidCredentials;
 }
 
 class _$InvalidCredentials implements InvalidCredentials {
