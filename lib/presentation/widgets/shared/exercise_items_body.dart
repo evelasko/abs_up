@@ -7,9 +7,9 @@ import '../../theme/text.dart';
 import 'wrappers.dart';
 
 Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
-    ? Icon(Icons.star, size: 13, color: Colors.limeAccent)
+    ? const Icon(Icons.star, size: 13, color: Colors.limeAccent)
     : tag == ExerciseTag.blacklisted.index
-        ? Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
+        ? const Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
         : Container();
 
 /// Renders Exercise List Item Body Content

@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   flutter_tts: ^1.0.0
+  font_awesome_flutter: ^8.8.1
 
   # Firebase Dependencies
   cloud_firestore: ^0.13.5
@@ -63,6 +64,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/app_images/
     - assets/data/exercises.json
     - assets/exercise_images/
     - assets/exercise_details/

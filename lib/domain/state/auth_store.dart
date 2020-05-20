@@ -41,6 +41,8 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> logInWithEmailAndPassword() async {
+    print('pressed login');
+
     _performActionOnAuthFacadeWithEmailAndPassword(
         authFacade.loginWithEmailAndPassword);
   }
@@ -59,13 +61,12 @@ abstract class _AuthStore with Store {
   /// Helpers
   void updateAuthFormState(AuthFormState newState) => authFormState = newState;
 
-  Stream<AuthFormState> _performActionOnAuthFacadeWithEmailAndPassword(
+  Future<void> _performActionOnAuthFacadeWithEmailAndPassword(
       Future<Either<AuthFailure, Unit>> Function(
               {@required EmailAddress emailAddress,
               @required Password password})
-          forwardedCall) async* {
+          forwardedCall) async {
     Either<AuthFailure, Unit> failureOrSuccess;
-
     final isEmailValid = authFormState.emailAddress.isValid();
     final isPasswordValid = authFormState.password.isValid();
     if (isEmailValid && isPasswordValid) {
@@ -76,6 +77,8 @@ abstract class _AuthStore with Store {
           emailAddress: authFormState.emailAddress,
           password: authFormState.password);
     }
+
+    print('updating authFormState');
 
     updateAuthFormState(authFormState.copyWith(
         isSubmitting: false,

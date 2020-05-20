@@ -1,4 +1,9 @@
+import 'package:abs_up/domain/state/auth_store.dart';
+import 'package:abs_up/infrastructure/firebase_auth_facade.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 import '../theme/colors.dart';
 import '../theme/icons.dart';
@@ -45,7 +50,11 @@ class _HomePageState extends State<HomePage> {
               color: AppColors.greyLight,
               onPressed: () => showDialog(
                   context: context,
-                  builder: (BuildContext context) => LoginDialog()))
+                  builder: (BuildContext context) => Provider(
+                        create: (_) => AuthStore(FirebaseAuthFacade(
+                            FirebaseAuth.instance, GoogleSignIn())),
+                        child: const LoginDialog(),
+                      )))
         ],
       ),
 
