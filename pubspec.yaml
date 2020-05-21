@@ -31,6 +31,7 @@ dependencies:
   google_sign_in: ^4.4.4
 
   uuid: ^2.0.4
+  flushbar: ^1.10.4
   fluro: ^1.6.3
   hive: 1.4.1+1
   hive_flutter: 0.3.0+2

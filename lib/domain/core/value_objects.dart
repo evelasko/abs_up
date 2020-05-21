@@ -3,6 +3,7 @@ import 'package:abs_up/domain/core/errors.dart';
 import 'package:abs_up/domain/core/value_validators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 import 'failures.dart';
 
@@ -53,4 +54,20 @@ class Password extends ValueObject<String> {
     return Password._(validatePassword(input));
   }
   const Password._(this.value);
+}
+
+class UniqueId extends ValueObject<String> {
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  factory UniqueId() {
+    return UniqueId._(right(Uuid().v4()));
+  }
+
+  factory UniqueId.fromUniqueString(String uniqueId) {
+    assert(uniqueId != null);
+    return UniqueId._(right(uniqueId));
+  }
+
+  const UniqueId._(this.value);
 }

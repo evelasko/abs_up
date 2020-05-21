@@ -41,8 +41,6 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> logInWithEmailAndPassword() async {
-    print('pressed login');
-
     _performActionOnAuthFacadeWithEmailAndPassword(
         authFacade.loginWithEmailAndPassword);
   }
@@ -77,9 +75,6 @@ abstract class _AuthStore with Store {
           emailAddress: authFormState.emailAddress,
           password: authFormState.password);
     }
-
-    print('updating authFormState');
-
     updateAuthFormState(authFormState.copyWith(
         isSubmitting: false,
         showErrorMessages: true,

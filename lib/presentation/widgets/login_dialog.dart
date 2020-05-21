@@ -1,7 +1,9 @@
 import 'package:abs_up/presentation/theme/colors.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/auth_store.dart';
@@ -44,6 +46,7 @@ class LoginDialog extends StatefulWidget {
 
 class _LoginDialogState extends State<LoginDialog> {
   AuthStore _authStore;
+  ReactionDisposer rDisposer;
 
   @override
   void didChangeDependencies() {
@@ -55,6 +58,22 @@ class _LoginDialogState extends State<LoginDialog> {
   @override
   Widget build(BuildContext context) {
     if (_authStore.authFormState == null) _authStore.initAuthForm();
+    rDisposer ??= when(
+        (_) => _authStore.authFormState.authFailureOrSuccessOption.fold(
+            () => false, (either) => either.fold((l) => true, (r) => false)),
+        () => _authStore.authFormState.authFailureOrSuccessOption.fold(
+            () => null,
+            (either) => either.fold(
+                (failure) => FlushbarHelper.createError(
+                        message: failure.map(
+                            cancelledByUser: (_) => 'Cancelled',
+                            serverError: (_) => 'Server Error',
+                            emailAlreadyInUse: (_) =>
+                                'Email address already in use',
+                            invalidCredentials: (_) =>
+                                'The combination of email and password is not valid'))
+                    .show(context),
+                (r) => null)));
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -73,6 +92,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Column(
                   children: [
+                    //= Login button
                     AppButtons.primaryActionButton(
                         onTap: () => _authStore.logInWithEmailAndPassword(),
                         text: 'Login'),
@@ -81,6 +101,7 @@ class _LoginDialogState extends State<LoginDialog> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            //= Register button
                             MaterialButton(
                               onPressed:
                                   _authStore.registerWithEmailAndPassword,
@@ -89,6 +110,7 @@ class _LoginDialogState extends State<LoginDialog> {
                                 style: TextStyle(fontSize: 18),
                               ),
                             ),
+                            //= Pasword reset button
                             MaterialButton(
                               onPressed: () {},
                               elevation: 0,
@@ -100,11 +122,14 @@ class _LoginDialogState extends State<LoginDialog> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          //= Sign in with Google
                           CircularIconButton(
                               onTap: _authStore.signInWithGooglePressed,
                               icon: FontAwesomeIcons.google),
+                          //= Sign in with Facebook
                           CircularIconButton(
                               onTap: () {}, icon: FontAwesomeIcons.facebookF),
+                          //= Sign in with Apple
                           CircularIconButton(
                               onTap: () {}, icon: FontAwesomeIcons.apple)
                         ]),
@@ -116,6 +141,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   SliverAppBar(
                     leading: Container(),
                     actions: [
+                      //= Close dialog button
                       IconButton(
                         icon: const Icon(Icons.close),
                         color: Colors.white,
@@ -136,6 +162,7 @@ class _LoginDialogState extends State<LoginDialog> {
                         autovalidate:
                             _authStore.authFormState.showErrorMessages,
                         child: Column(children: [
+                          //= Email text field
                           TextFormField(
                               style: const TextStyle(
                                   color: Colors.white,
@@ -156,6 +183,7 @@ class _LoginDialogState extends State<LoginDialog> {
                           const SizedBox(
                             height: 20,
                           ),
+                          //= Password text field
                           TextFormField(
                             style: const TextStyle(
                                 color: Colors.white,
