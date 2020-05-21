@@ -44,6 +44,7 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
             /// Sliver Search Bar
             SliverAppBar(
               pinned: searchString != null,
+              // ignore: avoid_redundant_argument_values
               leading: null,
               automaticallyImplyLeading: false,
               expandedHeight: 50.0,
@@ -62,13 +63,11 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
                 height: 30,
                 margin: const EdgeInsets.only(right: 30),
                 child: TextField(
-                  expands: false,
-                  maxLines: 1,
                   // TODO the search mechanismo is not working properly... consider changing the method that triggers the search
                   onChanged: _updateSearchString,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.search),
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(20.0),
                         ),

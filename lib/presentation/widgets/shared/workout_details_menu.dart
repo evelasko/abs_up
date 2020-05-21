@@ -1,4 +1,3 @@
-import 'package:abs_up/domain/repositories/data_values.dart';
 import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -16,14 +15,14 @@ class WorkoutDetailsMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCurrent = workoutKey == DataValues.currentWorkoutKey;
+    // final bool isCurrent = workoutKey == DataValues.currentWorkoutKey;
     // TODO disable buttons if the workout being shown is not the current flash workout
     return Container(
       width: double.infinity,
       height: 150,
-      decoration: const BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
-        BoxShadow(color: Colors.black45, offset: Offset(0, 0), blurRadius: 20)
-      ]),
+      decoration: const BoxDecoration(
+          color: AppColors.greyDarkest,
+          boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 20)]),
       child: Column(
         children: <Widget>[
           //= Menu Buttons

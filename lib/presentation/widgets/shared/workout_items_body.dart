@@ -8,9 +8,9 @@ import '../../theme/text.dart';
 import 'wrappers.dart';
 
 Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
-    ? Icon(Icons.star, size: 13, color: Colors.limeAccent)
+    ? const Icon(Icons.star, size: 13, color: Colors.limeAccent)
     : tag == ExerciseTag.blacklisted.index
-        ? Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
+        ? const Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
         : Container();
 
 /// Renders Workout Item Body Content
@@ -23,7 +23,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
             FluroRouter.getExerciseDetailsLink(
                 exerciseKey: workoutItem.exercise.key.toString())),
         child: Container(
-          padding: const EdgeInsets.only(left: 10, right: 0, top: 5, bottom: 5),
+          padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
           color: workoutItem.exercise.name == 'Rest'
               ? AppColors.greyLight
               : Colors.white,
@@ -46,7 +46,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
                   Center(
                       child: Text(
                     workoutItem.order.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         height: 1.05,
                         color: Colors.white60,
                         fontSize: 50,
@@ -89,8 +89,8 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
                               ),
                             ),
                             //= Duration Icon
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 4),
                               child: Icon(
                                 Icons.timer,
                                 color: AppColors.coquelicot,
@@ -122,7 +122,7 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
               Container(
                 width: 24,
                 margin: const EdgeInsets.only(right: 10),
-                child: Center(
+                child: const Center(
                     child: Icon(Icons.drag_handle, color: AppColors.greyDark)),
               )
             ],

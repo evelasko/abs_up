@@ -22,10 +22,10 @@ class _HomeBottomSheetWorkoutsettingsState
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 0, bottom: 20),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.only(bottom: 20),
+      decoration: const BoxDecoration(
           color: AppColors.greyLightest,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(
         children: <Widget>[
@@ -34,28 +34,28 @@ class _HomeBottomSheetWorkoutsettingsState
           Container(
             padding: const EdgeInsets.only(left: 15, right: 15),
             margin: const EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       color: AppColors.greyDark,
                     ),
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(top: 8, left: 0, bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     onPressed: () => Navigator.pop(context)),
                 Text('shuffle Workout Settings'.toUpperCase()),
                 IconButton(
-                    icon: Icon(Icons.settings_backup_restore,
+                    icon: const Icon(Icons.settings_backup_restore,
                         color: AppColors.greyDark),
                     alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(top: 8, left: 0, bottom: 8),
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
                     onPressed: () {})
               ],
             ),
@@ -123,7 +123,7 @@ class _HomeBottomSheetWorkoutsettingsState
                             )
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: AppColors.grey,
                         ),
 
@@ -144,7 +144,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                 ),
                                 IconButton(
                                     padding: EdgeInsets.zero,
-                                    icon: Icon(Icons.help,
+                                    icon: const Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
                                     constraints: BoxConstraints.tight(
                                         const Size(32, 32)),
@@ -170,7 +170,7 @@ class _HomeBottomSheetWorkoutsettingsState
                             )
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: AppColors.grey,
                         ),
 
@@ -191,7 +191,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                 ),
                                 IconButton(
                                     padding: EdgeInsets.zero,
-                                    icon: Icon(Icons.help,
+                                    icon: const Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
                                     constraints: BoxConstraints.tight(
                                         const Size(32, 32)),
@@ -217,7 +217,7 @@ class _HomeBottomSheetWorkoutsettingsState
                             )
                           ],
                         ),
-                        Divider(
+                        const Divider(
                           color: AppColors.grey,
                         ),
 
@@ -242,7 +242,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                     }),
                                 IconButton(
                                     padding: EdgeInsets.zero,
-                                    icon: Icon(Icons.help,
+                                    icon: const Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
                                     constraints: BoxConstraints.tight(
                                         const Size(32, 32)),
@@ -252,7 +252,7 @@ class _HomeBottomSheetWorkoutsettingsState
                           ],
                         ),
 
-                        Divider(
+                        const Divider(
                           color: AppColors.grey,
                         ),
 
@@ -273,7 +273,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                 ),
                                 IconButton(
                                     padding: EdgeInsets.zero,
-                                    icon: Icon(Icons.help,
+                                    icon: const Icon(Icons.help,
                                         size: 24, color: AppColors.grey),
                                     constraints: BoxConstraints.tight(
                                         const Size(32, 32)),

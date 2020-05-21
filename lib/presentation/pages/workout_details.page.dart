@@ -31,7 +31,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text(
+              title: const Text(
                 'Set Workout Name',
                 style: TextStyle(color: AppColors.greyDark),
               ),
@@ -67,25 +67,25 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       appBar: AppBar(
         title: Text(
           isCurrent ? 'Preview Workout' : workout?.name ?? 'Preview Workout',
-          style: TextStyle(
+          style: const TextStyle(
               color: AppColors.coquelicot, fontWeight: FontWeight.w800),
         ),
         actions: <Widget>[
-          // TODO implement saving the workout at preview window or update an already saved workout being previewed
           IconButton(
-              icon: Icon(
-                isCurrent ? Icons.save_alt : Icons.save,
-              ),
-              iconSize: 30,
-              padding: const EdgeInsets.only(top: 6),
-              onPressed: () => isCurrent
-                  ? createSaveCurrentWorkoutAsDialog(context).then((name) {
-                      if (name == null) return;
-                      IWorkoutFacade.saveCurrentWorkoutAs(name).then((value) =>
-                          workoutDetailsScaffoldKey.currentState
-                              .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
-                    })
-                  : print('update ${widget.workoutKey}'))
+            icon: Icon(
+              isCurrent ? Icons.save_alt : Icons.save,
+            ),
+            iconSize: 30,
+            padding: const EdgeInsets.only(top: 6),
+            onPressed: () => isCurrent
+                ? createSaveCurrentWorkoutAsDialog(context).then((name) {
+                    if (name == null) return;
+                    IWorkoutFacade.saveCurrentWorkoutAs(name).then((value) =>
+                        workoutDetailsScaffoldKey.currentState
+                            .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
+                  })
+                : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
+          )
         ],
       ),
       //= Workout Listenable

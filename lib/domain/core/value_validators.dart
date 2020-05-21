@@ -18,7 +18,7 @@ Either<ValueFailure<String>, String> validateEmailAddress(String input) {
 /// Password - Validation logic
 Either<ValueFailure<String>, String> validatePassword(String input) {
   const securePasswordRegEx =
-      r"""^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})""";
+      """^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})""";
   if (RegExp(securePasswordRegEx).hasMatch(input)) {
     return right(input);
   } else {

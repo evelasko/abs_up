@@ -20,12 +20,11 @@ class WorkoutDetailsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 0, left: 15, right: 15, bottom: 10),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
       height: 100,
-      decoration: BoxDecoration(color: AppColors.greyDarkest, boxShadow: [
-        BoxShadow(
-            color: Colors.black26, offset: const Offset(0, 0), blurRadius: 20)
-      ]),
+      decoration: const BoxDecoration(
+          color: AppColors.greyDarkest,
+          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 20)]),
       child: Column(
         children: <Widget>[
           Container(
@@ -48,12 +47,12 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     children: <Widget>[
                       //= Intensity
                       Text('intensity'.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
                       Text(averageIntensity.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w700))
@@ -63,7 +62,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                 Text(
                   //= Total duration
                   totalDuration,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
@@ -75,12 +74,12 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     children: <Widget>[
                       //= Difficulty
                       Text('difficulty'.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
                       Text(averageDifficulty.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w700))

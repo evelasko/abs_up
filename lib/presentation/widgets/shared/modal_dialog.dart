@@ -28,14 +28,15 @@ class AbsAppModalDialog extends StatelessWidget {
         // margin: const EdgeInsets.symmetric(vertical: 10),
         height: double.infinity,
         width: double.infinity,
-        decoration: decoration ?? BoxDecoration(color: Colors.transparent),
+        decoration:
+            decoration ?? const BoxDecoration(color: Colors.transparent),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // = Header and Message
             Column(
               children: <Widget>[
-                Icon(
+                const Icon(
                   AbsAppIcons.logo_fill,
                   size: 70,
                   color: AppColors.greyLightest,
@@ -43,7 +44,7 @@ class AbsAppModalDialog extends StatelessWidget {
                 const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
                 Text(title,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 38,
                         color: Colors.white,
                         fontWeight: FontWeight.w900)),
@@ -56,7 +57,8 @@ class AbsAppModalDialog extends StatelessWidget {
             Column(
               children: <Widget>[
                 for (final button in buttons)
-                  Container(margin: EdgeInsets.only(bottom: 20), child: button)
+                  Container(
+                      margin: const EdgeInsets.only(bottom: 20), child: button)
               ],
             )
           ],

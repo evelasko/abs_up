@@ -26,8 +26,8 @@ class HomeSectionWorkoutsettings extends StatelessWidget {
               builder: (context) => HomeBottomSheetWorkoutsettings(),
             );
 
-            sheetController.closed
-                .then((value) => print('sheet has closed: $value'));
+            // TODO implement workout settings' bottom sheet closing
+            sheetController.closed.then((_) => {});
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),

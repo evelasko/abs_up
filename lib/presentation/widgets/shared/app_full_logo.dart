@@ -13,12 +13,12 @@ class AppFullLogo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             AbsAppIcons.logo_fill,
             color: Colors.white54,
             size: 64,
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           RichText(

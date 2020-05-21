@@ -23,7 +23,7 @@ class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
       .get(DataValues.currentWorkoutKey)
       .removeItem(widget.workoutItem)
       // TODO show snackbar when deletting a saved workout item
-      .then((_) => print('show snackbar'));
+      .then((_) => {});
 
   @override
   Widget build(BuildContext context) => Dismissible(

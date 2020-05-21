@@ -105,8 +105,7 @@ class DrawerMenuItem extends StatelessWidget {
         width: double.infinity,
         height: 70,
         decoration: const BoxDecoration(
-            border:
-                Border(bottom: BorderSide(color: AppColors.grey, width: 1))),
+            border: Border(bottom: BorderSide(color: AppColors.grey))),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Text(title,
             style:

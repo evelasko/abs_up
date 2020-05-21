@@ -2,8 +2,8 @@ import 'package:abs_up/presentation/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-TextTheme textTheme() => TextTheme(
-    headline1: const TextStyle(color: AppColors.coquelicot),
+TextTheme textTheme() => const TextTheme(
+    headline1: TextStyle(color: AppColors.coquelicot),
     headline2: TextStyle(color: Colors.pink),
     headline3: TextStyle(color: Colors.purple),
     headline4: TextStyle(color: Colors.green),

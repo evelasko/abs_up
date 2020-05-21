@@ -56,9 +56,8 @@ class ExerciseDetailsContent extends StatelessWidget {
 }
 
 Widget dataRow(String label, String value) => Container(
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(width: 1, color: AppColors.greyLight))),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: AppColors.greyLight))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[Text(label.toUpperCase()), Text(value)],

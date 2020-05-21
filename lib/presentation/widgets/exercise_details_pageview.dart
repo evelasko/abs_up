@@ -16,9 +16,9 @@ class ExerciseDetailsPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 50),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(
         children: <Widget>[
@@ -27,7 +27,7 @@ class ExerciseDetailsPageView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: AppColors.greyDark,
                   ),
@@ -40,7 +40,8 @@ class ExerciseDetailsPageView extends StatelessWidget {
                     style: AppTextStyles.listItemTitle),
               ),
               IconButton(
-                  icon: Icon(Icons.filter_none, color: AppColors.greyDark),
+                  icon:
+                      const Icon(Icons.filter_none, color: AppColors.greyDark),
                   onPressed: () => pageController.nextPage(
                       duration: const Duration(milliseconds: 100),
                       curve: Curves.ease))

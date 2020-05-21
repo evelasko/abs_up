@@ -25,19 +25,16 @@ class ISpeechFacade implements AISpeechFacade {
     _getLanguages();
 
     _flutterTts.setStartHandler(() {
-      print("playing");
       speechState = SpeechState.playing;
       if (startHandler != null) startHandler();
     });
 
     _flutterTts.setCompletionHandler(() {
-      print("complete");
       speechState = SpeechState.stopped;
       if (completionHandler != null) completionHandler();
     });
 
     _flutterTts.setErrorHandler((msg) {
-      print("error: $msg");
       speechState = SpeechState.stopped;
       if (errorHandler != null) errorHandler();
     });

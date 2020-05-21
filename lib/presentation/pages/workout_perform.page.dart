@@ -201,7 +201,7 @@ class WorkoutPerformGeneralIndicator extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          margin: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 0),
+          margin: const EdgeInsets.only(left: 20, right: 20),
           height: 10,
           child: Row(
             children: [
@@ -230,11 +230,11 @@ class WorkoutPerformGeneralIndicator extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('total time remaining'.toUpperCase(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: AppColors.grey, fontWeight: FontWeight.w600)),
                 Text(
                   timeRemainingString,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: AppColors.greyLight, fontWeight: FontWeight.w800),
                 )
               ],

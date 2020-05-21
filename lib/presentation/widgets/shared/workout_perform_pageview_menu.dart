@@ -36,10 +36,10 @@ class WorkoutPerformPageViewMenu extends StatelessWidget {
             text: 'shuffle',
             buttonType: ButtonTypes.secondary),
         AppButtons.boxedSmallIconButton(
-            onTap: skipToNext,
-            icon: Icons.skip_next,
-            text: 'skip',
-            buttonType: ButtonTypes.primary)
+          onTap: skipToNext,
+          icon: Icons.skip_next,
+          text: 'skip',
+        )
       ],
     );
   }

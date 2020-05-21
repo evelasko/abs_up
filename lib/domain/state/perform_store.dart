@@ -180,7 +180,7 @@ abstract class _PerformStore with Store {
       // = start presentation speech catching completion to follow with countdown if current item is not rest
       speechFacade.completionHandler = () => currentItem.exercise.name == 'Rest'
           ? currentItemStatus = WorkoutItemStatus.ready
-          : countdownCurrentItem(seconds: 3);
+          : countdownCurrentItem();
       _speechFuture = ObservableFuture(speechFacade.speak(
           '${currentItem.exercise.name} for $minutes $joint $seconds, $finale'));
       await _speechFuture;
@@ -248,7 +248,7 @@ abstract class _PerformStore with Store {
     final Workout workoutBlueprint =
         IHiveFacade.workoutsBox.get(sourceWorkoutKey);
 
-    overallDuration = const Duration(seconds: 0);
+    overallDuration = const Duration();
     for (final item in workoutBlueprint.items) {
       overallDuration += Duration(seconds: item.duration);
     }

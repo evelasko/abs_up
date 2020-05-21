@@ -19,7 +19,7 @@ class ExercisePage extends StatelessWidget {
             title: Text('Exercises'.toUpperCase(),
                 style: const TextStyle(letterSpacing: 1)),
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.filter_list), onPressed: () {})
+              IconButton(icon: const Icon(Icons.filter_list), onPressed: () {})
             ],
             bottom: TabBar(
               tabs: <Widget>[

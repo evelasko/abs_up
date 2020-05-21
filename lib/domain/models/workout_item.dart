@@ -36,7 +36,6 @@ class WorkoutItem extends HiveObject {
         o.progress == progress;
   }
 
-  @override
   WorkoutItem copyWith(
           {Exercise exercise,
           int order,

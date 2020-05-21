@@ -29,7 +29,7 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
                 text: workoutItem.exercise.name,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'Montserrat',
                     color: AppColors.greyDarkest,
                     fontSize: 24,
@@ -86,9 +86,9 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(right: 2),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: AppColors.greyLightest,
-                      borderRadius: const BorderRadius.only(
+                      borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           bottomLeft: Radius.circular(10))),
                   child: Center(
@@ -102,13 +102,13 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(right: 2, left: 2),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.greyLightest,
                   ),
                   child: Center(
                     child: Text(
                       progress.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 42,
                           color: AppColors.greyDark,
                           fontWeight: FontWeight.w900,
@@ -121,12 +121,12 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(left: 2),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: AppColors.greyLightest,
-                      borderRadius: const BorderRadius.only(
+                      borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10))),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       '1/1',
                       style: TextStyle(

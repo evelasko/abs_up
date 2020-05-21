@@ -57,7 +57,7 @@ class AppButtons {
               constraints:
                   const BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
               alignment: Alignment.center,
-              child: Text(
+              child: const Text(
                 "Login",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white),
@@ -145,7 +145,7 @@ class AppButtons {
                   text != null
                       ? Text(text.toUpperCase(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white, fontWeight: FontWeight.w600))
                       : Container(
                           width: 0,
@@ -234,7 +234,7 @@ class AppButtons {
           IconData icon,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
       Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         child: GestureDetector(
           onTap: onTap,
           child: SizedBox(
@@ -280,7 +280,7 @@ class AppButtons {
           IconData icon,
           ButtonTypes buttonType = ButtonTypes.primary}) =>
       Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
         child: GestureDetector(
           onTap: onTap,
           child: SizedBox(

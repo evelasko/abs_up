@@ -42,7 +42,7 @@ class Workout extends HiveObject {
 
   /// Getters
   Duration get totalDuration {
-    Duration totalDuration = const Duration(seconds: 0);
+    Duration totalDuration = const Duration();
     for (final item in items) {
       totalDuration += Duration(seconds: item.duration);
     }

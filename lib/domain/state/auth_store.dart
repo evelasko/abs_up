@@ -56,6 +56,7 @@ abstract class _AuthStore with Store {
         authFailureOrSuccessOption: some(failureOrSuccess)));
   }
 
+  // ignore: use_setters_to_change_properties
   /// Helpers
   void updateAuthFormState(AuthFormState newState) => authFormState = newState;
 

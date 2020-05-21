@@ -73,7 +73,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
     // in the exercises list, then the dissmissible performs the action
     // without dissmising the item from the list
     final isDismissable =
-        widget.key.toString().contains(RegExp(r'favoritesList|blacklistList'));
+        widget.key.toString().contains(RegExp('favoritesList|blacklistList'));
     switch (widget.exercise.tag) {
 
       /// Favorite Exercise Item
