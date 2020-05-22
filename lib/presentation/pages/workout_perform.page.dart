@@ -3,11 +3,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants.dart';
 import '../../domain/models/workout_item.dart';
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_speech_facade.dart';
 import '../../domain/state/perform_store.dart';
-import '../theme/colors.dart';
+import '../../services/speech.s.dart';
+import '../theme/colors.t.dart';
 import '../widgets/shared/buttons.dart';
 import '../widgets/shared/modal_dialog.dart';
 import '../widgets/workout_item_perform_pageview.dart';
@@ -22,7 +22,7 @@ class WorkoutPerformPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Provider(
-        create: (_) => PerformStore(ISpeechFacade()),
+        create: (_) => PerformStore(SpeechService()),
         child: WorkoutPerformLayout(sourceWorkoutKey),
       );
 }
@@ -79,8 +79,8 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
                       text: 'Home',
                       icon: Icons.home,
                       onTap: () => _performStore.saveWorkoutLogEntry().then(
-                          (value) => Navigator.popAndPushNamed(
-                              context, DataValues.homeLink))),
+                          (value) =>
+                              Navigator.popAndPushNamed(context, HOME_LINK))),
                   AppButtons.secondaryActionButton(
                       buttonType: ButtonTypes.secondary,
                       text: 'Share progress',
@@ -88,8 +88,7 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
                       onTap: () =>
                           _performStore.saveWorkoutLogEntry().then((value) {
                             // TODO implement sharing progress when finishing workout
-                            Navigator.popAndPushNamed(
-                                context, DataValues.homeLink);
+                            Navigator.popAndPushNamed(context, HOME_LINK);
                           }))
                 ],
               ))) ??

@@ -1,23 +1,23 @@
+import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import 'domain/repositories/data_values.dart';
 import 'presentation/router/routes.dart';
-import 'presentation/theme/theme.dart';
+import 'presentation/theme/theme.t.dart';
 
-class AbsApp extends StatefulWidget {
+class AbsUp extends StatefulWidget {
   @override
-  _AbsAppState createState() => _AbsAppState();
+  _AbsUpState createState() => _AbsUpState();
 }
 
-class _AbsAppState extends State<AbsApp> {
+class _AbsUpState extends State<AbsUp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AbsApp Data Setup',
       theme: appTheme(),
       onGenerateRoute: FluroRouter.router.generator,
-      initialRoute: DataValues.homeLink,
+      initialRoute: HOME_LINK,
     );
   }
 

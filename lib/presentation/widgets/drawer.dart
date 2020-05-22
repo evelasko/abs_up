@@ -1,6 +1,6 @@
-import 'package:abs_up/domain/repositories/data_values.dart';
-import 'package:abs_up/presentation/theme/colors.dart';
-import 'package:abs_up/presentation/theme/icons.dart';
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/presentation/theme/colors.t.dart';
+import 'package:abs_up/presentation/theme/icons.t.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -38,20 +38,16 @@ class AppDrawer extends StatelessWidget {
             children: [
               DrawerMenuItem(
                   title: 'Settings',
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(DataValues.settingsLink)),
+                  onTap: () => Navigator.of(context).pushNamed(SETTINGS_LINK)),
               DrawerMenuItem(
                   title: 'About',
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(DataValues.aboutLink)),
+                  onTap: () => Navigator.of(context).pushNamed(ABOUT_LINK)),
               DrawerMenuItem(
                   title: 'Feedback - Contact',
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(DataValues.feedbackLink)),
+                  onTap: () => Navigator.of(context).pushNamed(FEEDBACK_LINK)),
               DrawerMenuItem(
                   title: 'Help - Support',
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(DataValues.supportLink))
+                  onTap: () => Navigator.of(context).pushNamed(SUPPORT_LINK))
             ],
           ),
           Column(

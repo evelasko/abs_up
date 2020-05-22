@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 // ignore_for_file: avoid_redundant_argument_values
-import 'package:abs_up/domain/repositories/data_values.dart';
+
+import 'package:abs_up/constants.dart';
 import 'package:flutter/widgets.dart';
 
 class AbsAppIcons {
@@ -10,27 +11,27 @@ class AbsAppIcons {
   static const String _kFontPkg = null;
 
   static const Map<String, IconData> equipment = {
-    DataValues.equipmentNoneKey: none,
-    DataValues.equipmentBarbellKey: barbell,
-    DataValues.equipmentPhysioBallKey: physio_ball,
-    DataValues.equipmentCableKey: cable,
-    DataValues.equipmentDumbbellKey: dumbbell,
-    DataValues.equipmentPartnerKey: partner,
-    DataValues.equipmentHungingBarKey: hunging_bar,
-    DataValues.equipmentSmallBallKey: small_ball,
-    DataValues.equipmentElasticBandKey: elastic_band
+    EQUIPMENT_NONE_KEY: none,
+    EQUIPMENT_BARBELL_KEY: barbell,
+    EQUIPMENT_PHYSIO_BALL_KEY: physio_ball,
+    EQUIPMENT_CABLE_KEY: cable,
+    EQUIPMENT_DUMBBELL_KEY: dumbbell,
+    EQUIPMENT_PARTNER_KEY: partner,
+    EQUIPMENT_HUNGING_BAR_KEY: hunging_bar,
+    EQUIPMENT_SMALL_BALL_KEY: small_ball,
+    EQUIPMENT_ELASTIC_BAND_KEY: elastic_band
   };
 
   static const Map<String, IconData> equipmentIcons = {
-    DataValues.equipmentNoneKey: none,
-    DataValues.equipmentBarbellKey: barbell,
-    DataValues.equipmentPhysioBallKey: physio_ball,
-    DataValues.equipmentCableKey: cable,
-    DataValues.equipmentDumbbellKey: dumbbell,
-    DataValues.equipmentPartnerKey: partner,
-    DataValues.equipmentHungingBarKey: hunging_bar,
-    DataValues.equipmentSmallBallKey: small_ball,
-    DataValues.equipmentElasticBandKey: elastic_band
+    EQUIPMENT_NONE_KEY: none,
+    EQUIPMENT_BARBELL_KEY: barbell,
+    EQUIPMENT_PHYSIO_BALL_KEY: physio_ball,
+    EQUIPMENT_CABLE_KEY: cable,
+    EQUIPMENT_DUMBBELL_KEY: dumbbell,
+    EQUIPMENT_PARTNER_KEY: partner,
+    EQUIPMENT_HUNGING_BAR_KEY: hunging_bar,
+    EQUIPMENT_SMALL_BALL_KEY: small_ball,
+    EQUIPMENT_ELASTIC_BAND_KEY: elastic_band
   };
 
   static const IconData barbell =

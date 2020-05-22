@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
-import '../../theme/icons.dart';
+import '../../theme/colors.t.dart';
+import '../../theme/icons.t.dart';
 
 class AbsAppModalDialog extends StatelessWidget {
   final String title;

@@ -1,4 +1,4 @@
-import 'package:abs_up/domain/repositories/data_values.dart';
+import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../router/routes.dart';
@@ -12,16 +12,14 @@ class MenuHomeSection extends StatelessWidget {
       children: <Widget>[
         /// Exercise List
         AppButtons.homePageButton(
-            onTap: () =>
-                Navigator.pushNamed(context, DataValues.exercisesListLink),
+            onTap: () => Navigator.pushNamed(context, EXERCISES_LIST_LINK),
             icon: Icons.local_library,
             text: 'exercises',
             buttonSide: ButtonSide.left),
 
         /// Workout List
         AppButtons.homePageButton(
-            onTap: () =>
-                Navigator.pushNamed(context, DataValues.workoutListLink),
+            onTap: () => Navigator.pushNamed(context, WORKOUT_LIST_LINK),
             icon: Icons.import_contacts,
             text: 'workouts',
             buttonSide: ButtonSide.center),

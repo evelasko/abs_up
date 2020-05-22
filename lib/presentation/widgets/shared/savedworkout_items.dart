@@ -2,8 +2,8 @@ import 'package:abs_up/domain/models/workout.dart';
 import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
-import '../../theme/text.dart';
+import '../../theme/colors.t.dart';
+import '../../theme/text.t.dart';
 import 'equipment_row.dart';
 import 'wrappers.dart';
 

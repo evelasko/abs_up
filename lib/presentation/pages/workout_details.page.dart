@@ -1,14 +1,9 @@
-import 'package:abs_up/domain/models/workout_settings.dart';
-import 'package:abs_up/domain/repositories/i_workout_facade.dart';
-import 'package:abs_up/presentation/widgets/shared/snackbars.dart';
+import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../domain/models/workout.dart';
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_hive_facade.dart';
-import '../theme/colors.dart';
+import '../../services/workout.s.dart';
+import '../theme/colors.t.dart';
+import '../widgets/shared/snackbars.dart';
 import '../widgets/shared/workout_details_menu.dart';
 import '../widgets/shared/workout_details_panel.dart';
 import '../widgets/shared/workout_items.dart';
@@ -58,15 +53,18 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Workout workout = IHiveFacade.workoutsBox
-        .get(widget.workoutKey ?? DataValues.currentWorkoutKey);
-    final bool isCurrent = widget.workoutKey == DataValues.currentWorkoutKey;
+    // TODO the statement below should be done by the WorkoutService
+    final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
 
+    final WorkoutService workoutService =
+        WorkoutService(workoutKey: widget.workoutKey);
     return Scaffold(
       key: workoutDetailsScaffoldKey,
       appBar: AppBar(
         title: Text(
-          isCurrent ? 'Preview Workout' : workout?.name ?? 'Preview Workout',
+          isCurrent
+              ? 'Preview Workout'
+              : workoutService.currentWorkout.name ?? 'Preview Workout',
           style: const TextStyle(
               color: AppColors.coquelicot, fontWeight: FontWeight.w800),
         ),
@@ -80,7 +78,7 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
             onPressed: () => isCurrent
                 ? createSaveCurrentWorkoutAsDialog(context).then((name) {
                     if (name == null) return;
-                    IWorkoutFacade.saveCurrentWorkoutAs(name).then((value) =>
+                    workoutService.saveCurrentWorkoutAs(name).then((value) =>
                         workoutDetailsScaffoldKey.currentState
                             .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
                   })
@@ -90,38 +88,36 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
       ),
       //= Workout Listenable
       body: ValueListenableBuilder(
-          valueListenable: IHiveFacade.workoutsBox.listenable(
-              keys: [widget.workoutKey ?? DataValues.currentWorkoutKey]),
-          builder: (context, Box<Workout> box, _) {
-            final Workout currentWorkout =
-                box.get(widget.workoutKey ?? DataValues.currentWorkoutKey);
-            final WorkoutSettings workoutSettings = IWorkoutFacade.settings;
-
-            return Column(
-              children: <Widget>[
-                //= Workout Details Panel
-                WorkoutDetailsPanel(
-                  activeEquipment: currentWorkout.equipmentTotal,
-                  averageDifficulty: workoutSettings.difficultyString,
-                  averageIntensity: workoutSettings.intensityString,
-                  totalDuration: currentWorkout.totalDurationString,
-                ),
-                //= Workout Reorderable Items List
-                Expanded(
-                    child: ReorderableListView(
-                  onReorder: (oldIndex, newIndex) async =>
-                      currentWorkout.reorderItems(oldIndex, newIndex),
-                  children: currentWorkout.items
-                      .map((item) => WorkoutItemWidget(
-                          key: Key('workoutItem:${item.exercise.key}'),
-                          workoutItem: item))
-                      .toList(),
-                )),
-                //= Menu Buttons
-                const WorkoutDetailsMenu()
-              ],
-            );
-          }),
+          valueListenable: workoutService.listenable,
+          builder: (_, __, ___) => Column(
+                children: <Widget>[
+                  //= Workout Details Panel
+                  WorkoutDetailsPanel(
+                    activeEquipment:
+                        workoutService.currentWorkout.equipmentTotal,
+                    averageDifficulty:
+                        workoutService.workoutSettings.difficultyString,
+                    averageIntensity:
+                        workoutService.workoutSettings.intensityString,
+                    totalDuration:
+                        workoutService.currentWorkout.totalDurationString,
+                  ),
+                  //= Workout Reorderable Items List
+                  Expanded(
+                      child: ReorderableListView(
+                    onReorder: (oldIndex, newIndex) async => workoutService
+                        .currentWorkout
+                        .reorderItems(oldIndex, newIndex),
+                    children: workoutService.currentWorkout.items
+                        .map((item) => WorkoutItemWidget(
+                            key: Key('workoutItem:${item.exercise.key}'),
+                            workoutItem: item))
+                        .toList(),
+                  )),
+                  //= Menu Buttons
+                  const WorkoutDetailsMenu()
+                ],
+              )),
     );
   }
 }

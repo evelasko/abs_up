@@ -1,8 +1,8 @@
-import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/repositories/i_workout_facade.dart';
-import '../../theme/colors.dart';
+import '../../../services/workout.s.dart';
+import '../../router/routes.dart';
+import '../../theme/colors.t.dart';
 import '../home_bottomsheet_workoutsettings.dart';
 import 'buttons.dart';
 
@@ -15,7 +15,8 @@ class WorkoutDetailsMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bool isCurrent = workoutKey == DataValues.currentWorkoutKey;
+    final WorkoutService workoutService = WorkoutService();
+    // final bool isCurrent = workoutKey == CURRENT_WORKOUT_KEY;
     // TODO disable buttons if the workout being shown is not the current flash workout
     return Container(
       width: double.infinity,
@@ -34,7 +35,7 @@ class WorkoutDetailsMenu extends StatelessWidget {
                 IconButton(
                     icon: const Icon(Icons.shuffle),
                     color: AppColors.greyLight,
-                    onPressed: () => IWorkoutFacade.generateCurrentWorkout()),
+                    onPressed: workoutService.generateCurrentWorkout),
                 IconButton(
                     icon: const Icon(Icons.tune),
                     color: AppColors.greyLight,
@@ -46,7 +47,7 @@ class WorkoutDetailsMenu extends StatelessWidget {
                       );
 
                       sheetController.closed.then(
-                          (value) => IWorkoutFacade.generateCurrentWorkout());
+                          (value) => workoutService.generateCurrentWorkout());
                     }),
                 IconButton(
                     icon: const Icon(Icons.add_circle_outline),

@@ -6,7 +6,7 @@ import 'package:abs_up/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/repositories/data_values.dart';
+import '../../constants.dart';
 import '../pages/exercise_details.page.dart';
 import '../pages/exercises.page.dart';
 import '../pages/home.page.dart';
@@ -29,8 +29,7 @@ class FluroRouter {
           ExercisePage());
 
   //= Exercise Details
-  static const exerciseDetailsLink =
-      '${DataValues.exerciseDetailsLink}:exerciseKey';
+  static const exerciseDetailsLink = '$EXERCISE_DETAILS_LINK:exerciseKey';
   static String getExerciseDetailsLink({String exerciseKey}) =>
       exerciseDetailsLink.replaceFirst(':exerciseKey', exerciseKey);
   static final Handler _exerciseDetails = Handler(
@@ -43,8 +42,7 @@ class FluroRouter {
           WorkoutListPage());
 
   //= Workout Details
-  static const workoutDetailsLink =
-      '${DataValues.workoutDetailsLink}:workoutKey';
+  static const workoutDetailsLink = '$WORKOUT_DETAILS_LINK:workoutKey';
   static String getWorkoutDetailsLink({String workoutKey}) =>
       workoutDetailsLink.replaceFirst(':workoutKey', workoutKey);
   static final Handler _workoutDetails = Handler(
@@ -52,10 +50,9 @@ class FluroRouter {
           WorkoutDetailsPage(params['workoutKey'][0].toString()));
 
   //= Workout Perform
-  static const workoutPerformLink =
-      '${DataValues.workoutPerformLink}:sourceWorkoutKey';
+  static const workoutPerformLink = '$WORKOUT_PERFORM_LINK:sourceWorkoutKey';
   static String getWorkoutPerformLink(
-          {String sourceWorkoutKey = DataValues.currentWorkoutKey}) =>
+          {String sourceWorkoutKey = CURRENT_WORKOUT_KEY}) =>
       workoutPerformLink.replaceFirst(':sourceWorkoutKey', sourceWorkoutKey);
   static final Handler _workoutPerform = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
@@ -91,15 +88,15 @@ class FluroRouter {
   static void setupRouter() {
     //= Home
     router.define('/', handler: _home);
-    router.define(DataValues.homeLink, handler: _home);
+    router.define(HOME_LINK, handler: _home);
     //= Exercises List
-    router.define(DataValues.exercisesListLink,
+    router.define(EXERCISES_LIST_LINK,
         handler: _exerciseList, transitionType: TransitionType.inFromRight);
     //= Exercise Details
     router.define(exerciseDetailsLink,
         handler: _exerciseDetails, transitionType: TransitionType.inFromBottom);
     //= Workout List
-    router.define(DataValues.workoutListLink,
+    router.define(WORKOUT_LIST_LINK,
         handler: _workoutList, transitionType: TransitionType.inFromRight);
     //= Workout Details
     router.define(workoutDetailsLink,
@@ -108,19 +105,19 @@ class FluroRouter {
     router.define(workoutPerformLink,
         handler: _workoutPerform, transitionType: TransitionType.inFromRight);
     //= Workout Logs
-    router.define(DataValues.workoutLogsLink,
+    router.define(WORKOUT_LOGS_LINK,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);
     //= Settings
-    router.define(DataValues.settingsLink,
+    router.define(SETTINGS_LINK,
         handler: _settings, transitionType: TransitionType.inFromRight);
     //= About
-    router.define(DataValues.aboutLink,
+    router.define(ABOUT_LINK,
         handler: _about, transitionType: TransitionType.inFromRight);
     //= Feedback
-    router.define(DataValues.feedbackLink,
+    router.define(FEEDBACK_LINK,
         handler: _feedback, transitionType: TransitionType.inFromRight);
     //= Support
-    router.define(DataValues.supportLink,
+    router.define(SUPPORT_LINK,
         handler: _support, transitionType: TransitionType.inFromRight);
   }
 }

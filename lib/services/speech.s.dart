@@ -1,13 +1,7 @@
+import 'package:abs_up/domain/interfaces/speech.i.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-enum SpeechState { playing, stopped }
-
-abstract class AISpeechFacade {
-  Future<void> speak(String textToSpeak);
-  Future<void> stop();
-}
-
-class ISpeechFacade implements AISpeechFacade {
+class SpeechService implements SpeechInterface {
   FlutterTts _flutterTts;
   dynamic languages;
   String language;
@@ -19,7 +13,7 @@ class ISpeechFacade implements AISpeechFacade {
   void Function() completionHandler;
   void Function() errorHandler;
 
-  ISpeechFacade() {
+  SpeechService() {
     _flutterTts = FlutterTts();
 
     _getLanguages();

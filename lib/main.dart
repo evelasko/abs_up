@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import 'app.dart';
-import 'domain/repositories/i_application_facade.dart';
-import 'domain/repositories/i_hive_facade.dart';
 import 'injection.dart';
 import 'presentation/router/routes.dart';
+import 'services/app.s.dart';
+import 'services/p_data.s.dart';
 
 // ignore: avoid_void_async
 void main() async {
@@ -15,13 +15,13 @@ void main() async {
   configureInjection(Environment.prod);
 
   // = init Hive
-  IHiveFacade.initHive();
+  await PDataService.initHive();
 
   // = init Fluro Routes
   FluroRouter.setupRouter();
 
   // = init Application
-  await IApplicationFacade().initApplication();
+  await ApplicationServices().initApplication();
   // = run App
-  runApp(AbsApp());
+  runApp(AbsUp());
 }

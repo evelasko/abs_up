@@ -1,6 +1,6 @@
 import 'package:abs_up/domain/core/failures.dart';
 import 'package:abs_up/domain/core/value_objects.dart';
-import 'package:abs_up/domain/repositories/i_auth_facade.dart';
+import 'package:abs_up/domain/interfaces/auth.i.dart';
 import 'package:abs_up/domain/state/auth_form_states.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -11,11 +11,11 @@ part 'auth_store.g.dart';
 
 @injectable
 class AuthStore extends _AuthStore with _$AuthStore {
-  AuthStore(IAuthFacade authFacade) : super(authFacade);
+  AuthStore(AuthInterface authFacade) : super(authFacade);
 }
 
 abstract class _AuthStore with Store {
-  final IAuthFacade authFacade;
+  final AuthInterface authFacade;
   _AuthStore(this.authFacade);
 
   @observable

@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/domain/repositories/i_speech_facade.dart';
-import 'package:abs_up/domain/repositories/i_workout_facade.dart';
+import 'package:abs_up/services/p_data.s.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../services/speech.s.dart';
+import '../../services/workout.s.dart';
+import '../interfaces/speech.i.dart';
+import '../models/exercise.dart';
 import '../models/workout.dart';
 import '../models/workout_item.dart';
-import '../repositories/i_hive_facade.dart';
 
 part 'perform_store.g.dart';
 
@@ -23,12 +24,14 @@ enum WorkoutItemStatus {
 enum PerformState { loading, initial, presenting, started, paused }
 
 class PerformStore extends _PerformStore with _$PerformStore {
-  PerformStore(ISpeechFacade speechFacade) : super(speechFacade);
+  PerformStore(SpeechService speechFacade) : super(speechFacade);
 }
 
 abstract class _PerformStore with Store {
-  final ISpeechFacade speechFacade;
+  final SpeechService speechFacade;
   _PerformStore(this.speechFacade);
+
+  final WorkoutService workoutService = WorkoutService();
 
   @observable
   String sourceWorkout;
@@ -246,7 +249,7 @@ abstract class _PerformStore with Store {
     // if (workoutLogKey == sourceWorkoutKey) return;
     state = PerformState.loading;
     final Workout workoutBlueprint =
-        IHiveFacade.workoutsBox.get(sourceWorkoutKey);
+        PDataService.workoutsBox.get(sourceWorkoutKey);
 
     overallDuration = const Duration();
     for (final item in workoutBlueprint.items) {
@@ -271,7 +274,7 @@ abstract class _PerformStore with Store {
     stopCurrentTimer();
     currentItemStatus = WorkoutItemStatus.paused;
     final List<Exercise> availableExercises =
-        IWorkoutFacade.getAvailableExercises()..shuffle();
+        workoutService.getAvailableExercises()..shuffle();
     updateCurrentItemsExercise(availableExercises.last);
   }
 
@@ -285,6 +288,6 @@ abstract class _PerformStore with Store {
 
   /// Saves the entire state as a new workout log entry and resets the store
   Future<void> saveWorkoutLogEntry() async =>
-      IWorkoutFacade.saveNewWorkoutLogEntry(
+      workoutService.saveNewWorkoutLogEntry(
           items: workoutItems, sourceWorkout: sourceWorkout);
 }

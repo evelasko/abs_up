@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../../../domain/models/workout_item.dart';
-import '../../../domain/repositories/data_values.dart';
-import '../../../domain/repositories/i_hive_facade.dart';
-import '../../theme/colors.dart';
+import '../../../services/p_data.s.dart';
+import '../../theme/colors.t.dart';
 import 'swipable_actions.dart';
 import 'workout_items_body.dart';
 
@@ -19,8 +19,8 @@ class WorkoutItemWidget extends StatefulWidget {
 }
 
 class _WorkoutItemWidgetState extends State<WorkoutItemWidget> {
-  void removeItem() => IHiveFacade.workoutsBox
-      .get(DataValues.currentWorkoutKey)
+  void removeItem() => PDataService.workoutsBox
+      .get(CURRENT_WORKOUT_KEY)
       .removeItem(widget.workoutItem)
       // TODO show snackbar when deletting a saved workout item
       .then((_) => {});

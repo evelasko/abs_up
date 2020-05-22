@@ -1,6 +1,6 @@
-import 'package:abs_up/presentation/theme/text.dart';
+import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
-import './colors.dart';
+import './colors.t.dart';
 
 ThemeData appTheme() => ThemeData(
 

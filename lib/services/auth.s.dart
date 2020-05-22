@@ -8,16 +8,16 @@ import 'package:injectable/injectable.dart';
 
 import '../domain/core/failures.dart';
 import '../domain/core/value_objects.dart';
-import '../domain/repositories/i_auth_facade.dart';
+import '../domain/interfaces/auth.i.dart';
 import './core/firebase_user_mapper.dart';
 
 @lazySingleton
-@RegisterAs(IAuthFacade)
-class FirebaseAuthFacade implements IAuthFacade {
+@RegisterAs(AuthInterface)
+class FirebaseAuthService implements AuthInterface {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthFacade(this._firebaseAuth, this._googleSignIn);
+  FirebaseAuthService(this._firebaseAuth, this._googleSignIn);
 
   @override
   Future<Either<AuthFailure, Unit>> loginWithEmailAndPassword(

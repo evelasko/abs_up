@@ -1,10 +1,9 @@
-import 'package:abs_up/domain/models/workout.dart';
-import 'package:abs_up/domain/repositories/data_values.dart';
-import 'package:abs_up/domain/repositories/i_hive_facade.dart';
-import 'package:abs_up/presentation/widgets/shared/savedworkout_items.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../constants.dart';
+import '../../services/p_data.s.dart';
+import '../widgets/shared/savedworkout_items.dart';
 
 class WorkoutListPage extends StatelessWidget {
   @override
@@ -14,10 +13,10 @@ class WorkoutListPage extends StatelessWidget {
         title: Text('Saved Workouts'.toUpperCase()),
       ),
       body: ValueListenableBuilder(
-        valueListenable: IHiveFacade.workoutsBox.listenable(),
-        builder: (context, Box<Workout> box, widget) => Column(
-          children: box.values
-              .where((workout) => workout.key != DataValues.currentWorkoutKey)
+        valueListenable: PDataService.workoutsBox.listenable(),
+        builder: (_, __, ___) => Column(
+          children: PDataService.workoutsBox.values
+              .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
               .map((workout) => savedWorkoutItem(context, workout))
               .toList(),
         ),

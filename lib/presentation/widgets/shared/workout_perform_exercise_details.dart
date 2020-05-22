@@ -1,7 +1,7 @@
 import 'package:abs_up/domain/models/exercise.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
-import 'package:abs_up/presentation/theme/colors.dart';
-import 'package:abs_up/presentation/theme/text.dart';
+import 'package:abs_up/presentation/theme/colors.t.dart';
+import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {

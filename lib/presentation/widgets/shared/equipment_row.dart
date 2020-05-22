@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/icons.dart';
+import '../../theme/icons.t.dart';
 
 Widget equipmentRow(
         {List<String> activeEquipment = const [],

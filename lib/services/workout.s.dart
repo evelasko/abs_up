@@ -1,25 +1,23 @@
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/domain/interfaces/workout.i.dart';
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
+import 'package:abs_up/domain/models/workout_settings.dart';
+import 'package:abs_up/services/p_data.s.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../models/exercise.dart';
-import '../models/workout.dart';
-import '../models/workout_item.dart';
-import '../models/workout_settings.dart';
-import 'data_values.dart';
-import 'i_hive_facade.dart';
-
-class IWorkoutFacade {
-  static Box workoutSettingsBox = IHiveFacade.workoutSettingsBox;
-  static Box<Workout> workoutsBox = IHiveFacade.workoutsBox;
-  static Box<Exercise> exercisesBox = IHiveFacade.exercisesBox;
-  static Box<Workout> workoutLogsBox = IHiveFacade.workoutLogsBox;
-  static final WorkoutSettings settings =
-      workoutSettingsBox.get(DataValues.workoutSettingsKey) as WorkoutSettings;
-  final Workout currentWorkout = workoutsBox.get(DataValues.currentWorkoutKey);
+class WorkoutService implements WorkoutInterface {
+  @override
+  @override
+  Workout currentWorkout;
+  final String workoutKey;
   static final Uuid uuid = Uuid();
-
-  static const List<String> availableTargets = [
+  @override
+  final List<String> availableTargets = [
     'Core',
     'Lower',
     'Upper',
@@ -29,29 +27,39 @@ class IWorkoutFacade {
     // 'Kegel'
   ];
 
-  //: Getters _________________________________________________
-  /// Returns the current workout settings
-  static WorkoutSettings get workoutSettings =>
-      workoutSettingsBox.get(DataValues.workoutSettingsKey) as WorkoutSettings;
-
-  /// Returns a rough amount exercises to include by the length set in settings
-  int get roughtExerciseAmount => IWorkoutFacade.workoutSettings.length <= 1
-      ? 9
-      : IWorkoutFacade.workoutSettings.length == 2 ? 18 : 20;
-
-  //: Main methods ___________________________________________
-  /// defaultWorkout initializer
-  static Future<void> initWorkoutSettings() async {
-    if (workoutSettingsBox.containsKey(DataValues.workoutSettingsKey)) return;
-
-    await workoutSettingsBox.put(
-        DataValues.workoutSettingsKey, WorkoutSettings());
-    await workoutsBox.put(
-        DataValues.currentWorkoutKey, Workout(name: 'Workout'));
+  WorkoutService({this.workoutKey = CURRENT_WORKOUT_KEY}) {
+    currentWorkout = PDataService.workoutsBox.get(workoutKey);
   }
 
-  /// Generates a new workout based on current settings
-  static Workout generateWorkout() {
+  //: Getters _________________________________________________
+  /// Returns the current workout settings
+  @override
+  WorkoutSettings get workoutSettings =>
+      PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
+
+  /// Returns a rough amount exercises to include by the length set in settings
+  @override
+  int get roughtExerciseAmount =>
+      workoutSettings.length <= 1 ? 9 : workoutSettings.length == 2 ? 18 : 20;
+
+  ValueListenable<Box<Workout>> get listenable =>
+      PDataService.workoutsBox.listenable(keys: [workoutKey]);
+
+  @override
+  Future<void> initWorkoutSettings() async {
+    if (PDataService.workoutSettingsBox.containsKey(WORKOUT_SETTINGS_KEY)) {
+      return;
+    }
+    print('generating default workout settings...');
+    await PDataService.workoutSettingsBox
+        .put(WORKOUT_SETTINGS_KEY, WorkoutSettings());
+    print('initializing the current workout box slot');
+    await PDataService.workoutsBox
+        .put(CURRENT_WORKOUT_KEY, Workout(name: 'Workout'));
+  }
+
+  @override
+  Workout generateWorkout() {
     //= filter exercises
     final List<Exercise> availableExercises = getAvailableExercises();
 
@@ -72,10 +80,11 @@ class IWorkoutFacade {
     int total = 0;
     for (final exercise in randomizedExercises) {
       int duration = 0;
-      duration = getWorkoutItemDuration(exercise.intensity, settings.length);
+      duration =
+          getWorkoutItemDuration(exercise.intensity, workoutSettings.length);
       exerciseItems.add(WorkoutItem(exercise: exercise, duration: duration));
       total += duration;
-      if (total > IWorkoutFacade.minWorkoutLength) break;
+      if (total > minWorkoutLength) break;
     }
 
     //= add rest items
@@ -88,22 +97,23 @@ class IWorkoutFacade {
     return Workout(items: workoutItems);
   }
 
-  /// Generates a new workout based on current settings
-  /// and saves it into the currentWorkout key of the workouts box
-  static Future<void> generateCurrentWorkout() async =>
-      workoutsBox.put(DataValues.currentWorkoutKey, generateWorkout());
+  @override
+  Future<void> generateCurrentWorkout() async =>
+      PDataService.workoutsBox.put(CURRENT_WORKOUT_KEY, generateWorkout());
 
-  static Future<void> saveCurrentWorkoutAs(String name) async {
+  @override
+  Future<void> saveCurrentWorkoutAs(String name) async {
     final Workout currentWorkout =
-        workoutsBox.get(DataValues.currentWorkoutKey);
-    workoutsBox.put(
-        generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
+        PDataService.workoutsBox.get(CURRENT_WORKOUT_KEY);
+    PDataService.workoutsBox
+        .put(generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
   }
 
-  static Future<void> saveNewWorkoutLogEntry(
+  @override
+  Future<void> saveNewWorkoutLogEntry(
           {@required List<WorkoutItem> items,
           @required String sourceWorkout}) async =>
-      workoutLogsBox.put(
+      PDataService.workoutLogsBox.put(
           uuid.v4(),
           Workout(
             name: 'log entry',
@@ -114,9 +124,9 @@ class IWorkoutFacade {
   //: Helper Methods_____________________________________________
 
   /// Generates a unique key to save a new workout
-  static String generateUniqueWorkoutKey() {
+  String generateUniqueWorkoutKey() {
     final List<String> savedWorkoutKey =
-        workoutsBox.keys.toList().cast<String>();
+        PDataService.workoutsBox.keys.toList().cast<String>();
     String uniqueKey = uuid.v4();
     while (savedWorkoutKey.contains(uniqueKey)) {
       uniqueKey = uuid.v4();
@@ -125,23 +135,23 @@ class IWorkoutFacade {
   }
 
   /// Get minimum workout duration by settings length
-  static int get minWorkoutLength {
-    switch (IWorkoutFacade.workoutSettings.length) {
+  int get minWorkoutLength {
+    switch (workoutSettings.length) {
       case 1:
-        return DataValues.minimumDurationShortLength;
+        return MINIMUM_DURATION_SHORT_LENGTH;
       case 2:
-        return DataValues.minimumDurationMediumLength;
+        return MINIMUM_DURATION_MEDIUM_LENGTH;
       case 3:
-        return DataValues.minimumDurationLongLength;
+        return MINIMUM_DURATION_LONG_LENGTH;
     }
-    return DataValues.minimumDurationDefault;
+    return MINIMUM_DURATION_DEFAULT;
   }
 
   /// Workout item duration matrix
-  static int getWorkoutItemDuration(int intensity, int settingsLength) {
-    const int short = DataValues.workoutItemDurationShort;
-    const int medium = DataValues.workoutItemDurationMedium;
-    const int long = DataValues.workoutItemDurationLong;
+  int getWorkoutItemDuration(int intensity, int settingsLength) {
+    const int short = WORKOUT_ITEM_DURATION_SHORT;
+    const int medium = WORKOUT_ITEM_DURATION_MEDIUM;
+    const int long = WORKOUT_ITEM_DURATION_LONG;
 
     switch (settingsLength) {
       case 1:
@@ -163,18 +173,19 @@ class IWorkoutFacade {
   }
 
   /// Filter exercises base on current workout settings
-  static List<Exercise> getAvailableExercises() => exercisesBox.values
+  List<Exercise> getAvailableExercises() => PDataService.exercisesBox.values
       .where((exercise) =>
-          intensityFilter(exercise.intensity, settings.intensity) &&
-          difficultyFilter(exercise.difficulty, settings.difficulty) &&
-          exercise.impact == settings.impact &&
-          settings.equipment.contains(exercise.equipment.toLowerCase()) &&
+          intensityFilter(exercise.intensity, workoutSettings.intensity) &&
+          difficultyFilter(exercise.difficulty, workoutSettings.difficulty) &&
+          exercise.impact == workoutSettings.impact &&
+          workoutSettings.equipment
+              .contains(exercise.equipment.toLowerCase()) &&
           exercise.tag != ExerciseTag.blacklisted.index &&
           exercise.name != 'Rest')
       .toList();
 
   /// Distributes available exercises into lists based in their targets
-  static Map<String, List<Exercise>> distributeByTargets(
+  Map<String, List<Exercise>> distributeByTargets(
           List<Exercise> availableExercises) =>
       Map.fromIterable(availableTargets,
           key: (target) => target as String,
@@ -183,7 +194,7 @@ class IWorkoutFacade {
               .toList());
 
   /// Returns random exercises from a list of distributed exercises
-  static List<Exercise> randomizeExercises(
+  List<Exercise> randomizeExercises(
       Map<String, List<Exercise>> distributedExercises) {
     final List<Exercise> randomizedExercises = [];
 
@@ -191,7 +202,7 @@ class IWorkoutFacade {
 
     // consinuously iterate thru all available targets
     Iterator<String> targetIterator = availableTargets.iterator;
-    while (currentIndex <= IWorkoutFacade().roughtExerciseAmount) {
+    while (currentIndex <= roughtExerciseAmount) {
       if (targetIterator.current == null) targetIterator.moveNext();
       if (distributedExercises[targetIterator.current].isEmpty) continue;
 
@@ -209,11 +220,13 @@ class IWorkoutFacade {
   }
 
   /// Returns the exercise items with rest items included
-  static List<WorkoutItem> addRestItems(List<WorkoutItem> exerciseItems) {
+  List<WorkoutItem> addRestItems(List<WorkoutItem> exerciseItems) {
     //= base duration of rest items
     const int baseInterval = 15;
 
     const List<int> intervalMatrix = [4, 3, 2];
+
+    final WorkoutSettings settings = workoutSettings;
 
     //= set rest interval duration
     final int interval = settings.intensity != 4
@@ -239,7 +252,7 @@ class IWorkoutFacade {
       exerciseAndRestItems.insert(
           index,
           WorkoutItem(
-              exercise: IHiveFacade.exercisesBox.values
+              exercise: PDataService.exercisesBox.values
                   .where((exercise) => exercise.name == 'Rest')
                   .first,
               duration: interval));

@@ -1,4 +1,4 @@
-import 'package:abs_up/presentation/theme/icons.dart';
+import 'package:abs_up/presentation/theme/icons.t.dart';
 import 'package:flutter/material.dart';
 
 class AppFullLogo extends StatelessWidget {

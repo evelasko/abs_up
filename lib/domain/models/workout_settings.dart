@@ -1,7 +1,8 @@
 //: Data model: Workout Settings
+import 'package:abs_up/constants.dart';
 import 'package:abs_up/domain/models/equipment.dart';
-import 'package:abs_up/domain/repositories/data_values.dart';
-import 'package:abs_up/presentation/theme/icons.dart';
+
+import 'package:abs_up/presentation/theme/icons.t.dart';
 import 'package:hive/hive.dart';
 
 part 'workout_settings.g.dart';
@@ -20,40 +21,37 @@ class WorkoutSettings extends HiveObject {
   List<String> equipment;
 
   WorkoutSettings(
-      {this.length = DataValues.lengthDefault,
-      this.intensity = DataValues.intensityDefault,
-      this.difficulty = DataValues.difficultyDefault,
-      this.impact = DataValues.impactDefault,
-      this.equipment = const [DataValues.equipmentDefault]});
+      {this.length = LENGTH_DEFAULT,
+      this.intensity = INTENSITY_DEFAULT,
+      this.difficulty = DIFFICULTY_DEFAULT,
+      this.impact = IMPACT_DEFAULT,
+      this.equipment = const [EQUIPMENT_DEFAULT]});
 
   /// Data UI getters
-  String get intensityString => DataValues.intensityToString(intensity);
-  String get difficultyString => DataValues.difficultyToString(difficulty);
-  String get lengthString => DataValues.lengthToString(length);
-  String get impactString => DataValues.impactToString(impact);
+  String get intensityString => intensityToString(intensity);
+  String get difficultyString => difficultyToString(difficulty);
+  String get lengthString => lengthToString(length);
+  String get impactString => impactToString(impact);
 
   Iterable<Equipment> get equipmentObjectList =>
       equipment.map((equipmentKey) => Equipment(
           key: equipmentKey,
           icon: AbsAppIcons.equipmentIcons[equipmentKey],
-          text: DataValues.equipmentText[equipmentKey]));
+          text: EQUIPMENT_TEXT[equipmentKey]));
 
   /// Data UI Set & Save
   Future<void> intensitySetAndSave(String newValue) async {
-    intensity = DataValues.intensityToInt(
-        newValue ?? DataValues.intensityDefault as String);
+    intensity = intensityToInt(newValue ?? INTENSITY_DEFAULT as String);
     await save();
   }
 
   Future<void> difficultySetAndSave(String newValue) async {
-    difficulty = DataValues.difficultyToInt(
-        newValue ?? DataValues.difficultyDefault as String);
+    difficulty = difficultyToInt(newValue ?? DIFFICULTY_DEFAULT as String);
     await save();
   }
 
   Future<void> lengthSetAndSave(String newValue) async {
-    length =
-        DataValues.lengthToInt(newValue ?? DataValues.lengthDefault as String);
+    length = lengthToInt(newValue ?? LENGTH_DEFAULT as String);
     await save();
   }
 
@@ -76,20 +74,11 @@ class WorkoutSettings extends HiveObject {
     await save();
   }
 
-  /// Default settings
-  static const Map<String, dynamic> defaultSettingsMap = {
-    DataValues.lengthKey: DataValues.lengthDefault,
-    DataValues.intensityKey: DataValues.intensityDefault,
-    DataValues.difficultyKey: DataValues.difficultyDefault,
-    DataValues.impactKey: DataValues.impactDefault,
-    DataValues.equipmentKey: [DataValues.equipmentDefault]
-  };
-
   /// Comparison checker
   bool hasWorkoutSettingsKeys(Map<String, dynamic> maybeWorkoutSettings) =>
-      maybeWorkoutSettings.containsKey(DataValues.intensityKey) &&
-      maybeWorkoutSettings.containsKey(DataValues.difficultyKey) &&
-      maybeWorkoutSettings.containsKey(DataValues.lengthKey) &&
-      maybeWorkoutSettings.containsKey(DataValues.impactKey) &&
-      maybeWorkoutSettings.containsKey(DataValues.equipmentKey);
+      maybeWorkoutSettings.containsKey(INTENSITY_KEY) &&
+      maybeWorkoutSettings.containsKey(DIFFICULTY_KEY) &&
+      maybeWorkoutSettings.containsKey(LENGTH_KEY) &&
+      maybeWorkoutSettings.containsKey(IMPACT_KEY) &&
+      maybeWorkoutSettings.containsKey(EQUIPMENT_KEY);
 }

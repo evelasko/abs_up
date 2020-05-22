@@ -7,7 +7,7 @@ import '../../domain/core/utils.dart';
 import '../../domain/models/exercise.dart';
 import '../../domain/models/workout_item.dart';
 import '../../domain/state/perform_store.dart';
-import '../theme/colors.dart';
+import '../theme/colors.t.dart';
 import 'shared/workout_perform_exercise_details.dart';
 import 'shared/workout_perform_pageview_exercise_info.dart';
 import 'shared/workout_perform_pageview_menu.dart';

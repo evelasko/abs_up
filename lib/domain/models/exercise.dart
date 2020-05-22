@@ -1,14 +1,17 @@
-import 'package:abs_up/domain/repositories/data_values.dart';
-import 'package:abs_up/presentation/theme/icons.dart';
+import 'package:abs_up/domain/models/exercise.m.dart';
+
+import 'package:abs_up/presentation/theme/icons.t.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
+import '../../constants.dart';
 
 part 'exercise.g.dart';
 
 enum ExerciseTag { exercise, favorited, blacklisted }
 
 @HiveType(typeId: 1, adapterName: 'ExerciseAdapter')
-class Exercise extends HiveObject {
+class Exercise extends HiveObject implements ExerciseModel {
   @HiveField(0)
   final String name;
   @HiveField(1)
@@ -42,54 +45,56 @@ class Exercise extends HiveObject {
       this.sided,
       this.tag = 0});
 
-  /// Exercise value getters
+  @override
   IconData get equipmentIcon =>
       AbsAppIcons.equipment[equipment.toLowerCase()] ??
       AbsAppIcons.logo_outline;
-
-  String get intensityString => DataValues.intensityToString(intensity);
-  String get difficultyString => DataValues.difficultyToString(difficulty);
-
+  @override
+  String get intensityString => intensityToString(intensity);
+  @override
+  String get difficultyString => difficultyToString(difficulty);
+  @override
   Future<void> setFavorite() async {
     tag = 1;
     await save();
   }
 
+  @override
   Future<void> setBlacklist() async {
     tag = 2;
     await save();
   }
 
+  @override
   Future<void> removeTag() async {
     tag = 0;
     await save();
   }
 
-  /// Comparison checker
+  @override
   bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>
-      maybeAnExercise.containsKey(DataValues.exerciseNameKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseDifficultyKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseIntensityKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseTargetKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseEquipmentKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseWeightedKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseSidedKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseImpactKey) &&
-      maybeAnExercise.containsKey(DataValues.exerciseGroupKey);
+      maybeAnExercise.containsKey(EXERCISE_NAME_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_DIFFICULTY_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_INTENSITY_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_TARGET_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_EQUIPMENT_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_WEIGHTED_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_SIDED_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_IMPACT_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_GROUP_KEY);
 
-  /// Exercise methods
+  @override
   Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) => Exercise(
-      name: exerciseMap[DataValues.exerciseNameKey] as String,
-      difficulty: exerciseMap[DataValues.exerciseDifficultyKey] as int,
-      intensity: exerciseMap[DataValues.exerciseIntensityKey] as int,
-      target: exerciseMap[DataValues.exerciseTargetKey] as String,
-      equipment: exerciseMap[DataValues.exerciseEquipmentKey] as String,
-      weighted: exerciseMap[DataValues.exerciseWeightedKey] as bool,
-      sided: exerciseMap[DataValues.exerciseSidedKey] as bool,
-      impact: exerciseMap[DataValues.exerciseImpactKey] as bool,
-      group: exerciseMap[DataValues.exerciseGroupKey] as String);
+      name: exerciseMap[EXERCISE_NAME_KEY] as String,
+      difficulty: exerciseMap[EXERCISE_DIFFICULTY_KEY] as int,
+      intensity: exerciseMap[EXERCISE_INTENSITY_KEY] as int,
+      target: exerciseMap[EXERCISE_TARGET_KEY] as String,
+      equipment: exerciseMap[EXERCISE_EQUIPMENT_KEY] as String,
+      weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
+      sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
+      impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
+      group: exerciseMap[EXERCISE_GROUP_KEY] as String);
 
-  /// Class overrides
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;

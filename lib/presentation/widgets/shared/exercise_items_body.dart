@@ -2,8 +2,8 @@ import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
-import '../../theme/colors.dart';
-import '../../theme/text.dart';
+import '../../theme/colors.t.dart';
+import '../../theme/text.t.dart';
 import 'wrappers.dart';
 
 Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index

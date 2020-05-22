@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../../domain/models/exercise.dart';
-import '../theme/colors.dart';
-import '../theme/text.dart';
+import '../theme/colors.t.dart';
+import '../theme/text.t.dart';
 
 class ExerciseDetailsContent extends StatelessWidget {
   final Exercise exercise;

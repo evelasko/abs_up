@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_workout_facade.dart';
+import '../../constants.dart';
+import '../../services/workout.s.dart';
 import '../router/routes.dart';
 import 'shared/buttons.dart';
 
 class HomeSectionPerform extends StatelessWidget {
+  final WorkoutService workoutService = WorkoutService();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,11 +16,11 @@ class HomeSectionPerform extends StatelessWidget {
         children: <Widget>[
           // = Preview Workout
           AppButtons.boxedBigIconButton(
-              onTap: () => IWorkoutFacade.generateCurrentWorkout().then(
+              onTap: () => workoutService.generateCurrentWorkout().then(
                   (value) => Navigator.pushNamed(
                       context,
                       FluroRouter.getWorkoutDetailsLink(
-                          workoutKey: DataValues.currentWorkoutKey))),
+                          workoutKey: CURRENT_WORKOUT_KEY))),
               icon: Icons.playlist_play,
               text: 'preview',
               buttonType: ButtonTypes.secondary),

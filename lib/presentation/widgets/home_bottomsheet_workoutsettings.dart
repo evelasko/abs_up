@@ -1,3 +1,4 @@
+import 'package:abs_up/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -5,10 +6,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../domain/models/equipment.dart';
 import '../../domain/models/workout_settings.dart';
-import '../../domain/repositories/data_values.dart';
-import '../../domain/repositories/i_hive_facade.dart';
-import '../theme/colors.dart';
-import '../theme/text.dart';
+import '../../services/p_data.s.dart';
+import '../theme/colors.t.dart';
+import '../theme/text.t.dart';
 import 'shared/equipment_chips.dart';
 
 class HomeBottomSheetWorkoutsettings extends StatefulWidget {
@@ -64,13 +64,12 @@ class _HomeBottomSheetWorkoutsettingsState
           ///
           /// Choice Sections
           ValueListenableBuilder(
-              valueListenable: IHiveFacade.workoutSettingsBox
-                  .listenable(keys: [DataValues.workoutSettingsKey]),
+              valueListenable: PDataService.workoutSettingsBox
+                  .listenable(keys: [WORKOUT_SETTINGS_KEY]),
 
               /// Listenable manager
               builder: (context, Box<WorkoutSettings> box, widget) {
-                final WorkoutSettings settings =
-                    box.get(DataValues.workoutSettingsKey);
+                final WorkoutSettings settings = box.get(WORKOUT_SETTINGS_KEY);
                 if (settings == null) {
                   return const Text('No previous workout settings found...');
                 }
@@ -111,8 +110,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                   const EdgeInsets.only(top: 10, bottom: 10),
                               margin: const EdgeInsets.only(bottom: 5),
                               child: CupertinoSlidingSegmentedControl<String>(
-                                children: Map.fromIterable(
-                                    DataValues.lengthStrings,
+                                children: Map.fromIterable(LENGTH_STRINGS,
                                     key: (key) => key.toString(),
                                     value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
@@ -158,8 +156,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                   const EdgeInsets.only(top: 10, bottom: 10),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: CupertinoSlidingSegmentedControl<String>(
-                                children: Map.fromIterable(
-                                    DataValues.intensityStrings,
+                                children: Map.fromIterable(INTENSITY_STRINGS,
                                     key: (key) => key.toString(),
                                     value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
@@ -205,8 +202,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                   const EdgeInsets.only(top: 10, bottom: 5),
                               margin: const EdgeInsets.only(bottom: 10),
                               child: CupertinoSlidingSegmentedControl<String>(
-                                children: Map.fromIterable(
-                                    DataValues.difficultyStrings,
+                                children: Map.fromIterable(DIFFICULTY_STRINGS,
                                     key: (key) => key.toString(),
                                     value: (value) => Text(value.toString())),
                                 onValueChanged: (newValue) {
@@ -288,7 +284,7 @@ class _HomeBottomSheetWorkoutsettingsState
                                 alignment: WrapAlignment.center,
                                 spacing: 5,
                                 runSpacing: -3,
-                                children: DataValues.equipmentDataKeys
+                                children: EQUIPMENT_DATA_KEYS
                                     .map((key) => equipmentChip(
                                         equipment:
                                             Equipment.equipmentFromKey(key),

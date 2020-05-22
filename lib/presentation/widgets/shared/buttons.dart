@@ -1,6 +1,7 @@
-import 'package:abs_up/presentation/theme/colors.dart';
-import 'package:abs_up/presentation/theme/text.dart';
 import 'package:flutter/material.dart';
+
+import '../../theme/colors.t.dart';
+import '../../theme/text.t.dart';
 
 enum ButtonTypes { primary, secondary, other }
 enum ButtonSide { left, center, right }

@@ -1,5 +1,5 @@
-import 'package:abs_up/presentation/theme/colors.dart';
-import 'package:abs_up/presentation/theme/text.dart';
+import 'package:abs_up/presentation/theme/colors.t.dart';
+import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
 
 class AppTypography {
@@ -23,7 +23,6 @@ class AppTypography {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.only(right: 3),
                 child: Text(

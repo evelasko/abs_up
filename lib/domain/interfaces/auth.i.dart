@@ -4,7 +4,7 @@ import 'package:abs_up/domain/core/failures.dart';
 import 'package:flutter/foundation.dart';
 import '../core/value_objects.dart';
 
-abstract class IAuthFacade {
+abstract class AuthInterface {
   /// Retreive a registered and signed in user
   Future<Option<User>> getLoggedInUser();
 

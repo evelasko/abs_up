@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
-import '../theme/colors.dart';
-import '../theme/text.dart';
+import '../theme/colors.t.dart';
+import '../theme/text.t.dart';
 import 'exercise_details_content.dart';
 
 class ExerciseDetailsPageView extends StatelessWidget {

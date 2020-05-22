@@ -1,7 +1,7 @@
 import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/domain/repositories/i_hive_facade.dart';
-import 'package:abs_up/presentation/theme/colors.dart';
+import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:abs_up/presentation/widgets/exercise_details_pageview.dart';
+import 'package:abs_up/services/p_data.s.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseDetailsPage extends StatefulWidget {
@@ -14,7 +14,7 @@ class ExerciseDetailsPage extends StatefulWidget {
 }
 
 class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> {
-  final List<Exercise> exercises = IHiveFacade.exercisesBox.values.toList();
+  final List<Exercise> exercises = PDataService.exercisesBox.values.toList();
 
   PageController _pageController;
 
