@@ -1,20 +1,18 @@
-import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:flutter/material.dart';
 
-import 'equipment_row.dart';
+import '../../../domain/models/workout.dart';
+import '../../../domain/models/workout_settings.dart';
+import '../../theme/colors.t.dart';
+import 'equipment_row.w.dart';
 
 class WorkoutDetailsPanel extends StatelessWidget {
-  final List<String> activeEquipment;
-  final String averageIntensity;
-  final String averageDifficulty;
-  final String totalDuration;
+  final Workout currentWorkout;
+  final WorkoutSettings workoutSettings;
 
   const WorkoutDetailsPanel({
     Key key,
-    @required this.activeEquipment,
-    @required this.averageIntensity,
-    @required this.averageDifficulty,
-    @required this.totalDuration,
+    this.currentWorkout,
+    this.workoutSettings,
   }) : super(key: key);
 
   @override
@@ -31,7 +29,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 15),
             //= Equipment row
             child: equipmentRowContent(
-                activeEquipment: activeEquipment,
+                activeEquipment: currentWorkout.equipmentTotal,
                 iconSize: 36,
                 activeColor: Colors.white,
                 baseColor: Colors.white24),
@@ -51,7 +49,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
-                      Text(averageIntensity.toUpperCase(),
+                      Text(workoutSettings.intensityString.toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -61,7 +59,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                 ),
                 Text(
                   //= Total duration
-                  totalDuration,
+                  currentWorkout.totalDurationString,
                   style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
@@ -78,7 +76,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
-                      Text(averageDifficulty.toUpperCase(),
+                      Text(workoutSettings.difficultyString.toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

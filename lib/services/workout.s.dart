@@ -11,9 +11,6 @@ import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class WorkoutService implements WorkoutInterface {
-  @override
-  @override
-  Workout currentWorkout;
   final String workoutKey;
   static final Uuid uuid = Uuid();
   @override
@@ -27,15 +24,18 @@ class WorkoutService implements WorkoutInterface {
     // 'Kegel'
   ];
 
-  WorkoutService({this.workoutKey = CURRENT_WORKOUT_KEY}) {
-    currentWorkout = PDataService.workoutsBox.get(workoutKey);
-  }
+  WorkoutService({this.workoutKey = CURRENT_WORKOUT_KEY});
 
   //: Getters _________________________________________________
-  /// Returns the current workout settings
   @override
   WorkoutSettings get workoutSettings =>
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
+
+  @override
+  Workout get currentWorkout => PDataService.workoutsBox.get(workoutKey);
+
+  Workout workoutFromKey(String key) =>
+      PDataService.workoutsBox.get(key, defaultValue: currentWorkout);
 
   /// Returns a rough amount exercises to include by the length set in settings
   @override
@@ -50,10 +50,8 @@ class WorkoutService implements WorkoutInterface {
     if (PDataService.workoutSettingsBox.containsKey(WORKOUT_SETTINGS_KEY)) {
       return;
     }
-    print('generating default workout settings...');
     await PDataService.workoutSettingsBox
         .put(WORKOUT_SETTINGS_KEY, WorkoutSettings());
-    print('initializing the current workout box slot');
     await PDataService.workoutsBox
         .put(CURRENT_WORKOUT_KEY, Workout(name: 'Workout'));
   }

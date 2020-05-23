@@ -15,7 +15,7 @@ class _AbsUpState extends State<AbsUp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AbsApp Data Setup',
-      theme: appTheme(),
+      theme: appTheme,
       onGenerateRoute: FluroRouter.router.generator,
       initialRoute: HOME_LINK,
     );

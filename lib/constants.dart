@@ -4,6 +4,7 @@ const String EXERCISES_LIST_LINK = 'exercises';
 const String EXERCISE_DETAILS_LINK = 'exercise/details/';
 const String WORKOUT_LIST_LINK = 'workout/list';
 const String WORKOUT_DETAILS_LINK = 'workout/details/';
+const String WORKOUT_ITEM_DETAILS_LINK = 'workout/item/';
 const String WORKOUT_PERFORM_LINK = 'workout/perform/';
 const String WORKOUT_LOGS_LINK = 'workout/logs';
 const String SETTINGS_LINK = 'settings';

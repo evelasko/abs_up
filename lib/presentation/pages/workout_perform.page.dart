@@ -8,9 +8,9 @@ import '../../domain/models/workout_item.dart';
 import '../../domain/state/perform_store.dart';
 import '../../services/speech.s.dart';
 import '../theme/colors.t.dart';
-import '../widgets/shared/buttons.dart';
-import '../widgets/shared/modal_dialog.dart';
-import '../widgets/workout_item_perform_pageview.dart';
+import '../widgets/shared/buttons.w.dart';
+import '../widgets/shared/modal_dialog.w.dart';
+import '../widgets/workout_item_perform_pageview.w.dart';
 
 /// Interface class to provide PerformStore
 class WorkoutPerformPage extends StatelessWidget {
@@ -21,7 +21,7 @@ class WorkoutPerformPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Provider(
+  Widget build(BuildContext context) => Provider<PerformStore>(
         create: (_) => PerformStore(SpeechService()),
         child: WorkoutPerformLayout(sourceWorkoutKey),
       );
@@ -75,13 +75,13 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
                 decoration:
                     const BoxDecoration(gradient: AppColors.primaryGradient),
                 buttons: <Widget>[
-                  AppButtons.secondaryActionButton(
+                  SecondaryActionButton(
                       text: 'Home',
                       icon: Icons.home,
                       onTap: () => _performStore.saveWorkoutLogEntry().then(
                           (value) =>
                               Navigator.popAndPushNamed(context, HOME_LINK))),
-                  AppButtons.secondaryActionButton(
+                  SecondaryActionButton(
                       buttonType: ButtonTypes.secondary,
                       text: 'Share progress',
                       icon: Icons.share,
@@ -102,14 +102,14 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
             builder: (context) => AbsAppModalDialog(
                   title: 'EXIT\nWORKOUT',
                   buttons: <Widget>[
-                    AppButtons.secondaryActionButton(
+                    SecondaryActionButton(
                         text: 'Yes! Take me out',
                         onTap: () {
                           _performStore.abandonWorkout();
                           Navigator.of(context).pop(true);
                         }),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 20)),
-                    AppButtons.primaryActionButton(
+                    PrimaryActionButton(
                         text: 'No! Keep me in',
                         onTap: () => Navigator.of(context).pop(false)),
                   ],

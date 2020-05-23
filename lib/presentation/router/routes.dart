@@ -2,6 +2,7 @@ import 'package:abs_up/presentation/pages/about.page.dart';
 import 'package:abs_up/presentation/pages/feedback_contact.page.dart';
 import 'package:abs_up/presentation/pages/help_support.page.dart';
 import 'package:abs_up/presentation/pages/settings.page.dart';
+import 'package:abs_up/presentation/pages/workout_item_details.page.dart';
 import 'package:abs_up/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,19 @@ class FluroRouter {
   static final Handler _exerciseDetails = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           ExerciseDetailsPage(params['exerciseKey'][0].toString()));
+
+  //= Workout Item Details
+  static const workoutItemDetailsLink =
+      '$WORKOUT_ITEM_DETAILS_LINK:workoutKey/:itemIndex';
+  static String getWorkoutItemDetailsLink({String workoutKey, int itemIndex}) =>
+      workoutItemDetailsLink
+          .replaceFirst(':workoutKey', workoutKey)
+          .replaceFirst(':itemIndex', itemIndex.toString());
+  static final Handler _workoutItemDetails = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          WorkoutItemDetailsPage(
+              workoutKey: params['workoutKey'][0].toString(),
+              itemIndex: int.parse(params['itemIndex'][0].toString())));
 
   //= Workout List
   static final Handler _workoutList = Handler(
@@ -101,6 +115,10 @@ class FluroRouter {
     //= Workout Details
     router.define(workoutDetailsLink,
         handler: _workoutDetails, transitionType: TransitionType.inFromRight);
+    //= Workout Item Details
+    router.define(workoutItemDetailsLink,
+        handler: _workoutItemDetails,
+        transitionType: TransitionType.inFromBottom);
     //= Workout Perform
     router.define(workoutPerformLink,
         handler: _workoutPerform, transitionType: TransitionType.inFromRight);

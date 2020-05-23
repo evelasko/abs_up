@@ -1,15 +1,15 @@
-import 'package:abs_up/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../constants.dart';
 import '../../domain/models/equipment.dart';
 import '../../domain/models/workout_settings.dart';
 import '../../services/p_data.s.dart';
 import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
-import 'shared/equipment_chips.dart';
+import 'shared/equipment_chips.w.dart';
 
 class HomeBottomSheetWorkoutsettings extends StatefulWidget {
   @override

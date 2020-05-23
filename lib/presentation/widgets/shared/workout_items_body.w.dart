@@ -1,11 +1,13 @@
+import 'package:abs_up/domain/models/workout.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../domain/models/exercise.dart';
 import '../../theme/colors.t.dart';
 import '../../theme/text.t.dart';
-import 'wrappers.dart';
+import 'wrappers.w.dart';
 
 Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
     ? const Icon(Icons.star, size: 13, color: Colors.limeAccent)
@@ -13,15 +15,23 @@ Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
         ? const Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
         : Container();
 
-/// Renders Workout Item Body Content
-Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
-    listSmallItemWrapper(
-      GestureDetector(
+class WorkoutItemBody extends StatelessWidget {
+  const WorkoutItemBody({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final WorkoutItem workoutItem = Provider.of<WorkoutItem>(context);
+    final Workout workout = Provider.of<Workout>(context);
+    final int itemIndex = workout.items.indexOf(workoutItem);
+
+    return ListSmallItemWrapper(
+      child: GestureDetector(
         // TODO on tapping a workout item should send to a bottom sheet view of the workout item...
         onTap: () => Navigator.pushNamed(
-            context,
-            FluroRouter.getExerciseDetailsLink(
-                exerciseKey: workoutItem.exercise.key.toString())),
+          context,
+          FluroRouter.getWorkoutItemDetailsLink(
+              workoutKey: workout.key.toString(), itemIndex: itemIndex),
+        ),
         child: Container(
           padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
           color: workoutItem.exercise.name == 'Rest'
@@ -130,3 +140,5 @@ Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
         ),
       ),
     );
+  }
+}

@@ -3,8 +3,8 @@ import 'package:hive/hive.dart';
 
 import '../../domain/models/exercise.dart';
 import '../theme/colors.t.dart';
-import 'shared/exercise_items.dart';
-import 'shared/lists_empty_feedback.dart';
+import 'shared/exercise_items.w.dart';
+import 'shared/lists_empty_feedback.w.dart';
 
 class ExercisesExercisesTabView extends StatefulWidget {
   final Box<Exercise> exerciseBox;

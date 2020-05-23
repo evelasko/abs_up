@@ -1,17 +1,17 @@
-import 'package:abs_up/domain/state/auth_store.dart';
-import 'package:abs_up/services/auth.s.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/state/auth_store.dart';
+import '../../services/auth.s.dart';
 import '../theme/colors.t.dart';
 import '../theme/icons.t.dart';
-import '../widgets/drawer.dart';
-import '../widgets/home_section_menu.dart';
-import '../widgets/home_section_perform.dart';
-import '../widgets/home_section_workoutsettings.dart';
-import '../widgets/login_dialog.dart';
+import '../widgets/drawer.w.dart';
+import '../widgets/home_section_menu.w.dart';
+import '../widgets/home_section_perform.w.dart';
+import '../widgets/home_section_workoutsettings.w.dart';
+import '../widgets/login_dialog.w.dart';
 
 /// Home Page
 class HomePage extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/models/exercise.dart';
 import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
-import 'exercise_details_content.dart';
+import 'exercise_details_content.w.dart';
 
 class ExerciseDetailsPageView extends StatelessWidget {
   final Exercise exercise;
@@ -32,12 +32,14 @@ class ExerciseDetailsPageView extends StatelessWidget {
                     color: AppColors.greyDark,
                   ),
                   onPressed: () => Navigator.pop(context)),
-              RichText(
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                    text: exercise.name.toUpperCase(),
-                    style: AppTextStyles.listItemTitle),
+              Expanded(
+                child: RichText(
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(
+                      text: exercise.name.toUpperCase(),
+                      style: AppTextStyles.listItemTitle),
+                ),
               ),
               IconButton(
                   icon:

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../services/workout.s.dart';
 import '../router/routes.dart';
-import 'shared/buttons.dart';
+import 'shared/buttons.w.dart';
 
 class HomeSectionPerform extends StatelessWidget {
   final WorkoutService workoutService = WorkoutService();
@@ -15,7 +15,7 @@ class HomeSectionPerform extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           // = Preview Workout
-          AppButtons.boxedBigIconButton(
+          BoxedBigIconButton(
               onTap: () => workoutService.generateCurrentWorkout().then(
                   (value) => Navigator.pushNamed(
                       context,
@@ -25,7 +25,7 @@ class HomeSectionPerform extends StatelessWidget {
               text: 'preview',
               buttonType: ButtonTypes.secondary),
           // = Perform Workout
-          AppButtons.boxedBigIconButton(
+          BoxedBigIconButton(
               onTap: () async => Navigator.pushNamed(
                   context, FluroRouter.getWorkoutPerformLink()),
               icon: Icons.play_circle_outline,

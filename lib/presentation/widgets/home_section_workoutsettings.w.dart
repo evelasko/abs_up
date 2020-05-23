@@ -1,13 +1,13 @@
-import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../constants.dart';
 import '../../domain/models/workout_settings.dart';
 import '../../services/p_data.s.dart';
-import 'home_bottomsheet_workoutsettings.dart';
-import 'shared/equipment_row.dart';
-import 'shared/typography.dart';
+import 'home_bottomsheet_workoutsettings.w.dart';
+import 'shared/equipment_row.w.dart';
+import 'shared/typography.w.dart';
 
 class HomeSectionWorkoutsettings extends StatelessWidget {
   const HomeSectionWorkoutsettings({Key key}) : super(key: key);

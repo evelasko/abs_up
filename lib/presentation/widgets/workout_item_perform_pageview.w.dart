@@ -8,9 +8,9 @@ import '../../domain/models/exercise.dart';
 import '../../domain/models/workout_item.dart';
 import '../../domain/state/perform_store.dart';
 import '../theme/colors.t.dart';
-import 'shared/workout_perform_exercise_details.dart';
-import 'shared/workout_perform_pageview_exercise_info.dart';
-import 'shared/workout_perform_pageview_menu.dart';
+import 'shared/workout_perform_exercise_details.w.dart';
+import 'shared/workout_perform_pageview_exercise_info.w.dart';
+import 'shared/workout_perform_pageview_menu.w.dart';
 
 class WorkoutItemPerformPageView extends StatefulWidget {
   final int pageIndex;

@@ -1,5 +1,6 @@
-import 'package:abs_up/presentation/widgets/shared/buttons.dart';
 import 'package:flutter/material.dart';
+
+import 'buttons.w.dart';
 
 class WorkoutPerformPageViewMenu extends StatelessWidget {
   final void Function() moreInfo;
@@ -20,22 +21,22 @@ class WorkoutPerformPageViewMenu extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        AppButtons.boxedSmallIconButton(
+        BoxedSmallIconButton(
             onTap: moreInfo,
             icon: Icons.info_outline,
             text: 'info',
             buttonType: ButtonTypes.other),
-        AppButtons.boxedSmallIconButton(
+        BoxedSmallIconButton(
             onTap: replaceExercise,
             icon: Icons.swap_horiz,
             text: 'replace',
             buttonType: ButtonTypes.other),
-        AppButtons.boxedSmallIconButton(
+        BoxedSmallIconButton(
             onTap: shuffleExercise,
             icon: Icons.shuffle,
             text: 'shuffle',
             buttonType: ButtonTypes.secondary),
-        AppButtons.boxedSmallIconButton(
+        BoxedSmallIconButton(
           onTap: skipToNext,
           icon: Icons.skip_next,
           text: 'skip',

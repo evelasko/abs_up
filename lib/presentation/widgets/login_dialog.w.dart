@@ -1,4 +1,3 @@
-import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,8 +6,9 @@ import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/auth_store.dart';
-import 'shared/app_full_logo.dart';
-import 'shared/buttons.dart';
+import '../theme/colors.t.dart';
+import 'shared/app_full_logo.w.dart';
+import 'shared/buttons.w.dart';
 
 InputDecoration authFormDecoration(
         {@required String labelText, @required IconData icon}) =>
@@ -93,7 +93,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 child: Column(
                   children: [
                     //= Login button
-                    AppButtons.primaryActionButton(
+                    PrimaryActionButton(
                         onTap: () => _authStore.logInWithEmailAndPassword(),
                         text: 'Login'),
                     Padding(

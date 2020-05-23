@@ -1,14 +1,15 @@
-import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/presentation/theme/colors.t.dart';
-import 'package:abs_up/presentation/theme/text.t.dart';
-import 'package:abs_up/services/p_data.s.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import '../widgets/exercises_blacklist_tabview.dart';
-import '../widgets/exercises_exercises_tabview.dart';
-import '../widgets/exercises_favorites_tabview.dart';
+
+import '../../domain/models/exercise.dart';
+import '../../services/p_data.s.dart';
+import '../theme/colors.t.dart';
+import '../theme/text.t.dart';
+import '../widgets/exercises_blacklist_tabview.w.dart';
+import '../widgets/exercises_exercises_tabview.w.dart';
+import '../widgets/exercises_favorites_tabview.w.dart';
 
 class ExercisePage extends StatelessWidget {
   final Box<Exercise> exercisesBox = PDataService.exercisesBox;

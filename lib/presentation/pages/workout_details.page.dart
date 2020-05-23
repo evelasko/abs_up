@@ -1,12 +1,15 @@
-import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../constants.dart';
+import '../../domain/models/workout.dart';
+import '../../domain/models/workout_item.dart';
 import '../../services/workout.s.dart';
 import '../theme/colors.t.dart';
-import '../widgets/shared/snackbars.dart';
-import '../widgets/shared/workout_details_menu.dart';
-import '../widgets/shared/workout_details_panel.dart';
-import '../widgets/shared/workout_items.dart';
+import '../widgets/shared/snackbars.w.dart';
+import '../widgets/shared/workout_details_menu.w.dart';
+import '../widgets/shared/workout_details_panel.w.dart';
+import '../widgets/shared/workout_items.w.dart';
 
 class WorkoutDetailsPage extends StatefulWidget {
   final String workoutKey;
@@ -53,71 +56,67 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO the statement below should be done by the WorkoutService
     final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
-
     final WorkoutService workoutService =
         WorkoutService(workoutKey: widget.workoutKey);
-    return Scaffold(
-      key: workoutDetailsScaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          isCurrent
-              ? 'Preview Workout'
-              : workoutService.currentWorkout.name ?? 'Preview Workout',
-          style: const TextStyle(
-              color: AppColors.coquelicot, fontWeight: FontWeight.w800),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              isCurrent ? Icons.save_alt : Icons.save,
+    return ValueListenableBuilder(
+      valueListenable: workoutService.listenable,
+      builder: (_, __, ___) => Scaffold(
+        key: workoutDetailsScaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            isCurrent
+                ? 'Preview Workout'
+                : workoutService.currentWorkout.name ?? 'Preview Workout',
+            style: const TextStyle(
+                color: AppColors.coquelicot, fontWeight: FontWeight.w800),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                isCurrent ? Icons.save_alt : Icons.save,
+              ),
+              iconSize: 30,
+              padding: const EdgeInsets.only(top: 6),
+              onPressed: () => isCurrent
+                  ? createSaveCurrentWorkoutAsDialog(context).then((name) {
+                      if (name == null) return;
+                      workoutService.saveCurrentWorkoutAs(name).then((value) =>
+                          workoutDetailsScaffoldKey.currentState
+                              .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
+                    })
+                  : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
             ),
-            iconSize: 30,
-            padding: const EdgeInsets.only(top: 6),
-            onPressed: () => isCurrent
-                ? createSaveCurrentWorkoutAsDialog(context).then((name) {
-                    if (name == null) return;
-                    workoutService.saveCurrentWorkoutAs(name).then((value) =>
-                        workoutDetailsScaffoldKey.currentState
-                            .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
-                  })
-                : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
-          )
-        ],
+          ],
+          //= Workout Details Panel
+          bottom: PreferredSize(
+            preferredSize: const Size(double.infinity, 100),
+            child: WorkoutDetailsPanel(
+              currentWorkout: workoutService.currentWorkout,
+              workoutSettings: workoutService.workoutSettings,
+            ),
+          ),
+        ),
+        //= Workout Reorderable Items List
+        body: Provider<Workout>(
+          create: (context) => workoutService.currentWorkout,
+          child: ReorderableListView(
+            onReorder: (oldIndex, newIndex) async =>
+                workoutService.currentWorkout.reorderItems(oldIndex, newIndex),
+            children: workoutService.currentWorkout.items
+                .map((item) => Provider<WorkoutItem>(
+                      key: Key('workoutItem:${item.exercise.key}'),
+                      create: (context) => item,
+                      child: WorkoutItemWidget(
+                        key: Key('workoutItem:${item.exercise.key}'),
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+        //= Menu Buttons
+        bottomNavigationBar: WorkoutDetailsMenu(workoutKey: widget.workoutKey),
       ),
-      //= Workout Listenable
-      body: ValueListenableBuilder(
-          valueListenable: workoutService.listenable,
-          builder: (_, __, ___) => Column(
-                children: <Widget>[
-                  //= Workout Details Panel
-                  WorkoutDetailsPanel(
-                    activeEquipment:
-                        workoutService.currentWorkout.equipmentTotal,
-                    averageDifficulty:
-                        workoutService.workoutSettings.difficultyString,
-                    averageIntensity:
-                        workoutService.workoutSettings.intensityString,
-                    totalDuration:
-                        workoutService.currentWorkout.totalDurationString,
-                  ),
-                  //= Workout Reorderable Items List
-                  Expanded(
-                      child: ReorderableListView(
-                    onReorder: (oldIndex, newIndex) async => workoutService
-                        .currentWorkout
-                        .reorderItems(oldIndex, newIndex),
-                    children: workoutService.currentWorkout.items
-                        .map((item) => WorkoutItemWidget(
-                            key: Key('workoutItem:${item.exercise.key}'),
-                            workoutItem: item))
-                        .toList(),
-                  )),
-                  //= Menu Buttons
-                  const WorkoutDetailsMenu()
-                ],
-              )),
     );
   }
 }

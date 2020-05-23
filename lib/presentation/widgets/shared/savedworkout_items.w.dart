@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../../theme/colors.t.dart';
 import '../../theme/text.t.dart';
-import 'equipment_row.dart';
-import 'wrappers.dart';
+import 'equipment_row.w.dart';
+import 'wrappers.w.dart';
 
 /// Renders Exercise List Item Body Content
 Widget savedWorkoutItem(BuildContext context, Workout workout) =>
-    listItemWrapper(
-      GestureDetector(
+    ListItemWrapper(
+      child: GestureDetector(
         onTap: () => Navigator.pushNamed(
             context,
             FluroRouter.getWorkoutDetailsLink(

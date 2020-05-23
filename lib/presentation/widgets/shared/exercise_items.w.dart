@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/models/exercise.dart';
 import '../../theme/colors.t.dart';
-import 'exercise_items_body.dart';
-import 'snackbars.dart';
-import 'swipable_actions.dart';
+import 'exercise_items_body.w.dart';
+import 'snackbars.w.dart';
+import 'swipable_actions.w.dart';
 
 /// Exercise Item Widget Class
 class ExerciseItem extends StatefulWidget {

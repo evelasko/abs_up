@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/models/exercise.dart';
 import '../../theme/colors.t.dart';
 import '../../theme/text.t.dart';
-import 'wrappers.dart';
+import 'wrappers.w.dart';
 
 Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
     ? const Icon(Icons.star, size: 13, color: Colors.limeAccent)
@@ -14,8 +14,8 @@ Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
 
 /// Renders Exercise List Item Body Content
 Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
-    listItemWrapper(
-      GestureDetector(
+    ListItemWrapper(
+      child: GestureDetector(
         onTap: () => Navigator.pushNamed(
             context,
             FluroRouter.getExerciseDetailsLink(

@@ -40,44 +40,24 @@ T buttonSideCase<T>(
   }
 }
 
-class AppButtons {
-  /// Main Accent Button
-  static Widget accentButton() => Container(
-        height: 50.0,
-        child: RaisedButton(
-          elevation: 0,
-          onPressed: () {},
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-          padding: const EdgeInsets.all(0.0),
-          child: Ink(
-            decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.circular(30.0)),
-            child: Container(
-              constraints:
-                  const BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
-              alignment: Alignment.center,
-              child: const Text(
-                "Login",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-      );
+final BoxDecoration homePageButtonDecoration =
+    BoxDecoration(border: Border.all(width: 1, color: AppColors.greyDark));
 
-  /// Home Page Menu Buttons
-  static BoxDecoration homePageButtonDecoration =
-      BoxDecoration(border: Border.all(width: 1, color: AppColors.greyDark));
+class HomePageButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final ButtonSide buttonSide;
+  const HomePageButton({
+    Key key,
+    this.onTap,
+    this.icon,
+    this.text,
+    this.buttonSide,
+  }) : super(key: key);
 
-  static Widget homePageButton(
-          {@required VoidCallback onTap,
-          @required IconData icon,
-          @required String text,
-          ButtonSide buttonSide}) =>
-      GestureDetector(
+  @override
+  Widget build(BuildContext context) => GestureDetector(
         onTap: onTap,
         child: Container(
           width: 100,
@@ -106,13 +86,53 @@ class AppButtons {
           ),
         ),
       );
+}
 
-  static Widget boxedBigIconButton(
-          {@required VoidCallback onTap,
-          @required IconData icon,
-          String text,
-          ButtonTypes buttonType = ButtonTypes.primary}) =>
-      Container(
+class AccentButton extends StatelessWidget {
+  const AccentButton({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => Container(
+        height: 50.0,
+        child: RaisedButton(
+          elevation: 0,
+          onPressed: () {},
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+          padding: const EdgeInsets.all(0.0),
+          child: Ink(
+            decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(30.0)),
+            child: Container(
+              constraints:
+                  const BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
+              alignment: Alignment.center,
+              child: const Text(
+                "Login",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class BoxedBigIconButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final ButtonTypes buttonType;
+  const BoxedBigIconButton({
+    Key key,
+    @required this.onTap,
+    @required this.icon,
+    this.text,
+    this.buttonType = ButtonTypes.primary,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
         width: 100,
         height: 100,
         child: RaisedButton(
@@ -158,13 +178,23 @@ class AppButtons {
           ),
         ),
       );
+}
 
-  static Widget boxedSmallIconButton(
-          {@required VoidCallback onTap,
-          @required IconData icon,
-          String text,
-          ButtonTypes buttonType = ButtonTypes.primary}) =>
-      Container(
+class BoxedSmallIconButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final ButtonTypes buttonType;
+  const BoxedSmallIconButton({
+    Key key,
+    @required this.onTap,
+    @required this.icon,
+    this.text,
+    this.buttonType = ButtonTypes.primary,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
         width: 68,
         height: 68,
         child: RaisedButton(
@@ -228,13 +258,23 @@ class AppButtons {
           ),
         ),
       );
+}
 
-  static Widget primaryActionButton(
-          {@required VoidCallback onTap,
-          @required String text,
-          IconData icon,
-          ButtonTypes buttonType = ButtonTypes.primary}) =>
-      Container(
+class PrimaryActionButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final ButtonTypes buttonType;
+  const PrimaryActionButton(
+      {Key key,
+      @required this.onTap,
+      this.icon,
+      this.text,
+      this.buttonType = ButtonTypes.primary})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         child: GestureDetector(
           onTap: onTap,
@@ -274,13 +314,23 @@ class AppButtons {
           ),
         ),
       );
+}
 
-  static Widget secondaryActionButton(
-          {@required VoidCallback onTap,
-          @required String text,
-          IconData icon,
-          ButtonTypes buttonType = ButtonTypes.primary}) =>
-      Container(
+class SecondaryActionButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String text;
+  final ButtonTypes buttonType;
+  const SecondaryActionButton(
+      {Key key,
+      @required this.onTap,
+      this.icon,
+      this.text,
+      this.buttonType = ButtonTypes.primary})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),
         child: GestureDetector(
           onTap: onTap,
