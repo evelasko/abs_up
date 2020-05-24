@@ -2,31 +2,21 @@ import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
 
-// TODO Implement the empty list feedback content widgets
-Widget emptyListFeedbackExercises = Container(
-  color: AppColors.greyLight,
-  child: const Center(
-    child: Text(
-      'There is no exercises loaded yet...',
-      style: AppTextStyles.emptyListFeedbackBody,
-    ),
-  ),
-);
-Widget emptyListFeedbackFavorites = Container(
-  color: AppColors.greyLight,
-  child: const Center(
-    child: Text(
-      'There is no favorited exercise yet...',
-      style: AppTextStyles.emptyListFeedbackBody,
-    ),
-  ),
-);
-Widget emptyListFeedbackBlacklist = Container(
-  color: AppColors.greyLight,
-  child: const Center(
-    child: Text(
-      'There is no blacklisted exercise yet...',
-      style: AppTextStyles.emptyListFeedbackBody,
-    ),
-  ),
-);
+class EmptyListFeedback extends StatelessWidget {
+  final String message;
+  const EmptyListFeedback(
+    this.message, {
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: AppColors.greyLight,
+        child: Center(
+          child: Text(
+            message,
+            style: AppTextStyles.emptyListFeedbackBody,
+          ),
+        ),
+      );
+}

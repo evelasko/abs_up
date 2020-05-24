@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../domain/models/exercise.dart';
+import '../../router/routes.dart';
 import '../../theme/colors.t.dart';
 import 'exercise_items_body.w.dart';
 import 'snackbars.w.dart';
@@ -18,14 +18,6 @@ class ExerciseItem extends StatefulWidget {
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
-  GlobalKey<ScaffoldState> parentScaffold;
-// ScaffoldFeatureController<SnackBar, SnackBarClosedReason> currentSnackBar;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    parentScaffold ??= Provider.of<GlobalKey<ScaffoldState>>(context);
-  }
-
   /// Action for non dissmisible list items:
   /// these actions will be performed by the Dissmissible
   /// but the items won't be dissmised from the list
@@ -50,28 +42,24 @@ class _ExerciseItemState extends State<ExerciseItem> {
 
   /// Remove exercise tag (either from favorites or blacklist)
   /// and show provided snackbar
-  Future<void> removeExerciseTag(BuildContext context) async {
+  Future<void> removeExerciseTag() async {
     if (widget.exercise.tag > 0) {
       await widget.exercise.removeTag();
-      parentScaffold.currentState.showSnackBar(widget.exercise.tag == 1
+      Scaffold.of(context).removeCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(widget.exercise.tag == 1
           ? AppSnackbars.favoriteRemoved
           : AppSnackbars.blacklistRemoved);
     }
   }
 
-  /// Renders an Exercise list item
-  Widget exerciseItem(
-          {@required String key,
-          @required Exercise exercise,
-          @required Future<bool> Function(DismissDirection) confirmDismiss}) =>
-      Dismissible(
-          key: Key(key),
-          background: SwipableActions.background(
-              Colors.green, Icons.favorite, 'favorite'),
-          secondaryBackground: SwipableActions.secondaryBackground(
-              Colors.red, Icons.not_interested, 'add to\nblacklist'),
-          confirmDismiss: confirmDismiss,
-          child: exerciseItemBody(context, exercise));
+  /// Default callback for tapping the exercise item
+  /// navigates to item's details
+  void navigateToDetails() => Navigator.pushNamed(
+        context,
+        FluroRouter.getExerciseDetailsLink(
+          exerciseKey: widget.exercise.key.toString(),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +81,13 @@ class _ExerciseItemState extends State<ExerciseItem> {
             confirmDismiss: (direction) async {
               // if it's not in favorites or blacklist page
               // do the action without dissmising the item
-              if (!isDismissable) await removeExerciseTag(context);
+              if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => removeExerciseTag(context),
-            child: exerciseItemBody(context, widget.exercise));
+            onDismissed: (direction) async => removeExerciseTag(),
+            child: GestureDetector(
+                onTap: navigateToDetails,
+                child: ExerciseItemBody(widget.exercise)));
 
       /// Blacklist Exercise Item
       case 2:
@@ -107,18 +97,26 @@ class _ExerciseItemState extends State<ExerciseItem> {
             background: SwipableActions.secondaryBackground(
                 AppColors.brandeis, Icons.thumb_up, 'remove from\nblacklist'),
             confirmDismiss: (direction) async {
-              if (!isDismissable) await removeExerciseTag(context);
+              if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },
-            onDismissed: (direction) async => removeExerciseTag(context),
-            child: exerciseItemBody(context, widget.exercise));
+            onDismissed: (direction) async => removeExerciseTag(),
+            child: GestureDetector(
+                onTap: navigateToDetails,
+                child: ExerciseItemBody(widget.exercise)));
 
       /// Exercise Item
       default:
-        return exerciseItem(
-            key: widget.exercise.key.toString(),
-            exercise: widget.exercise,
-            confirmDismiss: _addToFavoriteOrBlacklist);
+        return Dismissible(
+            key: Key(widget.exercise.key.toString()),
+            background: SwipableActions.background(
+                Colors.green, Icons.favorite, 'favorite'),
+            secondaryBackground: SwipableActions.secondaryBackground(
+                Colors.red, Icons.not_interested, 'add to\nblacklist'),
+            confirmDismiss: _addToFavoriteOrBlacklist,
+            child: GestureDetector(
+                onTap: navigateToDetails,
+                child: ExerciseItemBody(widget.exercise)));
     }
   }
 }

@@ -16,14 +16,15 @@ class ExercisesFavoritesTabView extends StatelessWidget {
     final List<Exercise> exerciseList = exerciseBox.values
         .where((exercise) => exercise.tag == ExerciseTag.favorited.index)
         .toList();
-    if (exerciseList.isEmpty) return emptyListFeedbackFavorites;
-    return Column(children: <Widget>[
-      Expanded(
-          child: ListView.builder(
-              itemCount: exerciseList.length,
-              itemBuilder: (_, index) => ExerciseItem(
-                  key: Key('favoritesList:${exerciseList[index].key}'),
-                  exercise: exerciseList[index]))),
-    ]);
+    return exerciseList.isEmpty
+        ? const EmptyListFeedback('There is no favorited exercise')
+        : Column(children: <Widget>[
+            Expanded(
+                child: ListView.builder(
+                    itemCount: exerciseList.length,
+                    itemBuilder: (_, index) => ExerciseItem(
+                        key: Key('favoritesList:${exerciseList[index].key}'),
+                        exercise: exerciseList[index]))),
+          ]);
   }
 }

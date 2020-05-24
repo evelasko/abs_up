@@ -1,25 +1,20 @@
-import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
 import '../../theme/colors.t.dart';
 import '../../theme/text.t.dart';
+import 'exercise_tag.w.dart';
 import 'wrappers.w.dart';
 
-Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
-    ? const Icon(Icons.star, size: 13, color: Colors.limeAccent)
-    : tag == ExerciseTag.blacklisted.index
-        ? const Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
-        : Container();
+class ExerciseItemBody extends StatelessWidget {
+  final Exercise exercise;
+  const ExerciseItemBody(
+    this.exercise, {
+    Key key,
+  }) : super(key: key);
 
-/// Renders Exercise List Item Body Content
-Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
-    ListItemWrapper(
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(
-            context,
-            FluroRouter.getExerciseDetailsLink(
-                exerciseKey: exercise.key.toString())),
+  @override
+  Widget build(BuildContext context) => ListItemWrapper(
         child: Card(
           color: Colors.transparent,
           elevation: 0,
@@ -37,7 +32,8 @@ Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
                     image: AssetImage('assets/exercise_images/_default.jpg'),
                     fit: BoxFit.cover,
                   ),
-                  Positioned(top: 4, left: 4, child: exerciseTag(exercise.tag))
+                  Positioned(
+                      top: 4, left: 4, child: ExerciseTagWidget(exercise.tag))
                 ]),
               ),
               //= Exercise content
@@ -106,5 +102,5 @@ Widget exerciseItemBody(BuildContext context, Exercise exercise) =>
             ],
           ),
         ),
-      ),
-    );
+      );
+}

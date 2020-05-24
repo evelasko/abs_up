@@ -36,63 +36,59 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
             .where((exercise) => exercise.name
                 .contains(RegExp(searchString, caseSensitive: false)))
             .toList();
-    if (exerciseList.isEmpty) return emptyListFeedbackExercises;
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: CustomScrollView(slivers: [
-            /// Sliver Search Bar
-            SliverAppBar(
-              pinned: searchString != null,
-              // ignore: avoid_redundant_argument_values
-              leading: null,
-              automaticallyImplyLeading: false,
-              expandedHeight: 50.0,
-              primary: false,
-              actions: <Widget>[
-                IconButton(
-                    icon: Icon(
-                      Icons.filter_list,
-                      color: showFilters ? AppColors.rudy : AppColors.greyDark,
-                    ),
-                    onPressed: _toggleShowFilters)
-              ],
-
-              /// Search Bar
-              title: Container(
-                height: 30,
-                margin: const EdgeInsets.only(right: 30),
-                child: TextField(
-                  // TODO the search mechanismo is not working properly... consider changing the method that triggers the search
-                  onChanged: _updateSearchString,
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                      )),
-                ),
-              ),
-              backgroundColor: AppColors.greyLightest,
-            ),
-
-            /// Sliver List
-            SliverFixedExtentList(
-              itemExtent: 90.0,
-              delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) => ExerciseItem(
-                        key: Key('exerciseList:${exerciseList[index].key}'),
-                        exercise: exerciseList[index],
+    return exerciseList.isEmpty
+        ? const EmptyListFeedback('No exercises found...')
+        : Container(
+            padding: const EdgeInsets.only(bottom: 40),
+            child: CustomScrollView(slivers: [
+              /// Sliver Search Bar
+              SliverAppBar(
+                pinned: searchString != null,
+                // ignore: avoid_redundant_argument_values
+                leading: null,
+                automaticallyImplyLeading: false,
+                expandedHeight: 50.0,
+                primary: false,
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(
+                        Icons.filter_list,
+                        color:
+                            showFilters ? AppColors.rudy : AppColors.greyDark,
                       ),
-                  childCount: exerciseList.length),
-            )
-          ]),
-        ),
-        Container(
-          height: 20,
-        )
-      ],
-    );
+                      onPressed: _toggleShowFilters)
+                ],
+
+                /// Search Bar
+                title: Container(
+                  height: 30,
+                  margin: const EdgeInsets.only(right: 30),
+                  child: TextField(
+                    // TODO the search mechanismo is not working properly... consider changing the method that triggers the search
+                    onChanged: _updateSearchString,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
+                        )),
+                  ),
+                ),
+                backgroundColor: AppColors.greyLightest,
+              ),
+
+              /// Sliver List
+              SliverFixedExtentList(
+                itemExtent: 90.0,
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) => ExerciseItem(
+                          key: Key('exerciseList:${exerciseList[index].key}'),
+                          exercise: exerciseList[index],
+                        ),
+                    childCount: exerciseList.length),
+              )
+            ]),
+          );
   }
 }

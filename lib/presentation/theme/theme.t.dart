@@ -16,4 +16,13 @@ final ThemeData appTheme = ThemeData(
 
   /// Widgets Theme
   appBarTheme: AppBarTheme(textTheme: textTheme()),
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: AppColors.greyDarkest,
+    actionTextColor: Colors.white,
+    contentTextStyle: TextStyle(
+      fontFamily: 'Montserrat',
+      color: Colors.white,
+      fontSize: 14,
+    ),
+  ),
 );
