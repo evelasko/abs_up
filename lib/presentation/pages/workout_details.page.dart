@@ -29,12 +29,24 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              backgroundColor: AppColors.greyLight,
               title: const Text(
-                'Set Workout Name',
-                style: TextStyle(color: AppColors.greyDark),
+                'Type Workout Name',
+                style: TextStyle(
+                    color: AppColors.greyDark, fontWeight: FontWeight.w700),
               ),
               content: TextField(
+                autocorrect: false,
+                autofocus: true,
                 controller: savedWorkoutNameController,
+                decoration: const InputDecoration(
+                    border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.greyLightest))),
+                style: const TextStyle(
+                    color: AppColors.greyDark,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18),
               ),
               actions: <Widget>[
                 MaterialButton(
