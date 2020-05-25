@@ -1,10 +1,16 @@
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/presentation/widgets/shared/snackbars.w.dart';
+import 'package:abs_up/services/p_data.s.dart';
+import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../constants.dart';
+// import '../../domain/interfaces/data_values.dart';
+// import '../../domain/interfaces/i_hive_facade.dart';
+// import '../../domain/interfaces/i_workout_facade.dart';
 import '../../domain/models/workout.dart';
-import '../../domain/models/workout_item.dart';
-import '../../services/workout.s.dart';
+import '../../domain/models/workout_settings.dart';
 import '../theme/colors.t.dart';
 import '../widgets/shared/snackbars.w.dart';
 import '../widgets/shared/workout_details_menu.w.dart';
@@ -29,24 +35,12 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: AppColors.greyLight,
               title: const Text(
-                'Type Workout Name',
-                style: TextStyle(
-                    color: AppColors.greyDark, fontWeight: FontWeight.w700),
+                'Set Workout Name',
+                style: TextStyle(color: AppColors.greyDark),
               ),
               content: TextField(
-                autocorrect: false,
-                autofocus: true,
                 controller: savedWorkoutNameController,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.greyLightest))),
-                style: const TextStyle(
-                    color: AppColors.greyDark,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18),
               ),
               actions: <Widget>[
                 MaterialButton(
@@ -68,67 +62,70 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
     final WorkoutService workoutService =
-        WorkoutService(workoutKey: widget.workoutKey);
-    return ValueListenableBuilder(
-      valueListenable: workoutService.listenable,
-      builder: (_, __, ___) => Scaffold(
-        key: workoutDetailsScaffoldKey,
-        appBar: AppBar(
-          title: Text(
-            isCurrent
-                ? 'Preview Workout'
-                : workoutService.currentWorkout.name ?? 'Preview Workout',
-            style: const TextStyle(
-                color: AppColors.coquelicot, fontWeight: FontWeight.w800),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                isCurrent ? Icons.save_alt : Icons.save,
-              ),
-              iconSize: 30,
-              padding: const EdgeInsets.only(top: 6),
-              onPressed: () => isCurrent
-                  ? createSaveCurrentWorkoutAsDialog(context).then((name) {
-                      if (name == null) return;
-                      workoutService.saveCurrentWorkoutAs(name).then((value) =>
-                          workoutDetailsScaffoldKey.currentState
-                              .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
-                    })
-                  : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
-            ),
-          ],
-          //= Workout Details Panel
-          bottom: PreferredSize(
-            preferredSize: const Size(double.infinity, 100),
-            child: WorkoutDetailsPanel(
-              currentWorkout: workoutService.currentWorkout,
-              workoutSettings: workoutService.workoutSettings,
-            ),
-          ),
+        WorkoutService(workoutKey: widget.workoutKey ?? CURRENT_WORKOUT_KEY);
+    final Workout workout = workoutService.currentWorkout;
+    final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
+
+    return Scaffold(
+      key: workoutDetailsScaffoldKey,
+      appBar: AppBar(
+        title: Text(
+          isCurrent ? 'Preview Workout' : workout?.name ?? 'Preview Workout',
+          style: const TextStyle(
+              color: AppColors.coquelicot, fontWeight: FontWeight.w800),
         ),
-        //= Workout Reorderable Items List
-        body: Provider<Workout>(
-          create: (context) => workoutService.currentWorkout,
-          child: ReorderableListView(
-            onReorder: (oldIndex, newIndex) async =>
-                workoutService.currentWorkout.reorderItems(oldIndex, newIndex),
-            children: workoutService.currentWorkout.items
-                .map((item) => Provider<WorkoutItem>(
-                      key: Key('workoutItem:${item.exercise.key}'),
-                      create: (context) => item,
-                      child: WorkoutItemWidget(
-                        key: Key('workoutItem:${item.exercise.key}'),
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
-        //= Menu Buttons
-        bottomNavigationBar: WorkoutDetailsMenu(workoutKey: widget.workoutKey),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              isCurrent ? Icons.save_alt : Icons.save,
+            ),
+            iconSize: 30,
+            padding: const EdgeInsets.only(top: 6),
+            onPressed: () => isCurrent
+                ? createSaveCurrentWorkoutAsDialog(context).then((name) {
+                    if (name == null) return;
+                    workoutService.saveCurrentWorkoutAs(name).then((value) =>
+                        workoutDetailsScaffoldKey.currentState
+                            .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
+                  })
+                : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
+          )
+        ],
       ),
+      //= Workout Listenable
+      body: ValueListenableBuilder(
+          valueListenable: PDataService.workoutsBox
+              .listenable(keys: [widget.workoutKey ?? CURRENT_WORKOUT_KEY]),
+          builder: (context, Box<Workout> box, _) {
+            final Workout currentWorkout =
+                box.get(widget.workoutKey ?? CURRENT_WORKOUT_KEY);
+            final WorkoutSettings workoutSettings =
+                workoutService.workoutSettings;
+
+            return Column(
+              children: <Widget>[
+                //= Workout Details Panel
+                WorkoutDetailsPanel(
+                  currentWorkout: currentWorkout,
+                  workoutSettings: workoutSettings,
+                ),
+                //= Workout Reorderable Items List
+                Expanded(
+                    child: ReorderableListView(
+                  onReorder: (oldIndex, newIndex) async =>
+                      currentWorkout.reorderItems(oldIndex, newIndex),
+                  children: currentWorkout.items
+                      .map((item) => WorkoutItemWidget(
+                          key: Key('workoutItem:${item.exercise.key}'),
+                          workoutItem: item))
+                      .toList(),
+                )),
+                //= Menu Buttons
+                const WorkoutDetailsMenu()
+              ],
+            );
+          }),
     );
   }
 }

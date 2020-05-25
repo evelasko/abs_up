@@ -1,6 +1,6 @@
-import 'package:abs_up/presentation/theme/colors.t.dart';
-import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
+
+import '../../theme/text.t.dart';
 
 class EmptyListFeedback extends StatelessWidget {
   final String message;
@@ -10,13 +10,10 @@ class EmptyListFeedback extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: AppColors.greyLight,
-        child: Center(
-          child: Text(
-            message,
-            style: AppTextStyles.emptyListFeedbackBody,
-          ),
+  Widget build(BuildContext context) => Center(
+        child: Text(
+          message,
+          style: AppTextStyles.emptyListFeedbackBody,
         ),
       );
 }

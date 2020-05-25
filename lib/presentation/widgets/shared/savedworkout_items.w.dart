@@ -9,6 +9,7 @@ import 'wrappers.w.dart';
 
 /// Renders Exercise List Item Body Content
 Widget savedWorkoutItem(BuildContext context, Workout workout) =>
+    // TODO make saved workout items dissmissible to delete
     ListItemWrapper(
       child: GestureDetector(
         onTap: () => Navigator.pushNamed(
@@ -34,8 +35,9 @@ Widget savedWorkoutItem(BuildContext context, Workout workout) =>
                         overflow: TextOverflow.ellipsis,
                         text: TextSpan(
                           text: workout.name,
-                          style: AppTextStyles.savedWorkoutTitle
-                              .copyWith(fontFamily: 'Montserrat'),
+                          style: AppTextStyles.savedWorkoutTitle.copyWith(
+                              fontFamily: 'Montserrat',
+                              color: AppColors.greyLight),
                         )),
 
                     //= Workout Equipment
@@ -44,8 +46,8 @@ Widget savedWorkoutItem(BuildContext context, Workout workout) =>
                       child: equipmentRowContent(
                           activeEquipment: workout.equipmentTotal,
                           iconSize: 28,
-                          baseColor: AppColors.greyLight,
-                          activeColor: AppColors.coquelicot),
+                          baseColor: AppColors.greyDarkest,
+                          activeColor: AppColors.greyLightest),
                     ),
 
                     //= Workout intensity & difficulty
@@ -69,19 +71,22 @@ Widget savedWorkoutItem(BuildContext context, Workout workout) =>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(workout.totalDurationString,
-                        style: AppTextStyles.savedWorkoutTitle
-                            .copyWith(fontWeight: FontWeight.w800)),
+                    Text(
+                      workout.totalDurationString,
+                      style: AppTextStyles.savedWorkoutTitle.copyWith(
+                          fontWeight: FontWeight.w800, color: AppColors.grey),
+                    ),
                     RichText(
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         text: TextSpan(
+                            // TODO define the final saved workout items content
                             text: '1 mont ago',
                             style: AppTextStyles.savedWorkoutTitle.copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 13,
-                                color: AppColors.rudy))),
+                                color: AppColors.grey))),
                   ],
                 ),
               )

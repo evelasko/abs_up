@@ -8,14 +8,27 @@ final ThemeData appTheme = ThemeData(
   textTheme: textTheme(),
 
   /// Color Theme
-  canvasColor: Colors.transparent,
-  scaffoldBackgroundColor: Colors.white,
+  canvasColor: AppColors.greyDark, // Colors.transparent,
+  scaffoldBackgroundColor: AppColors.greyDark,
+  backgroundColor: AppColors.greyLightest,
   colorScheme: colorScheme(),
   primaryColor: AppColors.greyDarkest,
   accentColor: AppColors.coquelicot,
 
   /// Widgets Theme
-  appBarTheme: AppBarTheme(textTheme: textTheme()),
+  appBarTheme: AppBarTheme(
+    color: AppColors.greyDarkest,
+    textTheme: textTheme(),
+  ),
+  bottomAppBarColor: AppColors.greyDarkest,
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      elevation: 0,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: AppColors.greyDarkest,
+      selectedItemColor: AppColors.coquelicot,
+      selectedLabelStyle: TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+      unselectedLabelStyle:
+          TextStyle(fontSize: 10, fontWeight: FontWeight.w300)),
   snackBarTheme: const SnackBarThemeData(
     backgroundColor: AppColors.greyDarkest,
     actionTextColor: Colors.white,

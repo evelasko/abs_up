@@ -38,9 +38,8 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
             .toList();
     return exerciseList.isEmpty
         ? const EmptyListFeedback('No exercises found...')
-        : Container(
-            padding: const EdgeInsets.only(bottom: 40),
-            child: CustomScrollView(slivers: [
+        : CustomScrollView(
+            slivers: [
               /// Sliver Search Bar
               SliverAppBar(
                 pinned: searchString != null,
@@ -88,7 +87,7 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
                         ),
                     childCount: exerciseList.length),
               )
-            ]),
+            ],
           );
   }
 }

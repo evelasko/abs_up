@@ -1,9 +1,8 @@
+import 'package:abs_up/domain/models/workout_item.dart';
+import 'package:abs_up/presentation/router/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
-import '../../../domain/models/workout.dart';
-import '../../../domain/models/workout_item.dart';
-import '../../router/routes.dart';
 import '../../theme/colors.t.dart';
 import '../../theme/text.t.dart';
 import 'wrappers.w.dart';
@@ -14,30 +13,20 @@ Widget exerciseTag(int tag) => tag == ExerciseTag.favorited.index
         ? const Icon(Icons.thumb_down, size: 13, color: AppColors.coquelicot)
         : Container();
 
-class WorkoutItemBody extends StatelessWidget {
-  final WorkoutItem workoutItem;
-  final Workout workout;
-  const WorkoutItemBody(
-      {Key key, @required this.workoutItem, @required this.workout})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final int itemIndex = workout.items.indexOf(workoutItem);
-
-    return ListSmallItemWrapper(
+/// Renders Workout Item Body Content
+Widget workoutItemBody(BuildContext context, WorkoutItem workoutItem) =>
+    ListSmallItemWrapper(
       child: GestureDetector(
         // TODO on tapping a workout item should send to a bottom sheet view of the workout item...
         onTap: () => Navigator.pushNamed(
-          context,
-          FluroRouter.getWorkoutItemDetailsLink(
-              workoutKey: workout.key.toString(), itemIndex: itemIndex),
-        ),
+            context,
+            FluroRouter.getExerciseDetailsLink(
+                exerciseKey: workoutItem.exercise.key.toString())),
         child: Container(
           padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
           color: workoutItem.exercise.name == 'Rest'
-              ? AppColors.grey
-              : AppColors.greyDark,
+              ? AppColors.greyLight
+              : Colors.white,
           key: Key('contentItem:${workoutItem.exercise.key}'),
           child: Row(
             children: <Widget>[
@@ -132,15 +121,12 @@ class WorkoutItemBody extends StatelessWidget {
               //= Reorder Handle
               Container(
                 width: 24,
-                margin: const EdgeInsets.only(right: 7),
+                margin: const EdgeInsets.only(right: 10),
                 child: const Center(
-                    child:
-                        Icon(Icons.drag_handle, color: AppColors.greyDarkest)),
+                    child: Icon(Icons.drag_handle, color: AppColors.greyDark)),
               )
             ],
           ),
         ),
       ),
     );
-  }
-}

@@ -15,14 +15,12 @@ class ExerciseItemBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListItemWrapper(
-        child: Card(
-          color: Colors.transparent,
-          elevation: 0,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           key: Key('contentItem:${exercise.key}'),
           child: Row(
             children: <Widget>[
               //= Exercise Image
-              // IUserSettingsFacade.isFavorite(key) ?
               Container(
                 width: 70,
                 height: 70,

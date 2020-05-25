@@ -1,19 +1,19 @@
-import 'package:abs_up/presentation/pages/about.page.dart';
-import 'package:abs_up/presentation/pages/feedback_contact.page.dart';
-import 'package:abs_up/presentation/pages/help_support.page.dart';
-import 'package:abs_up/presentation/pages/settings.page.dart';
-import 'package:abs_up/presentation/pages/workout_item_details.page.dart';
-import 'package:abs_up/presentation/pages/workout_perform.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
+import '../pages/about.page.dart';
 import '../pages/exercise_details.page.dart';
 import '../pages/exercises.page.dart';
+import '../pages/feedback_contact.page.dart';
+import '../pages/help_support.page.dart';
 import '../pages/home.page.dart';
+import '../pages/settings.page.dart';
 import '../pages/workout_details.page.dart';
-import '../pages/workout_list.page.dart';
+import '../pages/workout_item_details.page.dart';
 import '../pages/workout_logs.page.dart';
+import '../pages/workout_perform.page.dart';
+import '../pages/workouts.page.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class FluroRouter {
@@ -22,12 +22,12 @@ class FluroRouter {
   //= Home
   static final Handler _home = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          HomePage());
+          const HomePage());
 
   //= Exercise List
   static final Handler _exerciseList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          ExercisePage());
+          ExercisesPage());
 
   //= Exercise Details
   static const exerciseDetailsLink = '$EXERCISE_DETAILS_LINK:exerciseKey';
@@ -53,11 +53,12 @@ class FluroRouter {
   //= Workout List
   static final Handler _workoutList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutListPage());
+          WorkoutsPage());
 
   //= Workout Details
   static const workoutDetailsLink = '$WORKOUT_DETAILS_LINK:workoutKey';
-  static String getWorkoutDetailsLink({String workoutKey}) =>
+  static String getWorkoutDetailsLink(
+          {String workoutKey = CURRENT_WORKOUT_KEY}) =>
       workoutDetailsLink.replaceFirst(':workoutKey', workoutKey);
   static final Handler _workoutDetails = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>

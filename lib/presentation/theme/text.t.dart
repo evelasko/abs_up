@@ -28,7 +28,7 @@ class AppTextStyles {
       fontFamily: 'Montserrat',
       fontSize: 15,
       fontWeight: FontWeight.w600,
-      color: AppColors.greyDarkest);
+      color: AppColors.greyLight);
   static const TextStyle listItemTitleAccent = TextStyle(
       fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.coquelicot);
   static const TextStyle listItemBottomInfo = TextStyle(
@@ -42,8 +42,8 @@ class AppTextStyles {
       fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.greyDarkest);
   static const TextStyle homeButtonText = TextStyle(
       fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.greyLight);
-  static const TextStyle emptyListFeedbackBody = TextStyle(
-      fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.greyDarkest);
+  static const TextStyle emptyListFeedbackBody =
+      TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white);
   static const TextStyle tabHeader =
       TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w700);
 
