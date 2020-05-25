@@ -54,12 +54,13 @@ class WorkoutItemBody extends StatelessWidget {
                               AssetImage('assets/exercise_images/_default.jpg'),
                           fit: BoxFit.cover,
                         ),
+                  //= Item Number Badge
                   Center(
                       child: Text(
                     workoutItem.order.toString(),
                     style: const TextStyle(
                         height: 1.05,
-                        color: Colors.white60,
+                        color: Colors.black38,
                         fontSize: 50,
                         fontWeight: FontWeight.w800),
                   ))
@@ -104,7 +105,7 @@ class WorkoutItemBody extends StatelessWidget {
                               padding: EdgeInsets.only(right: 4),
                               child: Icon(
                                 Icons.timer,
-                                color: AppColors.coquelicot,
+                                color: AppColors.greyLightest,
                                 size: 10,
                               ),
                             ),
@@ -112,7 +113,7 @@ class WorkoutItemBody extends StatelessWidget {
                             Text(
                               '${workoutItem.duration} s',
                               style: AppTextStyles.listItemBottomInfo
-                                  .copyWith(color: AppColors.coquelicot),
+                                  .copyWith(color: AppColors.greyLightest),
                             ),
                           ],
                         )
