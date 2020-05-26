@@ -28,4 +28,6 @@ class ExerciseService implements ExerciseInterface {
 
   @override
   Future<void> updateExerciseList() async {}
+
+  List<Exercise> get allExercises => exercisesBox.values.toList();
 }

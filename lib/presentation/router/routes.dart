@@ -37,6 +37,14 @@ class FluroRouter {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           ExerciseDetailsPage(params['exerciseKey'][0].toString()));
 
+  //= Exercise Add To Workout
+  static const exerciseAddToWorkoutLink = '$EXERCISE_ADD_TO_LINK:workoutKey';
+  static String getExerciseAddToWorkoutLink({String workoutKey}) =>
+      exerciseAddToWorkoutLink.replaceFirst(':workoutKey', workoutKey);
+  static final Handler _exerciseAddToWorkout = Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+          ExercisesPage(workoutKey: params['workoutKey'][0].toString()));
+
   //= Workout Item Details
   static const workoutItemDetailsLink =
       '$WORKOUT_ITEM_DETAILS_LINK:workoutKey/:itemIndex';
@@ -110,6 +118,10 @@ class FluroRouter {
     //= Exercise Details
     router.define(exerciseDetailsLink,
         handler: _exerciseDetails, transitionType: TransitionType.inFromBottom);
+    //= Exercise Add To Workout
+    router.define(exerciseAddToWorkoutLink,
+        handler: _exerciseAddToWorkout,
+        transitionType: TransitionType.inFromRight);
     //= Workout List
     router.define(WORKOUT_LIST_LINK,
         handler: _workoutList, transitionType: TransitionType.inFromRight);

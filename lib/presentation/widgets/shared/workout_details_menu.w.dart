@@ -1,6 +1,7 @@
+import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
 import '../../../services/workout.s.dart';
 import '../../router/routes.dart';
 import '../../theme/colors.t.dart';
@@ -8,6 +9,7 @@ import '../../utils/choice.dart';
 import '../home_bottomsheet_workoutsettings.w.dart';
 import 'buttons.w.dart';
 
+/// consumes: WorkoutService
 class WorkoutDetailsMenu extends StatelessWidget {
   final String workoutKey;
   const WorkoutDetailsMenu({
@@ -17,8 +19,8 @@ class WorkoutDetailsMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WorkoutService workoutService = WorkoutService();
-    final bool isCurrent = workoutKey == CURRENT_WORKOUT_KEY;
+    final WorkoutService workoutService = Provider.of<WorkoutService>(context);
+
     return Container(
       width: double.infinity,
       height: 150,
@@ -33,18 +35,18 @@ class WorkoutDetailsMenu extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 choiceWidget(
-                    isCurrent,
+                    workoutService.isCurrent,
                     Expanded(
                       child: IconButton(
                         icon: const Icon(Icons.shuffle),
                         color: AppColors.greyLight,
-                        onPressed: isCurrent
+                        onPressed: workoutService.isCurrent
                             ? workoutService.generateCurrentWorkout
                             : null,
                       ),
                     )),
                 choiceWidget(
-                    isCurrent,
+                    workoutService.isCurrent,
                     Expanded(
                       child: IconButton(
                           icon: const Icon(Icons.tune),
@@ -66,7 +68,10 @@ class WorkoutDetailsMenu extends StatelessWidget {
                       icon: const Icon(Icons.add_circle_outline),
                       color: AppColors.greyLight,
                       // TODO add exercise to workout in workout details view
-                      onPressed: () {}),
+                      onPressed: () => Navigator.pushNamed(
+                          context,
+                          FluroRouter.getExerciseAddToWorkoutLink(
+                              workoutKey: workoutService.workoutKey))),
                 )
               ],
             ),

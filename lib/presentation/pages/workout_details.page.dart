@@ -1,12 +1,10 @@
+import 'package:abs_up/presentation/utils/choice.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../domain/models/workout.dart';
-import '../../domain/models/workout_settings.dart';
-import '../../services/p_data.s.dart';
 import '../../services/workout.s.dart';
 import '../theme/colors.t.dart';
 import '../widgets/shared/snackbars.w.dart';
@@ -26,6 +24,15 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
   TextEditingController savedWorkoutNameController = TextEditingController();
   final GlobalKey<ScaffoldState> workoutDetailsScaffoldKey =
       GlobalKey<ScaffoldState>(debugLabel: 'workoutDetailsScaffoldKey');
+
+  WorkoutService workoutService;
+
+  @override
+  void didChangeDependencies() {
+    workoutService =
+        WorkoutService(workoutKey: widget.workoutKey ?? CURRENT_WORKOUT_KEY);
+    super.didChangeDependencies();
+  }
 
   Future<String> createSaveCurrentWorkoutAsDialog(BuildContext context) {
     savedWorkoutNameController.clear();
@@ -73,73 +80,73 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final WorkoutService workoutService =
-        WorkoutService(workoutKey: widget.workoutKey ?? CURRENT_WORKOUT_KEY);
-    final Workout workout = workoutService.currentWorkout;
+    // final WorkoutService workoutService =
+    //     WorkoutService(workoutKey: widget.workoutKey ?? CURRENT_WORKOUT_KEY);
     final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
 
-    return Scaffold(
-      key: workoutDetailsScaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          isCurrent ? 'Preview Workout' : workout?.name ?? 'Preview Workout',
-          style: const TextStyle(
-              color: AppColors.coquelicot, fontWeight: FontWeight.w800),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              isCurrent ? Icons.save_alt : Icons.save,
-            ),
-            iconSize: 30,
-            padding: const EdgeInsets.only(top: 6),
-            onPressed: () => isCurrent
-                ? createSaveCurrentWorkoutAsDialog(context).then((name) {
+    return Provider<WorkoutService>(
+      create: (_) => workoutService,
+      child: Scaffold(
+        key: workoutDetailsScaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            isCurrent
+                ? 'Preview Workout'
+                : workoutService.currentWorkout?.name ?? 'Preview Workout',
+            style: const TextStyle(
+                color: AppColors.coquelicot, fontWeight: FontWeight.w800),
+          ),
+          actions: <Widget>[
+            choiceWidget(
+                isCurrent,
+                //= Save workout as...
+                IconButton(
+                  icon: const Icon(Icons.save_alt),
+                  onPressed: () =>
+                      createSaveCurrentWorkoutAsDialog(context).then((name) {
                     if (name == null) return;
                     workoutService.saveCurrentWorkoutAs(name).then((value) =>
                         workoutDetailsScaffoldKey.currentState
                             .showSnackBar(AppSnackbars.savedWorkoutAs(name)));
-                  })
-                : () {}, // TODO implement saving the workout at preview window or update an already saved workout being previewed
-          )
-        ],
+                  }),
+                ),
+                //= Share saved workout
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed:
+                      () {}, // TODO implement share a saved workout function
+                )),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size(double.infinity, 100),
+            child: ValueListenableBuilder(
+                valueListenable: workoutService.listenable,
+                //= Workout Details Panel
+                builder: (_, __, ___) => WorkoutDetailsPanel(
+                      currentWorkout: workoutService.currentWorkout,
+                      workoutSettings: workoutService.workoutSettings,
+                    )),
+          ),
+        ),
+        //= Workout Listenable
+        body: ValueListenableBuilder(
+            valueListenable: workoutService.listenable,
+            builder: (context, Box<Workout> box, _) {
+              //= Workout Reorderable Items List
+              return ReorderableListView(
+                onReorder: (oldIndex, newIndex) async => workoutService
+                    .currentWorkout
+                    .reorderItems(oldIndex, newIndex),
+                children: workoutService.currentWorkout.items
+                    .map((item) => WorkoutItemWidget(
+                        key: Key('workoutItem:${item.exercise.key}'),
+                        workoutItem: item))
+                    .toList(),
+              );
+            }),
+        // = Workout menu
+        bottomNavigationBar: const WorkoutDetailsMenu(),
       ),
-      //= Workout Listenable
-      body: ValueListenableBuilder(
-          valueListenable: PDataService.workoutsBox
-              .listenable(keys: [widget.workoutKey ?? CURRENT_WORKOUT_KEY]),
-          builder: (context, Box<Workout> box, _) {
-            final Workout currentWorkout =
-                box.get(widget.workoutKey ?? CURRENT_WORKOUT_KEY);
-            final WorkoutSettings workoutSettings =
-                workoutService.workoutSettings;
-
-            return Provider<Workout>(
-              create: (_) => currentWorkout,
-              child: Column(
-                children: <Widget>[
-                  //= Workout Details Panel
-                  WorkoutDetailsPanel(
-                    currentWorkout: currentWorkout,
-                    workoutSettings: workoutSettings,
-                  ),
-                  //= Workout Reorderable Items List
-                  Expanded(
-                      child: ReorderableListView(
-                    onReorder: (oldIndex, newIndex) async =>
-                        currentWorkout.reorderItems(oldIndex, newIndex),
-                    children: currentWorkout.items
-                        .map((item) => WorkoutItemWidget(
-                            key: Key('workoutItem:${item.exercise.key}'),
-                            workoutItem: item))
-                        .toList(),
-                  )),
-                  //= Menu Buttons
-                  const WorkoutDetailsMenu()
-                ],
-              ),
-            );
-          }),
     );
   }
 }

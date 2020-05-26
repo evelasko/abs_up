@@ -5,6 +5,7 @@ import '../../../domain/models/workout_settings.dart';
 import '../../theme/colors.t.dart';
 import 'equipment_row.w.dart';
 
+/// Consumes: WorkoutService
 class WorkoutDetailsPanel extends StatelessWidget {
   final Workout currentWorkout;
   final WorkoutSettings workoutSettings;
@@ -44,6 +45,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       //= Intensity
+                      // TODO this intensity should show an average intensity claculated from the workout being shown
                       Text('intensity'.toUpperCase(),
                           style: const TextStyle(
                               color: AppColors.grey,
@@ -71,6 +73,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       //= Difficulty
+                      // TODO this difficulty should show an average difficulty claculated from the workout being shown
                       Text('difficulty'.toUpperCase(),
                           style: const TextStyle(
                               color: AppColors.grey,

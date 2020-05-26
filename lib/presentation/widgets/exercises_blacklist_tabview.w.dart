@@ -1,3 +1,4 @@
+import 'package:abs_up/services/exercise.s.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,13 +8,11 @@ import 'shared/exercise_items.w.dart';
 import 'shared/lists_empty_feedback.w.dart';
 
 class ExercisesBlacklistTabView extends StatelessWidget {
-  final Box<Exercise> exerciseBox;
-
-  const ExercisesBlacklistTabView(this.exerciseBox, {Key key})
-      : super(key: key);
+  const ExercisesBlacklistTabView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Box<Exercise> exerciseBox = ExerciseService().exercisesBox;
     final List<Exercise> exerciseList = exerciseBox.values
         .where((exercise) => exercise.tag == ExerciseTag.blacklisted.index)
         .toList();

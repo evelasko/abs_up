@@ -1,6 +1,9 @@
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../domain/models/exercise.dart';
 import '../../services/p_data.s.dart';
@@ -9,6 +12,9 @@ import '../widgets/exercises_exercises_tabview.w.dart';
 import '../widgets/exercises_favorites_tabview.w.dart';
 
 class ExercisesPage extends StatefulWidget {
+  final String workoutKey;
+
+  const ExercisesPage({Key key, this.workoutKey}) : super(key: key);
   @override
   _ExercisesPageState createState() => _ExercisesPageState();
 }
@@ -24,11 +30,20 @@ class _ExercisesPageState extends State<ExercisesPage>
   ];
 
   TabController _tabController;
+  Workout _workout;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: _tabList.length);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _workout = widget.workoutKey == null
+        ? null
+        : WorkoutService(workoutKey: widget.workoutKey).currentWorkout;
   }
 
   @override
@@ -40,8 +55,9 @@ class _ExercisesPageState extends State<ExercisesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: false,
+      primary: _workout != null,
       appBar: AppBar(
+        title: _workout == null ? null : Text('add to ${_workout.name}'),
         bottom: TabBar(
           controller: _tabController,
           tabs: _tabList,
@@ -49,16 +65,19 @@ class _ExercisesPageState extends State<ExercisesPage>
       ),
       body: ValueListenableBuilder(
         valueListenable: exercisesBox.listenable(),
-        builder: (_, __, ___) => TabBarView(
-          controller: _tabController,
-          children: [
-            ExercisesExercisesTabView(exercisesBox),
-            ExercisesFavoritesTabView(exercisesBox),
-            ExercisesBlacklistTabView(exercisesBox),
-            const Center(
-              child: Text('New Exercise'),
-            )
-          ],
+        builder: (_, __, ___) => Provider<Workout>(
+          create: (_) => _workout,
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              const ExercisesExercisesTabView(),
+              const ExercisesFavoritesTabView(),
+              const ExercisesBlacklistTabView(),
+              const Center(
+                child: Text('New Exercise'),
+              )
+            ],
+          ),
         ),
       ),
       //        DefaultTabController(

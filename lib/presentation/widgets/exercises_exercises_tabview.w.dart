@@ -1,5 +1,8 @@
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/services/exercise.s.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 import '../../domain/models/exercise.dart';
 import '../theme/colors.t.dart';
@@ -7,10 +10,7 @@ import 'shared/exercise_items.w.dart';
 import 'shared/lists_empty_feedback.w.dart';
 
 class ExercisesExercisesTabView extends StatefulWidget {
-  final Box<Exercise> exerciseBox;
-
-  const ExercisesExercisesTabView(this.exerciseBox, {Key key})
-      : super(key: key);
+  const ExercisesExercisesTabView({Key key}) : super(key: key);
 
   @override
   _ExercisesExercisesTabViewState createState() =>
@@ -18,8 +18,15 @@ class ExercisesExercisesTabView extends StatefulWidget {
 }
 
 class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
+  final Box<Exercise> exerciseBox = ExerciseService().exercisesBox;
   String searchString;
   bool showFilters = false;
+  Workout _workout;
+
+  @override
+  void didChangeDependencies() {
+    _workout = Provider.of<Workout>(context);
+  }
 
   /// State methods
   void _updateSearchString(String newSearchString) => setState(
@@ -31,11 +38,14 @@ class _ExercisesExercisesTabViewState extends State<ExercisesExercisesTabView> {
   @override
   Widget build(BuildContext context) {
     final List<Exercise> exerciseList = searchString == null
-        ? widget.exerciseBox.values.toList()
-        : widget.exerciseBox.values
+        ? exerciseBox.values.toList()
+        : exerciseBox.values
             .where((exercise) => exercise.name
                 .contains(RegExp(searchString, caseSensitive: false)))
             .toList();
+    if (_workout != null) {
+      print('add exercises to workout: ${_workout.name}');
+    }
     return exerciseList.isEmpty
         ? const EmptyListFeedback('No exercises found...')
         : CustomScrollView(

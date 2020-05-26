@@ -31,6 +31,8 @@ class WorkoutService implements WorkoutInterface {
   WorkoutSettings get workoutSettings =>
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
 
+  bool get isCurrent => workoutKey == CURRENT_WORKOUT_KEY;
+
   @override
   Workout get currentWorkout => PDataService.workoutsBox.get(workoutKey);
 

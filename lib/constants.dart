@@ -2,6 +2,7 @@
 const String HOME_LINK = 'home';
 const String EXERCISES_LIST_LINK = 'exercises';
 const String EXERCISE_DETAILS_LINK = 'exercise/details/';
+const String EXERCISE_ADD_TO_LINK = 'exercise/addto/';
 const String WORKOUT_LIST_LINK = 'workout/list';
 const String WORKOUT_DETAILS_LINK = 'workout/details/';
 const String WORKOUT_ITEM_DETAILS_LINK = 'workout/item/';
