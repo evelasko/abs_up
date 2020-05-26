@@ -30,11 +30,11 @@ final ThemeData appTheme = ThemeData(
       unselectedLabelStyle:
           TextStyle(fontSize: 10, fontWeight: FontWeight.w300)),
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: AppColors.greyDarkest,
-    actionTextColor: Colors.white,
+    backgroundColor: AppColors.greyLight,
+    actionTextColor: AppColors.greyDark,
     contentTextStyle: TextStyle(
       fontFamily: 'Montserrat',
-      color: Colors.white,
+      color: AppColors.greyDark,
       fontSize: 14,
     ),
   ),

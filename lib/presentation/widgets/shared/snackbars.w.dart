@@ -10,5 +10,8 @@ class AppSnackbars {
   static const SnackBar blacklistRemoved =
       SnackBar(content: Text('Exercise removed from blacklist'));
   static SnackBar savedWorkoutAs(String name) =>
-      SnackBar(content: Text('Saved workout as $name'));
+      SnackBar(content: Text('Saved workout as: $name'));
+  static SnackBar removedWorkoutItem(String name) => SnackBar(
+        content: Text('Removed $name from workout'),
+      );
 }

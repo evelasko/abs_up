@@ -1,16 +1,13 @@
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/presentation/widgets/shared/snackbars.w.dart';
-import 'package:abs_up/services/p_data.s.dart';
-import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-// import '../../domain/interfaces/data_values.dart';
-// import '../../domain/interfaces/i_hive_facade.dart';
-// import '../../domain/interfaces/i_workout_facade.dart';
+import '../../constants.dart';
 import '../../domain/models/workout.dart';
 import '../../domain/models/workout_settings.dart';
+import '../../services/p_data.s.dart';
+import '../../services/workout.s.dart';
 import '../theme/colors.t.dart';
 import '../widgets/shared/snackbars.w.dart';
 import '../widgets/shared/workout_details_menu.w.dart';
@@ -36,11 +33,25 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
         context: context,
         builder: (context) => AlertDialog(
               title: const Text(
-                'Set Workout Name',
-                style: TextStyle(color: AppColors.greyDark),
+                'Save this workout as:',
+                style: TextStyle(color: AppColors.greyLight),
               ),
               content: TextField(
+                autocorrect: false,
+                autofocus: true,
                 controller: savedWorkoutNameController,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.greyLightest,
+                    ),
+                  ),
+                ),
+                style: const TextStyle(
+                    color: AppColors.greyLight,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18),
               ),
               actions: <Widget>[
                 MaterialButton(
@@ -103,27 +114,30 @@ class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
             final WorkoutSettings workoutSettings =
                 workoutService.workoutSettings;
 
-            return Column(
-              children: <Widget>[
-                //= Workout Details Panel
-                WorkoutDetailsPanel(
-                  currentWorkout: currentWorkout,
-                  workoutSettings: workoutSettings,
-                ),
-                //= Workout Reorderable Items List
-                Expanded(
-                    child: ReorderableListView(
-                  onReorder: (oldIndex, newIndex) async =>
-                      currentWorkout.reorderItems(oldIndex, newIndex),
-                  children: currentWorkout.items
-                      .map((item) => WorkoutItemWidget(
-                          key: Key('workoutItem:${item.exercise.key}'),
-                          workoutItem: item))
-                      .toList(),
-                )),
-                //= Menu Buttons
-                const WorkoutDetailsMenu()
-              ],
+            return Provider<Workout>(
+              create: (_) => currentWorkout,
+              child: Column(
+                children: <Widget>[
+                  //= Workout Details Panel
+                  WorkoutDetailsPanel(
+                    currentWorkout: currentWorkout,
+                    workoutSettings: workoutSettings,
+                  ),
+                  //= Workout Reorderable Items List
+                  Expanded(
+                      child: ReorderableListView(
+                    onReorder: (oldIndex, newIndex) async =>
+                        currentWorkout.reorderItems(oldIndex, newIndex),
+                    children: currentWorkout.items
+                        .map((item) => WorkoutItemWidget(
+                            key: Key('workoutItem:${item.exercise.key}'),
+                            workoutItem: item))
+                        .toList(),
+                  )),
+                  //= Menu Buttons
+                  const WorkoutDetailsMenu()
+                ],
+              ),
             );
           }),
     );

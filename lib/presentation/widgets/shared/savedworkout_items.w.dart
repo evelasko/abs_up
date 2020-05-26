@@ -55,11 +55,11 @@ Widget savedWorkoutItem(BuildContext context, Workout workout) =>
                       // TODO Implement exercise item intensity level indicator
                       children: <Widget>[
                         Text('intensity'.toUpperCase(),
-                            style: AppTextStyles.listItemBottomInfo.copyWith(
-                                fontSize: 10, color: AppColors.greyDark)),
+                            style: AppTextStyles.listItemBottomInfo
+                                .copyWith(fontSize: 10, color: AppColors.grey)),
                         Text('difficulty'.toUpperCase(),
-                            style: AppTextStyles.listItemBottomInfo.copyWith(
-                                fontSize: 10, color: AppColors.greyDark)),
+                            style: AppTextStyles.listItemBottomInfo
+                                .copyWith(fontSize: 10, color: AppColors.grey)),
                       ],
                     ),
                   ],
@@ -67,14 +67,27 @@ Widget savedWorkoutItem(BuildContext context, Workout workout) =>
               ),
               //= Workout time
               Container(
-                width: 70,
+                width: 80,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      workout.totalDurationString,
-                      style: AppTextStyles.savedWorkoutTitle.copyWith(
-                          fontWeight: FontWeight.w800, color: AppColors.grey),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.timer,
+                          color: AppColors.grey,
+                          size: 16,
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          workout.totalDurationString,
+                          style: AppTextStyles.savedWorkoutTitle.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.grey),
+                        ),
+                      ],
                     ),
                     RichText(
                         maxLines: 2,
