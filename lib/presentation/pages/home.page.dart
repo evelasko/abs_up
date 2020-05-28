@@ -18,80 +18,25 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   int _selectedIndex = 0;
-  PageController _pageController;
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onTabSelected(int index) => setState(() {
-        _selectedIndex = index;
-        _pageController.animateToPage(index,
-            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
-      });
+  void _onTabSelected(int index) => setState(() => _selectedIndex = index);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
 
-      // /// App Bar
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   title: const Icon(
-      //     AbsAppIcons.logo_fill,
-      //     color: AppColors.greyLight,
-      //     size: 32,
-      //   ),
-      //   leading: IconButton(
-      //       icon: const Icon(Icons.menu),
-      //       iconSize: 32,
-      //       color: AppColors.greyLight,
-      //       onPressed: () => _scaffoldKey.currentState.openDrawer()),
-      //   actions: <Widget>[
-      //     IconButton(
-      //         padding: const EdgeInsets.only(top: 8),
-      //         icon: const Icon(
-      //           Icons.person,
-      //         ),
-      //         iconSize: 32,
-      //         color: AppColors.greyLight,
-      //         onPressed: () => showDialog(
-      //             context: context,
-      //             builder: (BuildContext context) => Provider(
-      //                   create: (_) => AuthStore(FirebaseAuthService(
-      //                       FirebaseAuth.instance, GoogleSignIn())),
-      //                   child: const LoginDialog(),
-      //                 )))
-      //   ],
-      // ),
-
-      // /// Drawer
-      // drawer: const AppDrawer(),
-
-      /// Body
+      //= Body Content
       body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) => setState(() => _selectedIndex = index),
-          children: <Widget>[
-            ExercisesPage(), // index 0
-            WorkoutsPage(), // index 1
-            const Center(child: Text('Feed Section')), // index 2
-            const Center(child: Text('Profile & Settings Section')) // index 3
-          ],
-        ),
+        child: <Widget>[
+          const ExercisesPage(), // index 0
+          WorkoutsPage(), // index 1
+          const Center(child: Text('Feed Section')), // index 2
+          const Center(child: Text('Profile & Settings Section')), // index 3
+        ].elementAt(_selectedIndex),
       ),
 
-      /// Perform Button
+      //= Perform Button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed(
@@ -103,9 +48,11 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.playlist_play),
       ),
 
-      /// Bottom Navigation Bar
+      //= Bottom Navigation Bar
       bottomNavigationBar: FABBottomAppBar(
-        centerItemText: 'Perform',
+        // centerItemText: 'Perform',
+        height: 40,
+        iconSize: 28,
         notchedShape: const CircularNotchedRectangle(),
         onTabSelected: _onTabSelected,
         labelStyle: const TextStyle(
@@ -119,19 +66,19 @@ class _HomePageState extends State<HomePage> {
         items: [
           FABBottomAppBarItem(
             iconData: Icons.local_library,
-            text: 'Exercises',
+            //text: 'Exercises',
           ),
           FABBottomAppBarItem(
             iconData: Icons.import_contacts,
-            text: 'Workouts',
+            //text: 'Workouts',
           ),
           FABBottomAppBarItem(
             iconData: Icons.rss_feed,
-            text: 'Feed',
+            //text: 'Feed',
           ),
           FABBottomAppBarItem(
             iconData: Icons.person,
-            text: 'Profile',
+            //text: 'Profile',
           ),
         ],
       ),

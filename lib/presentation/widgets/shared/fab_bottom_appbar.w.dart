@@ -1,7 +1,11 @@
+import 'package:abs_up/presentation/utils/choice.dart';
 import 'package:flutter/material.dart';
 
 class FABBottomAppBarItem {
-  FABBottomAppBarItem({this.iconData, this.text});
+  FABBottomAppBarItem({
+    this.iconData,
+    this.text,
+  });
   IconData iconData;
   String text;
 }
@@ -56,10 +60,10 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: widget.iconSize),
-            Text(
-              widget.centerItemText ?? '',
-              style: widget.labelStyle ?? TextStyle(color: widget.color),
-            ),
+            // Text(
+            //   widget.centerItemText ?? '',
+            //   style: widget.labelStyle ?? TextStyle(color: widget.color),
+            // ),
           ],
         ),
       ),
@@ -73,8 +77,8 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
   }) {
     final Color color =
         _selectedIndex == index ? widget.selectedColor : widget.color;
-    final TextStyle style =
-        _selectedIndex == index ? widget.labelStyleSelected : widget.labelStyle;
+    // final TextStyle style =
+    //     _selectedIndex == index ? widget.labelStyleSelected : widget.labelStyle;
     return Expanded(
       child: SizedBox(
         height: widget.height,
@@ -82,13 +86,13 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
           onTap: () => onPressed(index),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Icon(item.iconData, color: color, size: widget.iconSize),
-              Text(
-                item.text,
-                style: style?.copyWith(color: color) ?? TextStyle(color: color),
-              )
+              // Text(
+              //   item.text ?? '',
+              //   style: style?.copyWith(color: color) ?? TextStyle(color: color),
+              // ),
             ],
           ),
         ),
