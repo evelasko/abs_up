@@ -12,6 +12,7 @@ class WorkoutsPage extends StatefulWidget {
 
 class _WorkoutsPageState extends State<WorkoutsPage>
     with SingleTickerProviderStateMixin {
+  // TODO get rid of the tabs and place an action button in the appbar linking to Create new workout page
   final List<Tab> _tabList = const <Tab>[
     Tab(text: 'SAVED'),
     Tab(text: 'FEED'),
@@ -30,17 +31,17 @@ class _WorkoutsPageState extends State<WorkoutsPage>
   Widget build(BuildContext context) => Scaffold(
         primary: false,
         appBar: AppBar(
+          // TODO switch this whole view to use slivers
           bottom: TabBar(controller: _tabController, tabs: _tabList),
         ),
         body: TabBarView(
           controller: _tabController,
           children: const <Widget>[
             WorkoutsSavedTabView(),
-            // TODO implement a tabview to filter workouts feed
+            // TODO implement a row to filter workouts feed
             Center(
               child: Text('workouts filtered feed'),
             ),
-            // TODO implement a tabview for the builld workout from scratch page
             Center(
               child: Text('new workout from srcatch'),
             ),

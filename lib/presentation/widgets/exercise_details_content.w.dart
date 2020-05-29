@@ -19,26 +19,22 @@ class ExerciseDetailsContent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-            margin: const EdgeInsets.all(15), color: AppColors.coquelicot),
-        dataRow('equipment', exercise.equipment),
-        dataRow('intensity', exercise.intensityString),
-        dataRow('difficulty', exercise.difficultyString),
-        Table(
-          children: [
-            TableRow(children: [
-              Container(
-                width: 120,
-                height: 120,
-                color: AppColors.coquelicot,
-              ),
-              Container(
-                width: 120,
-                height: 120,
-                color: AppColors.coquelicot,
-              )
-            ])
-          ],
+          margin: const EdgeInsets.only(top: 20, bottom: 15),
+          width: double.infinity,
+          height: 200,
+          color: AppColors.coquelicot,
+          child: const Image(
+            image: AssetImage('assets/exercise_images/_default.jpg'),
+            fit: BoxFit.cover,
+          ),
         ),
+        DataRow(
+            label: 'equipment',
+            value: exercise.equipment,
+            icon: exercise.equipmentIcon),
+        DataRow(label: 'intensity', value: exercise.intensityString),
+        DataRow(label: 'difficulty', value: exercise.difficultyString),
+        const SizedBox(width: double.infinity, height: 15),
         FutureBuilder(
             initialData: 'loading details',
             future: rootBundle.loadString("assets/exercise_details/default.md"),
@@ -55,11 +51,52 @@ class ExerciseDetailsContent extends StatelessWidget {
   }
 }
 
-Widget dataRow(String label, String value) => Container(
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: AppColors.greyLight))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[Text(label.toUpperCase()), Text(value)],
-      ),
-    );
+class DataRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  const DataRow(
+      {Key key, @required this.label, @required this.value, this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.only(bottom: 4),
+        margin: const EdgeInsets.only(top: 4),
+        decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: AppColors.grey))),
+        child: Row(
+          children: <Widget>[
+            //= Label
+            Text(
+              label.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.greyDark,
+              ),
+            ),
+            Expanded(child: Container()),
+            //= Icon
+            icon == null
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.only(right: 6.0),
+                    child: Icon(
+                      icon,
+                      color: AppColors.greyDarkest,
+                      size: 20,
+                    ),
+                  ),
+            //= Value
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.greyDark,
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          ],
+        ),
+      );
+}

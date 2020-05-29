@@ -67,48 +67,68 @@ class _ExercisesPageState extends State<ExercisesPage> {
                           child: Container(
                             width: double.infinity,
                             height: 32,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: <Widget>[
-                                  const FilterLabel('tag'),
-                                  FilterChipWidget(
-                                    label: 'Favorites',
-                                    selected: _exercisesStore.filterFavorites,
-                                    onSelected:
-                                        _exercisesStore.toggleFilterFavorites,
+                            child: Row(
+                              children: [
+                                //= Items counter
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 12, right: 8),
+                                  child: CounterChip(
+                                      exercisesStore: _exercisesStore),
+                                ),
+                                Expanded(
+                                  //= Filtering Row
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: <Widget>[
+                                        const FilterLabel('tag'),
+                                        FilterChipWidget(
+                                          label: 'Favorites',
+                                          selected:
+                                              _exercisesStore.filterFavorites,
+                                          onSelected: _exercisesStore
+                                              .toggleFilterFavorites,
+                                        ),
+                                        FilterChipWidget(
+                                          label: 'Blacklisted',
+                                          selected:
+                                              _exercisesStore.filterBlacklisted,
+                                          onSelected: _exercisesStore
+                                              .toggleFilterBlacklisted,
+                                        ),
+                                        const FilterLabel('equipment'),
+                                        ..._exercisesStore.equipmentSet
+                                            .map((e) => FilterChipWidget(
+                                                label: e,
+                                                selected: _exercisesStore
+                                                    .equipmentFilter
+                                                    .contains(e),
+                                                onSelected: (_) =>
+                                                    _exercisesStore
+                                                        .updateEquipmentFilter(
+                                                            e)))
+                                            .toList(),
+                                        const FilterLabel('sort by'),
+                                        FilterChipWidget(
+                                          label: 'Intensity',
+                                          selected:
+                                              _exercisesStore.sortByIntensity,
+                                          onSelected: _exercisesStore
+                                              .toggleSortByIntensity,
+                                        ),
+                                        FilterChipWidget(
+                                          label: 'Difficulty',
+                                          selected:
+                                              _exercisesStore.sortByDifficulty,
+                                          onSelected: _exercisesStore
+                                              .toggleSortByDifficulty,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  FilterChipWidget(
-                                    label: 'Blacklisted',
-                                    selected: _exercisesStore.filterBlacklisted,
-                                    onSelected:
-                                        _exercisesStore.toggleFilterBlacklisted,
-                                  ),
-                                  const FilterLabel('equipment'),
-                                  ..._exercisesStore.equipmentSet
-                                      .map((e) => FilterChipWidget(
-                                          label: e,
-                                          selected: _exercisesStore
-                                              .equipmentFilter
-                                              .contains(e),
-                                          onSelected: (_) => _exercisesStore
-                                              .updateEquipmentFilter(e)))
-                                      .toList(),
-                                  const FilterLabel('sort by'),
-                                  FilterChipWidget(
-                                    label: 'Intensity',
-                                    selected: _exercisesStore.sortByIntensity,
-                                    onSelected:
-                                        _exercisesStore.toggleSortByIntensity,
-                                  ),
-                                  FilterChipWidget(
-                                    label: 'Difficulty',
-                                    selected: _exercisesStore.sortByDifficulty,
-                                    onSelected:
-                                        _exercisesStore.toggleSortByDifficulty,
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -130,6 +150,30 @@ class _ExercisesPageState extends State<ExercisesPage> {
           //= Error widget
           ??
           const Center(child: Text('Error...')),
+    );
+  }
+}
+
+class CounterChip extends StatelessWidget {
+  const CounterChip({
+    Key key,
+    @required ExercisesStore exercisesStore,
+  })  : _exercisesStore = exercisesStore,
+        super(key: key);
+
+  final ExercisesStore _exercisesStore;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      backgroundColor: AppColors.greyDarkest,
+      shape: RoundedRectangleBorder(
+          side: const BorderSide(color: AppColors.greyDark),
+          borderRadius: BorderRadius.circular(20)),
+      label: Text((_exercisesStore.exercises.length + 1).toString()),
+      labelStyle:
+          const TextStyle(color: AppColors.grey, fontWeight: FontWeight.w500),
+      onSelected: (_) {},
     );
   }
 }

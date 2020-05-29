@@ -29,7 +29,7 @@ class WorkoutDetailsPanel extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(bottom: 15),
             //= Equipment row
-            child: equipmentRowContent(
+            child: EquipmentRow(
                 activeEquipment: currentWorkout.equipmentTotal,
                 iconSize: 36,
                 activeColor: Colors.white,

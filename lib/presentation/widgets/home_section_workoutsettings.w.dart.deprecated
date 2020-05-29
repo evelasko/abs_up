@@ -46,7 +46,7 @@ class HomeSectionWorkoutsettings extends StatelessWidget {
                 //= Equipment Row
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: equipmentRow(activeEquipment: settings.equipment),
+                  child: EquipmentRow(activeEquipment: settings.equipment),
                 ),
 
                 //= Edit Settings button

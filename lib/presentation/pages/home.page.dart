@@ -1,14 +1,14 @@
-import 'package:abs_up/domain/state/exercises_store.dart';
-import 'package:abs_up/domain/state/workouts_store.dart';
-import 'package:abs_up/services/exercise.s.dart';
-import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../domain/state/exercises_store.dart';
+import '../../domain/state/workouts_store.dart';
+import '../../services/exercise.s.dart';
+import '../../services/workout.s.dart';
 import '../router/routes.dart';
 import '../theme/colors.t.dart';
-import '../widgets/shared/fab_bottom_appbar.w.dart';
+import '../widgets/shared/buttons.w.dart';
 import 'exercises.page.dart';
 import 'workouts.page.dart';
 
@@ -30,81 +30,78 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      // appBar: AppBar(actions: [
-      //             IconButton(
-      //         padding: const EdgeInsets.only(top: 8),
-      //         icon: const Icon(
-      //           Icons.person,
-      //         ),
-      //         iconSize: 32,
-      //         color: AppColors.greyLight,
-      //         onPressed: () => showDialog(
-      //             context: context,
-      //             builder: (BuildContext context) => Provider(
-      //                   create: (_) => AuthStore(FirebaseAuthService(
-      //                       FirebaseAuth.instance, GoogleSignIn())),
-      //                   child: const LoginDialog(),
-      //                 )))
-      // ],),
       //= Body Content
       body: SizedBox.expand(
         child: <Widget>[
+          //= Exercises Page
           Provider(
             create: (context) => ExercisesStore(ExerciseService()),
             child: const ExercisesPage(),
           ),
+          //= Saved Workouts Page
           Provider(
             create: (context) => WorkoutsStore(WorkoutService()),
             child: WorkoutsPage(),
           ),
-          const Center(child: Text('Feed Section')), // index 2
-          const Center(child: Text('Profile & Settings Section')), // index 3
+          //= Perform Page
+          Center(
+              child: Column(
+            children: [
+              // TODO implement the perform section page
+              const Text('Perform Section'),
+              Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: PrimaryActionButton(
+                    text: 'perform workout',
+                    onTap: () => Navigator.of(context).pushNamed(
+                        FluroRouter.getWorkoutDetailsLink(
+                            workoutKey: CURRENT_WORKOUT_KEY)),
+                  ))
+            ],
+          )),
+          //= Feed Page
+          // TODO implement the feed page
+          const Center(child: Text('Feed Section')),
+          //= Settings & Profile Page
+          // TODO implement the settings and profile page
+          const Center(child: Text('Profile & Settings Section')),
         ].elementAt(_selectedIndex),
       ),
 
-      //= Perform Button
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed(
-            FluroRouter.getWorkoutDetailsLink(workoutKey: CURRENT_WORKOUT_KEY)),
-        tooltip: 'Perform',
-        backgroundColor: AppColors.coquelicot,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        child: const Icon(Icons.playlist_play),
-      ),
-
       //= Bottom Navigation Bar
-      bottomNavigationBar: FABBottomAppBar(
-        // centerItemText: 'Perform',
-        height: 40,
-        iconSize: 28,
-        notchedShape: const CircularNotchedRectangle(),
-        onTabSelected: _onTabSelected,
-        labelStyle: const TextStyle(
-          fontSize: 12,
-        ),
-        labelStyleSelected:
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onTabSelected,
         backgroundColor: Theme.of(context).bottomAppBarColor,
-        color: Colors.white,
-        selectedColor: AppColors.coquelicot,
-        items: [
-          FABBottomAppBarItem(
-            iconData: Icons.local_library,
-            //text: 'Exercises',
+        unselectedItemColor: AppColors.greyLight,
+        selectedItemColor: AppColors.coquelicot,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const [
+          //= Exercises
+          BottomNavigationBarItem(
+            title: SizedBox(width: 0, height: 0),
+            icon: Icon(Icons.local_library),
           ),
-          FABBottomAppBarItem(
-            iconData: Icons.import_contacts,
-            //text: 'Workouts',
+          //= Saved Workouts
+          BottomNavigationBarItem(
+            title: SizedBox(width: 0, height: 0),
+            icon: Icon(Icons.import_contacts),
           ),
-          FABBottomAppBarItem(
-            iconData: Icons.rss_feed,
-            //text: 'Feed',
+          //= Perform
+          BottomNavigationBarItem(
+            title: SizedBox(width: 0, height: 0),
+            icon: Icon(Icons.play_circle_filled),
           ),
-          FABBottomAppBarItem(
-            iconData: Icons.person,
-            //text: 'Profile',
+          //= Feed
+          BottomNavigationBarItem(
+            title: SizedBox(width: 0, height: 0),
+            icon: Icon(Icons.rss_feed),
+          ),
+          //= Settings & Profile
+          BottomNavigationBarItem(
+            title: SizedBox(width: 0, height: 0),
+            icon: Icon(Icons.person),
           ),
         ],
       ),

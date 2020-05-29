@@ -58,6 +58,17 @@ class Workout extends HiveObject {
           .toList()
           .cast<String>();
 
+  int get intensityAverage =>
+      items.map((e) => e.exercise.intensity).toList().reduce((a, b) => a + b) ~/
+      items.length;
+
+  int get difficultyAverage =>
+      items
+          .map((e) => e.exercise.difficulty)
+          .toList()
+          .reduce((a, b) => a + b) ~/
+      items.length;
+
   /// Custom methods
   Future<void> reorderItems(int oldIndex, int newIndex) async {
     final int _index = newIndex > oldIndex ? newIndex - 1 : newIndex;

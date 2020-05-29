@@ -33,12 +33,17 @@ class ExerciseDetailsPageView extends StatelessWidget {
                   ),
                   onPressed: () => Navigator.pop(context)),
               Expanded(
-                child: RichText(
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(
-                      text: exercise.name.toUpperCase(),
-                      style: AppTextStyles.listItemTitle),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: RichText(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        text: exercise.name.toUpperCase(),
+                        style: AppTextStyles.listItemTitle.copyWith(
+                            color: AppColors.greyDark,
+                            fontWeight: FontWeight.w700)),
+                  ),
                 ),
               ),
               IconButton(
@@ -52,7 +57,7 @@ class ExerciseDetailsPageView extends StatelessWidget {
           //= Content
           Expanded(
               child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
             color: AppColors.greyLightest,
             child: CustomScrollView(
               slivers: <Widget>[
