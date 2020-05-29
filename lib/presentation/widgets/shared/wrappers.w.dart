@@ -22,7 +22,7 @@ class ListItemWrapper extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         constraints: const BoxConstraints.expand(height: 100),
         decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: AppColors.greyDarkest))),
+            border: Border(bottom: BorderSide(color: AppColors.greyDark))),
         child: child,
       );
 }

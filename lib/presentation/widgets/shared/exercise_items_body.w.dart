@@ -1,3 +1,4 @@
+import 'package:abs_up/presentation/widgets/shared/rate_data_chip.w.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/models/exercise.dart';
@@ -64,12 +65,11 @@ class ExerciseItemBody extends StatelessWidget {
                           ],
                         )),
                         Row(
-                          // TODO Implement exercise item intensity level indicator
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(exercise.intensityString.toUpperCase(),
-                                style: AppTextStyles.listItemBottomInfo),
-                            Text(exercise.difficultyString.toUpperCase(),
-                                style: AppTextStyles.listItemBottomInfo),
+                            //= Intensity & Difficulty Indicators
+                            RateDataChip.circle5(exercise.intensity),
+                            RateDataChip.square5(exercise.difficulty),
                           ],
                         ),
                       ],

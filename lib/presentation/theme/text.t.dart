@@ -23,7 +23,7 @@ class AppTextStyles {
       fontFamily: 'Montserrat',
       fontSize: 9,
       fontWeight: FontWeight.w600,
-      color: AppColors.greyDark);
+      color: AppColors.grey);
   static const TextStyle listItemTitle = TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 15,
