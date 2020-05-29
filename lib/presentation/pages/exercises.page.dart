@@ -1,112 +1,149 @@
-import 'package:abs_up/domain/models/workout.dart';
-import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/models/exercise.dart';
-import '../../services/p_data.s.dart';
-import '../widgets/exercises_blacklist_tabview.w.dart';
-import '../widgets/exercises_exercises_tabview.w.dart';
-import '../widgets/exercises_favorites_tabview.w.dart';
+import '../../domain/state/exercises_store.dart';
+import '../theme/colors.t.dart';
+import '../widgets/shared/exercise_items.w.dart';
+import '../widgets/shared/filter_chip.w.dart';
+import '../widgets/shared/filter_label.w.dart';
 
 class ExercisesPage extends StatefulWidget {
-  final String workoutKey;
-
-  const ExercisesPage({Key key, this.workoutKey}) : super(key: key);
+  const ExercisesPage({Key key}) : super(key: key);
   @override
   _ExercisesPageState createState() => _ExercisesPageState();
 }
 
-class _ExercisesPageState extends State<ExercisesPage>
-    with SingleTickerProviderStateMixin {
-  final Box<Exercise> exercisesBox = PDataService.exercisesBox;
-  final List<Tab> _tabList = <Tab>[
-    const Tab(text: 'ALL'),
-    const Tab(text: 'FAVORITES'),
-    const Tab(text: 'BLACKLIST'),
-    const Tab(text: 'NEW')
-  ];
-
-  TabController _tabController;
-  Workout _workout;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(vsync: this, length: _tabList.length);
-  }
+class _ExercisesPageState extends State<ExercisesPage> {
+  ExercisesStore _exercisesStore;
+  TextEditingController _searchTextController;
 
   @override
   void didChangeDependencies() {
+    _exercisesStore = Provider.of<ExercisesStore>(context);
     super.didChangeDependencies();
-    _workout = widget.workoutKey == null
-        ? null
-        : WorkoutService(workoutKey: widget.workoutKey).currentWorkout;
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      primary: _workout != null,
-      appBar: AppBar(
-        title: _workout == null ? null : Text('add to ${_workout.name}'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: _tabList,
-        ),
-      ),
-      body: ValueListenableBuilder(
-        valueListenable: exercisesBox.listenable(),
-        builder: (_, __, ___) => Provider<Workout>(
-          create: (_) => _workout,
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              const ExercisesExercisesTabView(),
-              const ExercisesFavoritesTabView(),
-              const ExercisesBlacklistTabView(),
-              const Center(
-                child: Text('New Exercise'),
-              )
+    return Observer(
+      builder: (_) =>
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                title: const Text('Exercises'),
+                //= Create exercise button
+                // TODO implement user exercise creation
+                //= Reset filters button
+                // TODO implement a Clear Filters mechanism
+                bottom: PreferredSize(
+                  preferredSize: const Size(double.infinity, 85),
+                  child: Container(
+                    height: 85,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(
+                          width: double.infinity,
+                          height: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            //= Search field
+                            child: TextField(
+                              cursorColor: AppColors.grey,
+                              textAlignVertical: TextAlignVertical.center,
+                              controller: _searchTextController,
+                              onChanged: _exercisesStore.updateSearchString,
+                              decoration: searchFieldDecoration,
+                              style: const TextStyle(
+                                  color: AppColors.grey, height: 0.8),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            height: 32,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: <Widget>[
+                                  const FilterLabel('tag'),
+                                  FilterChipWidget(
+                                    label: 'Favorites',
+                                    selected: _exercisesStore.filterFavorites,
+                                    onSelected:
+                                        _exercisesStore.toggleFilterFavorites,
+                                  ),
+                                  FilterChipWidget(
+                                    label: 'Blacklisted',
+                                    selected: _exercisesStore.filterBlacklisted,
+                                    onSelected:
+                                        _exercisesStore.toggleFilterBlacklisted,
+                                  ),
+                                  const FilterLabel('equipment'),
+                                  ..._exercisesStore.equipmentSet
+                                      .map((e) => FilterChipWidget(
+                                          label: e,
+                                          selected: _exercisesStore
+                                              .equipmentFilter
+                                              .contains(e),
+                                          onSelected: (_) => _exercisesStore
+                                              .updateEquipmentFilter(e)))
+                                      .toList(),
+                                  const FilterLabel('sort by'),
+                                  FilterChipWidget(
+                                    label: 'Intensity',
+                                    selected: _exercisesStore.sortByIntensity,
+                                    onSelected:
+                                        _exercisesStore.toggleSortByIntensity,
+                                  ),
+                                  FilterChipWidget(
+                                    label: 'Difficulty',
+                                    selected: _exercisesStore.sortByDifficulty,
+                                    onSelected:
+                                        _exercisesStore.toggleSortByDifficulty,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              //= Exercise Items List
+              SliverFixedExtentList(
+                  delegate: SliverChildListDelegate(_exercisesStore.exercises
+                      .map((exercise) => ExerciseItem(
+                          key: Key('exerciseList:${exercise.key}'),
+                          exercise: exercise))
+                      .toList()),
+                  itemExtent: 90.0)
             ],
-          ),
-        ),
-      ),
-      //        DefaultTabController(
-      // length: 3,
-      // child: Column(
-      //   children: [
-      // Container(
-      //   padding: const EdgeInsets.only(top: 60, bottom: 20),
-      //   child:
-      //   TabBar(
-      //     tabs: <Widget>[
-      //       Text('Exercises'.toUpperCase(),
-      //           style: AppTextStyles.tabHeader),
-      //       Text('Favorites'.toUpperCase(),
-      //           style: AppTextStyles.tabHeader),
-      //       Text('Blacklist'.toUpperCase(),
-      //           style: AppTextStyles.tabHeader)
-      //     ],
-      //     labelStyle: AppTextStyles.tabBarItem,
-      //     labelPadding: const EdgeInsets.only(bottom: 15),
-      //     indicatorColor: AppColors.coquelicot,
-      //     indicatorWeight: 4,
-      //   ),
-      // ),
-      //   Expanded(
-      //     child:
-      //   )
-      // ],
-      // )),
+          )
+          //= Error widget
+          ??
+          const Center(child: Text('Error...')),
     );
   }
 }
+
+const InputDecoration searchFieldDecoration = InputDecoration(
+  prefixIcon: Icon(Icons.search),
+  enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(20.0),
+      ),
+      borderSide: BorderSide(color: AppColors.greyDark)),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(20.0),
+    ),
+  ),
+);

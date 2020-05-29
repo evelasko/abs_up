@@ -1,4 +1,6 @@
+import 'package:abs_up/domain/state/exercises_store.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../domain/models/exercise.dart';
 import '../../router/routes.dart';
@@ -35,8 +37,6 @@ class _ExerciseItemState extends State<ExerciseItem> {
       await widget.exercise.setBlacklist();
       Scaffold.of(context).showSnackBar(AppSnackbars.blacklistAdded);
     }
-    // confirmDissmiss requires to return bool
-    // this bool must be false in order to
     return false;
   }
 
@@ -45,10 +45,13 @@ class _ExerciseItemState extends State<ExerciseItem> {
   Future<void> removeExerciseTag() async {
     if (widget.exercise.tag > 0) {
       await widget.exercise.removeTag();
-      Scaffold.of(context).removeCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(widget.exercise.tag == 1
-          ? AppSnackbars.favoriteRemoved
-          : AppSnackbars.blacklistRemoved);
+      // TODO dissmising the exercise item from a filtered list won't show resize animation  and confirmation snackbar (context is null while running this Future...)
+      if (context != null) {
+        Scaffold.of(context).removeCurrentSnackBar();
+        Scaffold.of(context).showSnackBar(widget.exercise.tag == 1
+            ? AppSnackbars.favoriteRemoved
+            : AppSnackbars.blacklistRemoved);
+      }
     }
   }
 
@@ -67,8 +70,11 @@ class _ExerciseItemState extends State<ExerciseItem> {
     // then the dissmisible must dissmiss the items, if it is shown
     // in the exercises list, then the dissmissible performs the action
     // without dissmising the item from the list
+
+    final ExercisesStore _exercisesStore = Provider.of<ExercisesStore>(context);
+
     final isDismissable =
-        widget.key.toString().contains(RegExp('favoritesList|blacklistList'));
+        _exercisesStore.filterBlacklisted || _exercisesStore.filterFavorites;
     switch (widget.exercise.tag) {
 
       /// Favorite Exercise Item
@@ -79,7 +85,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
             background: SwipableActions.secondaryBackground(AppColors.brandeis,
                 Icons.favorite_border, 'remove from\nfavorites'),
             confirmDismiss: (direction) async {
-              // if it's not in favorites or blacklist page
+              // if the exercise list is not being filtered by favorites or blacklist
               // do the action without dissmising the item
               if (!isDismissable) await removeExerciseTag();
               return isDismissable;
@@ -97,6 +103,8 @@ class _ExerciseItemState extends State<ExerciseItem> {
             background: SwipableActions.secondaryBackground(
                 AppColors.brandeis, Icons.thumb_up, 'remove from\nblacklist'),
             confirmDismiss: (direction) async {
+              // if the exercise list is not being filtered by favorites or blacklist
+              // do the action without dissmising the item
               if (!isDismissable) await removeExerciseTag();
               return isDismissable;
             },

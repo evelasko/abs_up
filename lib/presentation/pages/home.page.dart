@@ -1,4 +1,9 @@
+import 'package:abs_up/domain/state/exercises_store.dart';
+import 'package:abs_up/domain/state/workouts_store.dart';
+import 'package:abs_up/services/exercise.s.dart';
+import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../router/routes.dart';
@@ -25,12 +30,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-
+      // appBar: AppBar(actions: [
+      //             IconButton(
+      //         padding: const EdgeInsets.only(top: 8),
+      //         icon: const Icon(
+      //           Icons.person,
+      //         ),
+      //         iconSize: 32,
+      //         color: AppColors.greyLight,
+      //         onPressed: () => showDialog(
+      //             context: context,
+      //             builder: (BuildContext context) => Provider(
+      //                   create: (_) => AuthStore(FirebaseAuthService(
+      //                       FirebaseAuth.instance, GoogleSignIn())),
+      //                   child: const LoginDialog(),
+      //                 )))
+      // ],),
       //= Body Content
       body: SizedBox.expand(
         child: <Widget>[
-          const ExercisesPage(), // index 0
-          WorkoutsPage(), // index 1
+          Provider(
+            create: (context) => ExercisesStore(ExerciseService()),
+            child: const ExercisesPage(),
+          ),
+          Provider(
+            create: (context) => WorkoutsStore(WorkoutService()),
+            child: WorkoutsPage(),
+          ),
           const Center(child: Text('Feed Section')), // index 2
           const Center(child: Text('Profile & Settings Section')), // index 3
         ].elementAt(_selectedIndex),

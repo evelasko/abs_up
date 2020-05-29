@@ -1,3 +1,4 @@
+import 'package:abs_up/presentation/pages/exercises_selector.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class FluroRouter {
   //= Exercise List
   static final Handler _exerciseList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          ExercisesPage());
+          const ExercisesPage());
 
   //= Exercise Details
   static const exerciseDetailsLink = '$EXERCISE_DETAILS_LINK:exerciseKey';
@@ -43,7 +44,8 @@ class FluroRouter {
       exerciseAddToWorkoutLink.replaceFirst(':workoutKey', workoutKey);
   static final Handler _exerciseAddToWorkout = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          ExercisesPage(workoutKey: params['workoutKey'][0].toString()));
+          ExercisesSelectorPage(
+              workoutKey: params['workoutKey'][0].toString()));
 
   //= Workout Item Details
   static const workoutItemDetailsLink =

@@ -9,8 +9,8 @@ final ThemeData appTheme = ThemeData(
 
   /// Color Theme
   canvasColor: AppColors.greyDark, // Colors.transparent,
-  scaffoldBackgroundColor: AppColors.greyDark,
-  backgroundColor: AppColors.greyLightest,
+  scaffoldBackgroundColor: Colors.black,
+  backgroundColor: Colors.black,
   colorScheme: colorScheme(),
   primaryColor: AppColors.greyDarkest,
   accentColor: AppColors.coquelicot,

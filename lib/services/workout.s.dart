@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class WorkoutService implements WorkoutInterface {
-  final String workoutKey;
+  String workoutKey;
   static final Uuid uuid = Uuid();
   @override
   final List<String> availableTargets = [
