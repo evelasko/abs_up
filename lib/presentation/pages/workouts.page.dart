@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
-import '../../constants.dart';
-import '../../services/p_data.s.dart';
+import '../../domain/state/workouts_store.dart';
 import '../widgets/shared/savedworkout_items.w.dart';
 
 class WorkoutsPage extends StatefulWidget {
@@ -10,65 +10,40 @@ class WorkoutsPage extends StatefulWidget {
   _WorkoutsPageState createState() => _WorkoutsPageState();
 }
 
-class _WorkoutsPageState extends State<WorkoutsPage>
-    with SingleTickerProviderStateMixin {
-  // TODO get rid of the tabs and place an action button in the appbar linking to Create new workout page
-  final List<Tab> _tabList = const <Tab>[
-    Tab(text: 'SAVED'),
-    Tab(text: 'FEED'),
-    Tab(text: 'CREATE'),
-  ];
-
-  TabController _tabController;
+class _WorkoutsPageState extends State<WorkoutsPage> {
+  WorkoutsStore _workoutsStore;
 
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(vsync: this, length: _tabList.length);
+  void didChangeDependencies() {
+    _workoutsStore = Provider.of<WorkoutsStore>(context);
+    super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        primary: false,
-        appBar: AppBar(
-          // TODO switch this whole view to use slivers
-          bottom: TabBar(controller: _tabController, tabs: _tabList),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: const <Widget>[
-            WorkoutsSavedTabView(),
-            // TODO implement a row to filter workouts feed
-            Center(
-              child: Text('workouts filtered feed'),
+  Widget build(BuildContext context) => Observer(
+        builder: (_) => CustomScrollView(
+          slivers: <Widget>[
+            const SliverAppBar(
+              automaticallyImplyLeading: false,
+              floating: true,
+              title: Text('Saved Workouts'),
+              //= Create new workout button
+              // TODO implement workout from scratch creation
+              //= Reset filters button
+              // TODO implement clear filters on workouts page
             ),
-            Center(
-              child: Text('new workout from srcatch'),
-            ),
+            //= Workout Items List
+            SliverFixedExtentList(
+              delegate: SliverChildListDelegate(
+                _workoutsStore.workouts
+                    .map(
+                      (workout) => SavedWorkoutItem(workout),
+                    )
+                    .toList(),
+              ),
+              itemExtent: 90.0,
+            )
           ],
         ),
       );
-}
-
-class WorkoutsSavedTabView extends StatelessWidget {
-  const WorkoutsSavedTabView({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: PDataService.workoutsBox.listenable(),
-      builder: (_, __, ___) => SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: PDataService.workoutsBox.values
-              .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
-              .map((workout) => savedWorkoutItem(context, workout))
-              .toList(),
-        ),
-      ),
-    );
-  }
 }

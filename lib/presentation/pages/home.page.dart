@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
 import '../../domain/state/exercises_store.dart';
 import '../../domain/state/workouts_store.dart';
 import '../../services/exercise.s.dart';
 import '../../services/workout.s.dart';
-import '../router/routes.dart';
 import '../theme/colors.t.dart';
-import '../widgets/shared/buttons.w.dart';
 import 'exercises.page.dart';
+import 'main.page.dart';
 import 'workouts.page.dart';
 
 /// Home Page
@@ -21,8 +19,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final WorkoutService _workoutService = WorkoutService();
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   void _onTabSelected(int index) => setState(() => _selectedIndex = index);
 
@@ -40,25 +39,11 @@ class _HomePageState extends State<HomePage> {
           ),
           //= Saved Workouts Page
           Provider(
-            create: (context) => WorkoutsStore(WorkoutService()),
+            create: (context) => WorkoutsStore(_workoutService),
             child: WorkoutsPage(),
           ),
-          //= Perform Page
-          Center(
-              child: Column(
-            children: [
-              // TODO implement the perform section page
-              const Text('Perform Section'),
-              Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: PrimaryActionButton(
-                    text: 'perform workout',
-                    onTap: () => Navigator.of(context).pushNamed(
-                        FluroRouter.getWorkoutDetailsLink(
-                            workoutKey: CURRENT_WORKOUT_KEY)),
-                  ))
-            ],
-          )),
+          //= Main Page
+          Provider(create: (context) => _workoutService, child: MainPage()),
           //= Feed Page
           // TODO implement the feed page
           const Center(child: Text('Feed Section')),
@@ -91,7 +76,10 @@ class _HomePageState extends State<HomePage> {
           //= Perform
           BottomNavigationBarItem(
             title: SizedBox(width: 0, height: 0),
-            icon: Icon(Icons.play_circle_filled),
+            icon: Icon(
+              Icons.play_circle_filled,
+              size: 40,
+            ),
           ),
           //= Feed
           BottomNavigationBarItem(

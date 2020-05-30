@@ -12,6 +12,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class WorkoutService implements WorkoutInterface {
   String workoutKey;
+  final Box<Workout> workoutsBox = PDataService.workoutsBox;
   static final Uuid uuid = Uuid();
   @override
   final List<String> availableTargets = [
@@ -27,9 +28,19 @@ class WorkoutService implements WorkoutInterface {
   WorkoutService({this.workoutKey = CURRENT_WORKOUT_KEY});
 
   //: Getters _________________________________________________
+
+  @override
+  ValueListenable<Box<Workout>> get workoutsListenable =>
+      workoutsBox.listenable();
+  @override
+  List<Workout> get allWorkouts => workoutsBox.values.toList();
+
   @override
   WorkoutSettings get workoutSettings =>
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
+
+  ValueListenable<Box<WorkoutSettings>> get workoutSettingsListenable =>
+      PDataService.workoutSettingsBox.listenable(keys: [WORKOUT_SETTINGS_KEY]);
 
   bool get isCurrent => workoutKey == CURRENT_WORKOUT_KEY;
 

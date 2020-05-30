@@ -1,3 +1,4 @@
+import 'package:abs_up/presentation/widgets/shared/counter_chip.w.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -36,9 +37,9 @@ class _ExercisesPageState extends State<ExercisesPage> {
                 floating: true,
                 title: const Text('Exercises'),
                 //= Create exercise button
-                // TODO ** implement user exercise creation
+                // TODO implement user exercise creation
                 //= Reset filters button
-                // TODO ** implement clear filters
+                // TODO implement clear filters
                 bottom: PreferredSize(
                   preferredSize: const Size(double.infinity, 85),
                   child: Container(
@@ -74,7 +75,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
                                   padding:
                                       const EdgeInsets.only(left: 12, right: 8),
                                   child: CounterChip(
-                                      exercisesStore: _exercisesStore),
+                                      (_exercisesStore.exercises.length + 1)
+                                          .toString()),
                                 ),
                                 Expanded(
                                   //= Filtering Row
@@ -139,44 +141,25 @@ class _ExercisesPageState extends State<ExercisesPage> {
               ),
               //= Exercise Items List
               SliverFixedExtentList(
-                  delegate: SliverChildListDelegate(_exercisesStore.exercises
-                      .map((exercise) => ExerciseItem(
-                            key: Key('exerciseList:${exercise.key}'),
-                            exercise: exercise,
-                            isDismissible: _exercisesStore.filterFavorites ||
-                                _exercisesStore.filterBlacklisted,
-                          ))
-                      .toList()),
-                  itemExtent: 90.0)
+                delegate: SliverChildListDelegate(
+                  _exercisesStore.exercises
+                      .map(
+                        (exercise) => ExerciseItem(
+                          key: Key('exerciseList:${exercise.key}'),
+                          exercise: exercise,
+                          isDismissible: _exercisesStore.filterFavorites ||
+                              _exercisesStore.filterBlacklisted,
+                        ),
+                      )
+                      .toList(),
+                ),
+                itemExtent: 90.0,
+              )
             ],
           )
           //= Error widget
           ??
           const Center(child: Text('Error...')),
-    );
-  }
-}
-
-class CounterChip extends StatelessWidget {
-  const CounterChip({
-    Key key,
-    @required ExercisesStore exercisesStore,
-  })  : _exercisesStore = exercisesStore,
-        super(key: key);
-
-  final ExercisesStore _exercisesStore;
-
-  @override
-  Widget build(BuildContext context) {
-    return FilterChip(
-      backgroundColor: AppColors.greyDarkest,
-      shape: RoundedRectangleBorder(
-          side: const BorderSide(color: AppColors.greyDark),
-          borderRadius: BorderRadius.circular(20)),
-      label: Text((_exercisesStore.exercises.length + 1).toString()),
-      labelStyle:
-          const TextStyle(color: AppColors.grey, fontWeight: FontWeight.w500),
-      onSelected: (_) {},
     );
   }
 }

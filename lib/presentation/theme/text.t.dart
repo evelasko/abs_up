@@ -49,7 +49,7 @@ class AppTextStyles {
 
   /// Current Workout Settings
   static const TextStyle currentWorkoutSettingsData = TextStyle(
-      fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.grey);
+      fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.grey);
 
   /// Chip text
   static const TextStyle chipText = TextStyle(

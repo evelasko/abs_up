@@ -1,4 +1,3 @@
-import 'package:abs_up/presentation/pages/exercises_selector.page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +5,10 @@ import '../../constants.dart';
 import '../pages/about.page.dart';
 import '../pages/exercise_details.page.dart';
 import '../pages/exercises.page.dart';
+import '../pages/exercises_selector.page.dart';
 import '../pages/feedback_contact.page.dart';
 import '../pages/help_support.page.dart';
 import '../pages/home.page.dart';
-import '../pages/settings.page.dart';
 import '../pages/workout_details.page.dart';
 import '../pages/workout_item_details.page.dart';
 import '../pages/workout_logs.page.dart';
@@ -89,11 +88,6 @@ class FluroRouter {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutLogsPage());
 
-  //= Settings Page
-  static final Handler _settings = Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          SettingsPage());
-
   //= About Page
   static final Handler _about = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
@@ -140,9 +134,6 @@ class FluroRouter {
     //= Workout Logs
     router.define(WORKOUT_LOGS_LINK,
         handler: _workoutLogs, transitionType: TransitionType.inFromRight);
-    //= Settings
-    router.define(SETTINGS_LINK,
-        handler: _settings, transitionType: TransitionType.inFromRight);
     //= About
     router.define(ABOUT_LINK,
         handler: _about, transitionType: TransitionType.inFromRight);

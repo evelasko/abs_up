@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../models/workout.dart';
 import '../models/workout_settings.dart';
 
@@ -16,6 +18,9 @@ abstract class WorkoutInterface {
   //: Getters _________________________________________________
   /// Returns the current workout settings
   WorkoutSettings get workoutSettings;
+
+  ValueListenable get workoutsListenable;
+  List<Workout> get allWorkouts;
 
   /// Returns a rough amount exercises to include by the length set in settings
   int get roughtExerciseAmount;

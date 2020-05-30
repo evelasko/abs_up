@@ -29,14 +29,14 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   final _$equipmentFilterAtom = Atom(name: '_WorkoutsStore.equipmentFilter');
 
   @override
-  String get equipmentFilter {
+  List<String> get equipmentFilter {
     _$equipmentFilterAtom.context.enforceReadPolicy(_$equipmentFilterAtom);
     _$equipmentFilterAtom.reportObserved();
     return super.equipmentFilter;
   }
 
   @override
-  set equipmentFilter(String value) {
+  set equipmentFilter(List<String> value) {
     _$equipmentFilterAtom.context.conditionallyRunInAction(() {
       super.equipmentFilter = value;
       _$equipmentFilterAtom.reportChanged();
@@ -46,69 +46,69 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   final _$targetFilterAtom = Atom(name: '_WorkoutsStore.targetFilter');
 
   @override
-  String get targetFilter {
+  List<String> get targetFilter {
     _$targetFilterAtom.context.enforceReadPolicy(_$targetFilterAtom);
     _$targetFilterAtom.reportObserved();
     return super.targetFilter;
   }
 
   @override
-  set targetFilter(String value) {
+  set targetFilter(List<String> value) {
     _$targetFilterAtom.context.conditionallyRunInAction(() {
       super.targetFilter = value;
       _$targetFilterAtom.reportChanged();
     }, _$targetFilterAtom, name: '${_$targetFilterAtom.name}_set');
   }
 
-  final _$intensityFilterAtom = Atom(name: '_WorkoutsStore.intensityFilter');
+  final _$sortByIntensityAtom = Atom(name: '_WorkoutsStore.sortByIntensity');
 
   @override
-  int get intensityFilter {
-    _$intensityFilterAtom.context.enforceReadPolicy(_$intensityFilterAtom);
-    _$intensityFilterAtom.reportObserved();
-    return super.intensityFilter;
+  bool get sortByIntensity {
+    _$sortByIntensityAtom.context.enforceReadPolicy(_$sortByIntensityAtom);
+    _$sortByIntensityAtom.reportObserved();
+    return super.sortByIntensity;
   }
 
   @override
-  set intensityFilter(int value) {
-    _$intensityFilterAtom.context.conditionallyRunInAction(() {
-      super.intensityFilter = value;
-      _$intensityFilterAtom.reportChanged();
-    }, _$intensityFilterAtom, name: '${_$intensityFilterAtom.name}_set');
+  set sortByIntensity(bool value) {
+    _$sortByIntensityAtom.context.conditionallyRunInAction(() {
+      super.sortByIntensity = value;
+      _$sortByIntensityAtom.reportChanged();
+    }, _$sortByIntensityAtom, name: '${_$sortByIntensityAtom.name}_set');
   }
 
-  final _$difficultyFilterAtom = Atom(name: '_WorkoutsStore.difficultyFilter');
+  final _$sortByDifficultyAtom = Atom(name: '_WorkoutsStore.sortByDifficulty');
 
   @override
-  int get difficultyFilter {
-    _$difficultyFilterAtom.context.enforceReadPolicy(_$difficultyFilterAtom);
-    _$difficultyFilterAtom.reportObserved();
-    return super.difficultyFilter;
-  }
-
-  @override
-  set difficultyFilter(int value) {
-    _$difficultyFilterAtom.context.conditionallyRunInAction(() {
-      super.difficultyFilter = value;
-      _$difficultyFilterAtom.reportChanged();
-    }, _$difficultyFilterAtom, name: '${_$difficultyFilterAtom.name}_set');
-  }
-
-  final _$exercisesAtom = Atom(name: '_WorkoutsStore.exercises');
-
-  @override
-  List<Exercise> get exercises {
-    _$exercisesAtom.context.enforceReadPolicy(_$exercisesAtom);
-    _$exercisesAtom.reportObserved();
-    return super.exercises;
+  bool get sortByDifficulty {
+    _$sortByDifficultyAtom.context.enforceReadPolicy(_$sortByDifficultyAtom);
+    _$sortByDifficultyAtom.reportObserved();
+    return super.sortByDifficulty;
   }
 
   @override
-  set exercises(List<Exercise> value) {
-    _$exercisesAtom.context.conditionallyRunInAction(() {
-      super.exercises = value;
-      _$exercisesAtom.reportChanged();
-    }, _$exercisesAtom, name: '${_$exercisesAtom.name}_set');
+  set sortByDifficulty(bool value) {
+    _$sortByDifficultyAtom.context.conditionallyRunInAction(() {
+      super.sortByDifficulty = value;
+      _$sortByDifficultyAtom.reportChanged();
+    }, _$sortByDifficultyAtom, name: '${_$sortByDifficultyAtom.name}_set');
+  }
+
+  final _$workoutsAtom = Atom(name: '_WorkoutsStore.workouts');
+
+  @override
+  List<Workout> get workouts {
+    _$workoutsAtom.context.enforceReadPolicy(_$workoutsAtom);
+    _$workoutsAtom.reportObserved();
+    return super.workouts;
+  }
+
+  @override
+  set workouts(List<Workout> value) {
+    _$workoutsAtom.context.conditionallyRunInAction(() {
+      super.workouts = value;
+      _$workoutsAtom.reportChanged();
+    }, _$workoutsAtom, name: '${_$workoutsAtom.name}_set');
   }
 
   final _$workoutAtom = Atom(name: '_WorkoutsStore.workout');
@@ -131,7 +131,7 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   @override
   String toString() {
     final string =
-        'searchString: ${searchString.toString()},equipmentFilter: ${equipmentFilter.toString()},targetFilter: ${targetFilter.toString()},intensityFilter: ${intensityFilter.toString()},difficultyFilter: ${difficultyFilter.toString()},exercises: ${exercises.toString()},workout: ${workout.toString()}';
+        'searchString: ${searchString.toString()},equipmentFilter: ${equipmentFilter.toString()},targetFilter: ${targetFilter.toString()},sortByIntensity: ${sortByIntensity.toString()},sortByDifficulty: ${sortByDifficulty.toString()},workouts: ${workouts.toString()},workout: ${workout.toString()}';
     return '{$string}';
   }
 }

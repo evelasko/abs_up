@@ -1,9 +1,11 @@
-import 'package:abs_up/domain/interfaces/workout.i.dart';
-import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/domain/models/workout.dart';
-import 'package:abs_up/services/p_data.s.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../constants.dart';
+import '../../services/p_data.s.dart';
+import '../interfaces/workout.i.dart';
+import '../models/workout.dart';
 
 part 'workouts_store.g.dart';
 
@@ -14,70 +16,35 @@ class WorkoutsStore extends _WorkoutsStore with _$WorkoutsStore {
 abstract class _WorkoutsStore with Store {
   final WorkoutInterface workoutService;
   final Box<Workout> workoutBox = PDataService.workoutsBox;
-  _WorkoutsStore(this.workoutService);
+  _WorkoutsStore(this.workoutService) {
+    workouts = workoutService.allWorkouts
+        .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
+        .toList();
+  }
+
+  ValueListenable get workoutsListenable => workoutService.workoutsListenable;
+
+  /// This workouts list includes the current workout
+  List<Workout> get all => workoutService.allWorkouts;
+
+  /// This workouts list excludes the current workout
+  List<Workout> get allButCurrent => workoutService.allWorkouts
+      .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
+      .toList();
 
   @observable
-  String searchString;
+  String searchString = '';
   @observable
-  String equipmentFilter;
+  List<String> equipmentFilter = [];
   @observable
-  String targetFilter;
+  List<String> targetFilter = [];
   @observable
-  int intensityFilter;
+  bool sortByIntensity = false;
   @observable
-  int difficultyFilter;
+  bool sortByDifficulty = false;
   @observable
-  List<Exercise> exercises;
-
-  // List<Exercise> get all => exercisesBox.values.toList();
+  List<Workout> workouts;
 
   @observable
   Workout workout;
-
-  // @action
-  // void filterExercises() =>
-  //     exercises = exercisesBox.values.where(filterPredicate).toList();
-
-  bool filterPredicate(Exercise exercise) =>
-      exercise.name.contains(searchString.length < 3
-          ? ''
-          : RegExp(searchString, caseSensitive: false)) &&
-      exercise.equipment.contains(equipmentFilter ?? '') &&
-      exercise.target.contains(targetFilter ?? '') &&
-      (intensityFilter == null || exercise.intensity == intensityFilter) &&
-      (difficultyFilter == null || exercise.difficulty == difficultyFilter);
-
-  // void updateSearchString(String input) {
-  //   searchString = input;
-  //   filterExercises();
-  // }
-
-  // void updateEquipmentFilter(String input) {
-  //   equipmentFilter = input;
-  //   filterExercises();
-  // }
-
-  // void updateTargetFilter(String input) {
-  //   targetFilter = input;
-  //   filterExercises();
-  // }
-
-  // void updateIntensityFilter(int input) {
-  //   intensityFilter = input;
-  //   filterExercises();
-  // }
-
-  // void updateDifficultyFilter(int input) {
-  //   difficultyFilter = input;
-  //   filterExercises();
-  // }
-
-  // void clearFilters() {
-  //   searchString = '';
-  //   equipmentFilter = null;
-  //   targetFilter = null;
-  //   intensityFilter = null;
-  //   difficultyFilter = null;
-  //   exercises = exercisesBox.values.toList();
-  // }
 }

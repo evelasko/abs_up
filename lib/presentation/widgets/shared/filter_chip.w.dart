@@ -27,7 +27,7 @@ class FilterChipWidget extends StatelessWidget {
           elevation: 0,
           pressElevation: 0,
           showCheckmark: false,
-          backgroundColor: Colors.black,
+          backgroundColor: AppColors.black,
           selectedColor: AppColors.coquelicot,
           labelStyle: const TextStyle(
             color: AppColors.greyLight,

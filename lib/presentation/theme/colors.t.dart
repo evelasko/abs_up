@@ -16,6 +16,9 @@ class AppColors {
   static const Color greyLight = Color(0xffe2e2e6);
   static const Color greyLightest = Color(0xfff5f5f7);
 
+  /// Black
+  static const Color black = Color.fromRGBO(17, 17, 17, 1);
+
   /// Gradients
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [rudy, orange],

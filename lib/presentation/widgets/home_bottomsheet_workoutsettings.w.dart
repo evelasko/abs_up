@@ -285,9 +285,8 @@ class _HomeBottomSheetWorkoutsettingsState
                                 spacing: 5,
                                 runSpacing: -3,
                                 children: EQUIPMENT_DATA_KEYS
-                                    .map((key) => equipmentChip(
-                                        equipment:
-                                            Equipment.equipmentFromKey(key),
+                                    .map((key) => EquipmentChip(
+                                        Equipment.equipmentFromKey(key),
                                         onSelected: (value) => value
                                             ? settings.addEquipment(key: key)
                                             : settings.removeEquipment(
