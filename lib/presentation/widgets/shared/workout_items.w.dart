@@ -26,10 +26,17 @@ class WorkoutItemWidget extends StatelessWidget {
     final WorkoutService workoutService = Provider.of<WorkoutService>(context);
     return Dismissible(
       key: Key(workoutItem.exercise.key.toString()),
-      background: SwipableActions.background(
-          AppColors.brandeis, Icons.favorite, 'replace\nexercise'),
-      secondaryBackground: SwipableActions.secondaryBackground(
-          Colors.red, Icons.delete, 'remove from\nworkout'),
+      background: const SwipableActionBackground(
+        color: AppColors.brandeis,
+        icon: Icons.favorite,
+        text: 'replace\nexercise',
+        primary: true,
+      ),
+      secondaryBackground: const SwipableActionBackground(
+          color: Colors.red,
+          icon: Icons.delete,
+          text: 'remove from\nworkout',
+          primary: false),
       onDismissed: (direction) => removeItem(
           Scaffold.of(context), workoutItem, workoutService.currentWorkout),
       // TODO implement the swippable action to replace the exercise of a workout item

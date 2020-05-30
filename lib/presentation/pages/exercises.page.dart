@@ -36,9 +36,9 @@ class _ExercisesPageState extends State<ExercisesPage> {
                 floating: true,
                 title: const Text('Exercises'),
                 //= Create exercise button
-                // TODO implement user exercise creation
+                // TODO ** implement user exercise creation
                 //= Reset filters button
-                // TODO implement a Clear Filters mechanism
+                // TODO ** implement clear filters
                 bottom: PreferredSize(
                   preferredSize: const Size(double.infinity, 85),
                   child: Container(
@@ -141,8 +141,11 @@ class _ExercisesPageState extends State<ExercisesPage> {
               SliverFixedExtentList(
                   delegate: SliverChildListDelegate(_exercisesStore.exercises
                       .map((exercise) => ExerciseItem(
-                          key: Key('exerciseList:${exercise.key}'),
-                          exercise: exercise))
+                            key: Key('exerciseList:${exercise.key}'),
+                            exercise: exercise,
+                            isDismissible: _exercisesStore.filterFavorites ||
+                                _exercisesStore.filterBlacklisted,
+                          ))
                       .toList()),
                   itemExtent: 90.0)
             ],
