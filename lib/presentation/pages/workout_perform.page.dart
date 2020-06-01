@@ -51,7 +51,7 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _performStore ??= Provider.of<PerformStore>(context);
-    _performStore.initNew(widget.sourceWorkoutKey);
+    _performStore.initNew(widget.sourceWorkoutKey ?? CURRENT_WORKOUT_KEY);
     when(
         (_) =>
             _performStore.currentItemIsLast &&

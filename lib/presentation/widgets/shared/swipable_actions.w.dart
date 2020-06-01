@@ -5,6 +5,8 @@ class SwipableActionBackground extends StatelessWidget {
   final IconData icon;
   final Color color;
   final String text;
+
+  /// Primary action aligns to left, secondary aligns to right
   final bool primary;
   const SwipableActionBackground(
       {Key key,

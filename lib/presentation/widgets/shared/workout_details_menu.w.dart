@@ -1,25 +1,25 @@
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/domain/models/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/workout.s.dart';
+import '../../../domain/state/workouts_store.dart';
 import '../../router/routes.dart';
 import '../../theme/colors.t.dart';
 import '../../utils/choice.dart';
-import '../home_bottomsheet_workoutsettings.w.dart';
 import 'buttons.w.dart';
 
 /// consumes: WorkoutService
 class WorkoutDetailsMenu extends StatelessWidget {
-  final String workoutKey;
   const WorkoutDetailsMenu({
     Key key,
-    this.workoutKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final WorkoutService workoutService = Provider.of<WorkoutService>(context);
-
+    final Workout workout = Provider.of<Workout>(context);
+    final _workoutsStore = Provider.of<WorkoutsStore>(context);
+    final bool isCurrent = workout.key.toString() == CURRENT_WORKOUT_KEY;
     return Container(
       width: double.infinity,
       height: 150,
@@ -34,43 +34,52 @@ class WorkoutDetailsMenu extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 choiceWidget(
-                    workoutService.isCurrent,
-                    Expanded(
-                      child: IconButton(
-                        icon: const Icon(Icons.shuffle),
-                        color: AppColors.greyLight,
-                        onPressed: workoutService.isCurrent
-                            ? workoutService.generateCurrentWorkout
-                            : null,
-                      ),
-                    )),
-                choiceWidget(
-                    workoutService.isCurrent,
-                    Expanded(
-                      child: IconButton(
-                          icon: const Icon(Icons.tune),
-                          color: AppColors.greyLight,
-                          onPressed: () {
-                            final PersistentBottomSheetController
-                                sheetController = showBottomSheet(
-                              context: context,
-                              builder: (context) =>
-                                  HomeBottomSheetWorkoutsettings(),
-                            );
-
-                            sheetController.closed.then((value) =>
-                                workoutService.generateCurrentWorkout());
-                          }),
-                    )),
-                Expanded(
-                  child: IconButton(
-                      icon: const Icon(Icons.add_circle_outline),
+                  isCurrent,
+                  Expanded(
+                    child: IconButton(
+                      icon: const Icon(Icons.shuffle),
                       color: AppColors.greyLight,
-                      // TODO add exercise to workout in workout details view
-                      onPressed: () => Navigator.pushNamed(
-                          context,
-                          FluroRouter.getExerciseAddToWorkoutLink(
-                              workoutKey: workoutService.workoutKey))),
+                      onPressed: isCurrent
+                          ? _workoutsStore.generateCurrentWorkout
+                          : null,
+                    ),
+                  ),
+                ),
+
+                /// Deprecated changing the settings thru a bottom sheet
+                /// at workout details page... the user can navigate back
+                /// to the settings page to change them and regenerate a new
+                /// workout
+                // choiceWidget(
+                //     _workoutStore.isCurrent,
+                //     Expanded(
+                //       child: IconButton(
+                //           icon: const Icon(Icons.tune),
+                //           color: AppColors.greyLight,
+                //           onPressed: () {
+                //             final PersistentBottomSheetController
+                //                 sheetController = showBottomSheet(
+                //               context: context,
+                //               builder: (context) =>
+                //                   HomeBottomSheetWorkoutsettings(),
+                //             );
+
+                //             sheetController.closed.then((value) =>
+                //                 _workoutStore.generateCurrentWorkout());
+                //           }),
+                //     )),
+                Expanded(
+                  //= Add Workout Item
+                  child: IconButton(
+                    icon: const Icon(Icons.add_circle_outline),
+                    color: AppColors.greyLight,
+                    // TODO add exercise to workout in workout details view
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      FluroRouter.getExerciseAddToWorkoutLink(
+                          workoutKey: workout.key.toString()),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -80,7 +89,8 @@ class WorkoutDetailsMenu extends StatelessWidget {
               onTap: () async => Navigator.pushNamed(
                   context,
                   FluroRouter.getWorkoutPerformLink(
-                      sourceWorkoutKey: workoutKey)),
+                      sourceWorkoutKey:
+                          workout.key.toString() ?? CURRENT_WORKOUT_KEY)),
               text: 'Start Workout'),
         ],
       ),

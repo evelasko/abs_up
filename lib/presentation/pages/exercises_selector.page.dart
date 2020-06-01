@@ -20,9 +20,8 @@ class _ExercisesSelectorPageState extends State<ExercisesSelectorPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _workout = widget.workoutKey == null
-        ? null
-        : WorkoutService(workoutKey: widget.workoutKey).currentWorkout;
+    _workout =
+        widget.workoutKey == null ? null : WorkoutService().currentWorkout;
   }
 
   @override

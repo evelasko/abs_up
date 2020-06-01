@@ -25,18 +25,20 @@ class WorkoutService implements WorkoutInterface {
     // 'Kegel'
   ];
 
-  WorkoutService({this.workoutKey = CURRENT_WORKOUT_KEY});
+  WorkoutService();
 
   //: Getters _________________________________________________
 
   @override
   ValueListenable<Box<Workout>> get workoutsListenable =>
       workoutsBox.listenable();
+
   @override
   List<Workout> get allWorkouts => workoutsBox.values.toList();
 
   @override
   WorkoutSettings get workoutSettings =>
+      // TODO set the statement below to return fallback default values
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
 
   ValueListenable<Box<WorkoutSettings>> get workoutSettingsListenable =>

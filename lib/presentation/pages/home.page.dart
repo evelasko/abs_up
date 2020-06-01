@@ -1,4 +1,10 @@
+import 'package:abs_up/domain/state/auth_store.dart';
+import 'package:abs_up/presentation/pages/profile.page.dart';
+import 'package:abs_up/presentation/widgets/drawer.w.dart';
+import 'package:abs_up/services/auth.s.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/exercises_store.dart';
@@ -17,7 +23,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final WorkoutService _workoutService = WorkoutService();
 
@@ -48,11 +54,14 @@ class _HomePageState extends State<HomePage> {
           // TODO implement the feed page
           const Center(child: Text('Feed Section')),
           //= Settings & Profile Page
-          // TODO implement the settings and profile page
-          const Center(child: Text('Profile & Settings Section')),
+          Provider(
+              create: (context) => AuthStore(
+                  FirebaseAuthService(FirebaseAuth.instance, GoogleSignIn())),
+              child: ProfilePage()),
         ].elementAt(_selectedIndex),
       ),
-
+      //= App Drawer
+      drawer: const AppDrawer(),
       //= Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,

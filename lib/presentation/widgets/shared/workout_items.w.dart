@@ -1,4 +1,3 @@
-import 'package:abs_up/services/workout.s.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,12 +22,12 @@ class WorkoutItemWidget extends StatelessWidget {
           AppSnackbars.removedWorkoutItem(workoutItem.exercise.name)));
   @override
   Widget build(BuildContext context) {
-    final WorkoutService workoutService = Provider.of<WorkoutService>(context);
+    final Workout workout = Provider.of<Workout>(context);
     return Dismissible(
       key: Key(workoutItem.exercise.key.toString()),
       background: const SwipableActionBackground(
         color: AppColors.brandeis,
-        icon: Icons.favorite,
+        icon: Icons.find_replace,
         text: 'replace\nexercise',
         primary: true,
       ),
@@ -37,12 +36,11 @@ class WorkoutItemWidget extends StatelessWidget {
           icon: Icons.delete,
           text: 'remove from\nworkout',
           primary: false),
-      onDismissed: (direction) => removeItem(
-          Scaffold.of(context), workoutItem, workoutService.currentWorkout),
+      onDismissed: (direction) =>
+          removeItem(Scaffold.of(context), workoutItem, workout),
       // TODO implement the swippable action to replace the exercise of a workout item
       // confirmDismiss: (direction) async { return true;},
-      child: WorkoutItemBody(
-          workoutItem: workoutItem, workout: workoutService.currentWorkout),
+      child: WorkoutItemBody(workoutItem: workoutItem, workout: workout),
     );
   }
 }

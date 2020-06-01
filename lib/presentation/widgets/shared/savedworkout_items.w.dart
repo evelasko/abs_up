@@ -1,4 +1,7 @@
+import 'package:abs_up/domain/state/workouts_store.dart';
+import 'package:abs_up/presentation/widgets/shared/swipable_actions.w.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../domain/models/workout.dart';
 import '../../router/routes.dart';
@@ -16,9 +19,38 @@ class SavedWorkoutItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      // TODO *** make saved workout items dissmissible to delete
-      ListItemWrapper(
+  Widget build(BuildContext context) {
+    final WorkoutsStore store = Provider.of<WorkoutsStore>(context);
+    return Dismissible(
+      key: Key(workout.key.toString()),
+      direction: DismissDirection.endToStart,
+      background: const SwipableActionBackground(
+          icon: Icons.delete,
+          text: 'Delete\nworkout',
+          primary: false,
+          color: Colors.red),
+      onDismissed: (direction) =>
+          store.deleteSavedWorkout(workout.key.toString()),
+      confirmDismiss: (direction) => showDialog<bool>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Text('Delete ${workout.name}'),
+          content: const Text(
+              'This action is irreversible, please confirm deletion'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Delete'),
+            )
+          ],
+        ),
+      ),
+      child: ListItemWrapper(
         child: GestureDetector(
           onTap: () => Navigator.pushNamed(
               context,
@@ -80,5 +112,7 @@ class SavedWorkoutItem extends StatelessWidget {
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

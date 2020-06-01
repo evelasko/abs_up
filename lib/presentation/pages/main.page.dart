@@ -1,4 +1,3 @@
-import 'package:abs_up/presentation/widgets/shared/extreme_row.w.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +11,7 @@ import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
 import '../widgets/shared/buttons.w.dart';
 import '../widgets/shared/equipment_chips.w.dart';
+import '../widgets/shared/extreme_row.w.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -224,9 +224,10 @@ class _MainPageState extends State<MainPage> {
             child: PrimaryActionButton(
               text: 'preview / edit workout',
               buttonType: ButtonTypes.secondary,
-              onTap: () => Navigator.of(context).pushNamed(
-                  FluroRouter.getWorkoutDetailsLink(
-                      workoutKey: CURRENT_WORKOUT_KEY)),
+              onTap: () => workoutService.generateCurrentWorkout().then((_) =>
+                  Navigator.of(context).pushNamed(
+                      FluroRouter.getWorkoutDetailsLink(
+                          workoutKey: CURRENT_WORKOUT_KEY))),
             ),
           )
         ],

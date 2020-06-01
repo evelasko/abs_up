@@ -1,6 +1,7 @@
 import 'package:abs_up/domain/core/failures.dart';
 import 'package:abs_up/domain/core/value_objects.dart';
 import 'package:abs_up/domain/interfaces/auth.i.dart';
+import 'package:abs_up/domain/models/user.dart';
 import 'package:abs_up/domain/state/auth_form_states.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +21,14 @@ abstract class _AuthStore with Store {
 
   @observable
   AuthFormState authFormState;
+
+  @observable
+  Option<User> user;
+
+  @action
+  Future<void> getUser() async {
+    user = await authFacade.getLoggedInUser();
+  }
 
   @action
   void initAuthForm() => updateAuthFormState(AuthFormState.initial());
