@@ -76,7 +76,6 @@ class WorkoutItemBody extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                             child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             //= Name

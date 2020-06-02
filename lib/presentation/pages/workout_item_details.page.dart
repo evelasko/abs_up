@@ -37,7 +37,6 @@ class _WorkoutItemDetailsPageState extends State<WorkoutItemDetailsPage> {
     return Scaffold(
       backgroundColor: AppColors.greyDarkest,
       body: PageView.builder(
-          scrollDirection: Axis.horizontal,
           controller: _pageController,
           itemCount: workout.items.length,
           itemBuilder: (context, index) => WorkoutItemDetailsPageView(

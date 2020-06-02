@@ -41,7 +41,7 @@ T buttonSideCase<T>(
 }
 
 final BoxDecoration homePageButtonDecoration =
-    BoxDecoration(border: Border.all(width: 1, color: AppColors.greyDark));
+    BoxDecoration(border: Border.all(color: AppColors.greyDark));
 
 class HomePageButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -291,7 +291,6 @@ class PrimaryActionButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30.0)),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     icon != null
                         ? Icon(
@@ -350,7 +349,6 @@ class SecondaryActionButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30.0)),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     icon != null
                         ? Icon(icon,

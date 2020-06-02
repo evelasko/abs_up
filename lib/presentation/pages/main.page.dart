@@ -225,9 +225,8 @@ class _MainPageState extends State<MainPage> {
               text: 'preview / edit workout',
               buttonType: ButtonTypes.secondary,
               onTap: () => workoutService.generateCurrentWorkout().then((_) =>
-                  Navigator.of(context).pushNamed(
-                      FluroRouter.getWorkoutDetailsLink(
-                          workoutKey: CURRENT_WORKOUT_KEY))),
+                  Navigator.of(context)
+                      .pushNamed(FluroRouter.getWorkoutDetailsLink())),
             ),
           )
         ],

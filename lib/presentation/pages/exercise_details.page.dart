@@ -37,7 +37,6 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: AppColors.greyDarkest,
         body: PageView.builder(
-            scrollDirection: Axis.horizontal,
             controller: _pageController,
             itemCount: exercises.length,
             itemBuilder: (context, index) => ExerciseDetailsPageView(

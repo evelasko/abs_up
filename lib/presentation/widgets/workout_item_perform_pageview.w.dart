@@ -133,7 +133,6 @@ class _WorkoutItemPerformPageViewState
                             .workoutItems[widget.pageIndex].progress
                             .toDouble()),
                         duration: const Duration(seconds: 1),
-                        curve: Curves.linear,
                       )
                     ]),
                   ),

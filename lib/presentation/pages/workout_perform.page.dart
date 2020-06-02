@@ -43,7 +43,7 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    _pageController = PageController();
     _pageController.addListener(focusLocalizer);
   }
 
@@ -167,7 +167,6 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
                     child: _performStore.workoutItems.isEmpty
                         ? const CircularProgressIndicator()
                         : PageView.builder(
-                            scrollDirection: Axis.horizontal,
                             controller: _pageController,
                             itemCount: _performStore.workoutItems.length,
                             itemBuilder: (context, index) =>
