@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/workouts_store.dart';
-import '../widgets/shared/savedworkout_items.w.dart';
+import '../widgets/savedworkout_items.w.dart';
 
 class WorkoutsPage extends StatefulWidget {
   @override

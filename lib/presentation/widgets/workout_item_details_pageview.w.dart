@@ -1,10 +1,10 @@
-import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
+import '../../domain/models/workout_item.dart';
 import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
-import 'exercise_details_content.w.dart';
+import 'exercise_details_body.w.dart';
 
 class WorkoutItemDetailsPageView extends StatelessWidget {
   final WorkoutItem workoutItem;
@@ -59,7 +59,7 @@ class WorkoutItemDetailsPageView extends StatelessWidget {
             color: AppColors.greyLightest,
             child: CustomScrollView(
               slivers: <Widget>[
-                SliverToBoxAdapter(child: ExerciseDetailsContent(exercise)),
+                SliverToBoxAdapter(child: ExerciseDetailsBody(exercise)),
               ],
             ),
           ))

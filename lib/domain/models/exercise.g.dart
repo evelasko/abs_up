@@ -17,6 +17,9 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Exercise(
+      description: fields[10] as String,
+      media: fields[11] as String,
+      thumb: fields[12] as String,
       impact: fields[7] as bool,
       group: fields[8] as String,
       name: fields[0] as String,
@@ -33,7 +36,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -53,6 +56,12 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(8)
       ..write(obj.group)
       ..writeByte(9)
-      ..write(obj.tag);
+      ..write(obj.tag)
+      ..writeByte(10)
+      ..write(obj.description)
+      ..writeByte(11)
+      ..write(obj.media)
+      ..writeByte(12)
+      ..write(obj.thumb);
   }
 }

@@ -54,7 +54,7 @@ const String EQUIPMENT_PHYSIO_BALL_KEY = 'physio ball';
 const String EQUIPMENT_SMALL_BALL_KEY = 'small ball';
 const String EQUIPMENT_CABLE_KEY = 'cable';
 const String EQUIPMENT_ELASTIC_BAND_KEY = 'elastic band';
-const String EQUIPMENT_HUNGING_BAR_KEY = 'hunging bar';
+const String EQUIPMENT_HUNGING_BAR_KEY = 'hanging bar';
 const String EQUIPMENT_PARTNER_KEY = 'partner';
 
 const List<String> EQUIPMENT_DATA_KEYS = [
@@ -77,7 +77,7 @@ const Map<String, String> EQUIPMENT_TEXT = {
   EQUIPMENT_SMALL_BALL_KEY: 'Small Ball',
   EQUIPMENT_CABLE_KEY: 'Cable',
   EQUIPMENT_ELASTIC_BAND_KEY: 'Elastic Band',
-  EQUIPMENT_HUNGING_BAR_KEY: 'Hunging Bar',
+  EQUIPMENT_HUNGING_BAR_KEY: 'Hanging Bar',
   EQUIPMENT_PARTNER_KEY: 'Partner'
 };
 
@@ -91,6 +91,9 @@ const String EXERCISE_DIFFICULTY_KEY = DIFFICULTY_KEY;
 const String EXERCISE_INTENSITY_KEY = INTENSITY_KEY;
 const String EXERCISE_EQUIPMENT_KEY = EQUIPMENT_KEY;
 const String EXERCISE_IMPACT_KEY = IMPACT_KEY;
+const String EXERCISE_DESCRIPTION_KEY = 'description';
+const String EXERCISE_MEDIA_KEY = 'media';
+const String EXERCISE_THUMB_KEY = 'thumb';
 
 /// Workout Settings Default Values
 const int INTENSITY_DEFAULT = 1;

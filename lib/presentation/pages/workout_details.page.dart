@@ -1,10 +1,10 @@
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/domain/models/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants.dart';
+import '../../domain/models/workout.dart';
 import '../../domain/state/workouts_store.dart';
 import '../../services/workout.s.dart';
 import '../theme/colors.t.dart';
@@ -12,7 +12,7 @@ import '../utils/choice.dart';
 import '../widgets/shared/snackbars.w.dart';
 import '../widgets/shared/workout_details_menu.w.dart';
 import '../widgets/shared/workout_details_panel.w.dart';
-import '../widgets/shared/workout_items.w.dart';
+import '../widgets/workout_items.w.dart';
 
 class WorkoutDetailsPage extends StatelessWidget {
   final String workoutKey;

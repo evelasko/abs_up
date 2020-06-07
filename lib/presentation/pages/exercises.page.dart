@@ -1,11 +1,11 @@
-import 'package:abs_up/presentation/widgets/shared/counter_chip.w.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/exercises_store.dart';
 import '../theme/colors.t.dart';
-import '../widgets/shared/exercise_items.w.dart';
+import '../widgets/exercise_items_view.w.dart';
+import '../widgets/shared/counter_chip.w.dart';
 import '../widgets/shared/filter_chip.w.dart';
 import '../widgets/shared/filter_label.w.dart';
 

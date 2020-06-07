@@ -1,10 +1,9 @@
-import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/auth_store.dart';
+import '../theme/colors.t.dart';
 
 class ProfilePage extends StatefulWidget {
   @override

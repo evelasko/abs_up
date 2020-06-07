@@ -1,10 +1,9 @@
-import 'package:abs_up/domain/models/exercise.m.dart';
-
-import 'package:abs_up/presentation/theme/icons.t.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../../constants.dart';
+import '../../presentation/theme/icons.t.dart';
+import 'exercise.m.dart';
 
 part 'exercise.g.dart';
 
@@ -12,30 +11,52 @@ enum ExerciseTag { exercise, favorited, blacklisted }
 
 @HiveType(typeId: 1, adapterName: 'ExerciseAdapter')
 class Exercise extends HiveObject implements ExerciseModel {
+  @override
   @HiveField(0)
   final String name;
   @HiveField(1)
+  @override
   final int difficulty;
   @HiveField(2)
+  @override
   final int intensity;
   @HiveField(3)
+  @override
   final String target;
   @HiveField(4)
+  @override
   final String equipment;
   @HiveField(5)
+  @override
   final bool weighted;
   @HiveField(6)
+  @override
   final bool sided;
   @HiveField(7)
+  @override
   final bool impact;
   @HiveField(8)
-  final String group;
+  @override
+  String group;
   @HiveField(9)
+  @override
   int tag;
+  @HiveField(10)
+  @override
+  final String description;
+  @HiveField(11)
+  @override
+  final String media;
+  @HiveField(12)
+  @override
+  final String thumb;
 
   Exercise(
-      {this.impact,
-      this.group,
+      {this.description = '',
+      this.media = '',
+      this.thumb = '',
+      this.impact,
+      this.group = 'Free',
       this.name,
       this.difficulty,
       this.intensity,
@@ -49,10 +70,12 @@ class Exercise extends HiveObject implements ExerciseModel {
   IconData get equipmentIcon =>
       AbsAppIcons.equipment[equipment.toLowerCase()] ??
       AbsAppIcons.logo_outline;
+
   @override
   String get intensityString => intensityToString(intensity);
   @override
   String get difficultyString => difficultyToString(difficulty);
+
   @override
   Future<void> setFavorite() async {
     tag = 1;
@@ -81,7 +104,9 @@ class Exercise extends HiveObject implements ExerciseModel {
       maybeAnExercise.containsKey(EXERCISE_WEIGHTED_KEY) &&
       maybeAnExercise.containsKey(EXERCISE_SIDED_KEY) &&
       maybeAnExercise.containsKey(EXERCISE_IMPACT_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_GROUP_KEY);
+      maybeAnExercise.containsKey(EXERCISE_DESCRIPTION_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_MEDIA_KEY) &&
+      maybeAnExercise.containsKey(EXERCISE_THUMB_KEY);
 
   @override
   Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) => Exercise(
@@ -93,7 +118,10 @@ class Exercise extends HiveObject implements ExerciseModel {
       weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
       sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
       impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
-      group: exerciseMap[EXERCISE_GROUP_KEY] as String);
+      group: exerciseMap[EXERCISE_GROUP_KEY] as String,
+      description: exerciseMap[EXERCISE_DESCRIPTION_KEY] as String ?? '',
+      media: exerciseMap[EXERCISE_MEDIA_KEY] as String ?? '',
+      thumb: exerciseMap[EXERCISE_THUMB_KEY] as String ?? '');
 
   @override
   bool operator ==(Object o) {
@@ -105,7 +133,10 @@ class Exercise extends HiveObject implements ExerciseModel {
         o.target == target &&
         o.equipment == equipment &&
         o.weighted == weighted &&
-        o.sided == sided;
+        o.sided == sided &&
+        o.media == media &&
+        o.thumb == thumb &&
+        o.description == description;
   }
 
   @override

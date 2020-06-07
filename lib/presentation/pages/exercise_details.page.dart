@@ -1,9 +1,9 @@
+import 'package:abs_up/presentation/widgets/exercise_details_view.w.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
 import '../../services/p_data.s.dart';
 import '../theme/colors.t.dart';
-import '../widgets/exercise_details_pageview.w.dart';
 
 class ExerciseDetailsPage extends StatefulWidget {
   final String exerciseKey;

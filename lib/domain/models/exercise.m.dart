@@ -3,13 +3,41 @@ import 'package:flutter/material.dart';
 enum ExerciseTag { exercise, favorited, blacklisted }
 
 abstract class ExerciseModel {
+  final String name;
+  final int difficulty;
+  final int intensity;
+  final String target;
+  final String equipment;
+  final bool weighted;
+  final bool sided;
+  final bool impact;
+  String group;
+  int tag;
+  final String description;
+  final String media;
+  final String thumb;
+
+  ExerciseModel(
+    this.name,
+    this.difficulty,
+    this.intensity,
+    this.target,
+    this.equipment,
+    this.weighted,
+    this.sided,
+    this.impact,
+    this.description,
+    this.media,
+    this.thumb,
+  );
+
   /// Retrieve the icon for the exercise quipment
   IconData get equipmentIcon;
 
-  /// Returns the string for the exercise's intensity
+  /// Returns the string for the exercise's intensity value
   String get intensityString;
 
-  /// Returns the string for the exercise's difficulty
+  /// Returns the string for the exercise's difficulty value
   String get difficultyString;
 
   /// Tags the exercise as favorite and removes it from blacklist if present

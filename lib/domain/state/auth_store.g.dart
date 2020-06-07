@@ -26,6 +26,30 @@ mixin _$AuthStore on _AuthStore, Store {
     }, _$authFormStateAtom, name: '${_$authFormStateAtom.name}_set');
   }
 
+  final _$userAtom = Atom(name: '_AuthStore.user');
+
+  @override
+  Option<User> get user {
+    _$userAtom.context.enforceReadPolicy(_$userAtom);
+    _$userAtom.reportObserved();
+    return super.user;
+  }
+
+  @override
+  set user(Option<User> value) {
+    _$userAtom.context.conditionallyRunInAction(() {
+      super.user = value;
+      _$userAtom.reportChanged();
+    }, _$userAtom, name: '${_$userAtom.name}_set');
+  }
+
+  final _$getUserAsyncAction = AsyncAction('getUser');
+
+  @override
+  Future<void> getUser() {
+    return _$getUserAsyncAction.run(() => super.getUser());
+  }
+
   final _$registerWithEmailAndPasswordAsyncAction =
       AsyncAction('registerWithEmailAndPassword');
 
@@ -87,7 +111,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   String toString() {
-    final string = 'authFormState: ${authFormState.toString()}';
+    final string =
+        'authFormState: ${authFormState.toString()},user: ${user.toString()}';
     return '{$string}';
   }
 }

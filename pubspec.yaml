@@ -22,6 +22,8 @@ dependencies:
   cupertino_icons:
   flutter_tts: ^1.0.0
   font_awesome_flutter: ^8.8.1
+  video_player: ^0.10.11+1
+  native_video_view: ^0.2.1
 
   # Firebase Dependencies
   cloud_firestore: ^0.13.5
@@ -68,7 +70,7 @@ flutter:
     - assets/app_images/
     - assets/data/exercises.json
     - assets/exercise_images/
-    - assets/exercise_details/
+    - assets/exercise_media/
 
   fonts:
     - family: AbsAppIcons
