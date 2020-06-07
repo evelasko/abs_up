@@ -7,10 +7,10 @@ version: 1.0.0+1
 # flutter pub run flutter_application_id:main -f pubspec.yaml
 flutter_application_id:
   android:
-    id: "com.misfitcoders.absup"
-    #name: Abs Up"
+    id: "com.misfitcoders.abs_up"
+    #name: "Abs Up"
   ios:
-    id: "com.misfitcoders.absup"
+    id: "com.misfitcoders.abs_up"
     #name: "Abs Up"
 
 flutter_icons:
