@@ -44,13 +44,12 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       //= Intensity
-                      // TODO this intensity should show an average intensity claculated from the workout being shown
                       Text('intensity'.toUpperCase(),
                           style: const TextStyle(
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
-                      Text(workoutSettings.intensityString.toUpperCase(),
+                      Text(currentWorkout.intensityAverageString.toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -72,13 +71,12 @@ class WorkoutDetailsPanel extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       //= Difficulty
-                      // TODO this difficulty should show an average difficulty claculated from the workout being shown
                       Text('difficulty'.toUpperCase(),
                           style: const TextStyle(
                               color: AppColors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.w700)),
-                      Text(workoutSettings.difficultyString.toUpperCase(),
+                      Text(currentWorkout.difficultyAverageString.toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

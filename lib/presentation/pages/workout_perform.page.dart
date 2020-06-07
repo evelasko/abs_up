@@ -87,7 +87,7 @@ class _WorkoutPerformLayoutState extends State<WorkoutPerformLayout> {
                       icon: Icons.share,
                       onTap: () =>
                           _performStore.saveWorkoutLogEntry().then((value) {
-                            // TODO implement sharing progress when finishing workout
+                            // TODO (late) implement sharing progress when finishing workout
                             Navigator.popAndPushNamed(context, HOME_LINK);
                           }))
                 ],

@@ -28,7 +28,7 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
               floating: true,
               title: Text('Saved Workouts'),
               //= Create new workout button
-              // TODO implement workout from scratch creation
+              // TODO (late) implement workout from scratch creation
               //= Reset filters button
               // TODO implement clear filters on workouts page
             ),

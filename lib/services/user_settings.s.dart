@@ -23,9 +23,8 @@ class UserSettingsService implements UserSettingsInterace {
     return userSettingsBox.get(WORKOUT_SETTINGS_KEY) as Map<String, dynamic>;
   }
 
-  // TODO the expression below should only set the default workout settings...
   @override
-  Future<void> setWorkoutSettings() =>
+  Future<void> setWorkoutSettingsDefaults() =>
       userSettingsBox.put(WORKOUT_SETTINGS_KEY, WORKOUT_SETTINGS_DEFAULTS_MAP);
 
   @override

@@ -27,7 +27,6 @@ class WorkoutItemBody extends StatelessWidget {
 
     return ListSmallItemWrapper(
       child: GestureDetector(
-        // TODO on tapping a workout item should send to a bottom sheet view of the workout item...
         onTap: () => Navigator.pushNamed(
           context,
           FluroRouter.getWorkoutItemDetailsLink(

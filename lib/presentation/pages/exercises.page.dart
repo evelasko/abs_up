@@ -37,7 +37,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                 floating: true,
                 title: const Text('Exercises'),
                 //= Create exercise button
-                // TODO implement user exercise creation
+                // TODO (late) implement user exercise creation
                 //= Reset filters button
                 // TODO implement clear filters
                 bottom: PreferredSize(

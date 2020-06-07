@@ -111,7 +111,7 @@ class WorkoutDetailsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.share),
                           onPressed:
-                              () {}, // TODO implement share a saved workout function
+                              () {}, // TODO (late) implement share a saved workout function
                         )),
                   ],
                   bottom: PreferredSize(

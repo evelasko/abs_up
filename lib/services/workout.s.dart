@@ -21,7 +21,6 @@ class WorkoutService implements WorkoutInterface {
     'Upper',
     'Rect',
     'Obliques',
-    // TODO implement what to do with Kegel exercises (for now dey won't be included in the distirbution)
     // 'Kegel'
   ];
 
@@ -38,7 +37,6 @@ class WorkoutService implements WorkoutInterface {
 
   @override
   WorkoutSettings get workoutSettings =>
-      // TODO set the statement below to return fallback default values
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
 
   ValueListenable<Box<WorkoutSettings>> get workoutSettingsListenable =>

@@ -45,29 +45,6 @@ class WorkoutDetailsMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                /// Deprecated changing the settings thru a bottom sheet
-                /// at workout details page... the user can navigate back
-                /// to the settings page to change them and regenerate a new
-                /// workout
-                // choiceWidget(
-                //     _workoutStore.isCurrent,
-                //     Expanded(
-                //       child: IconButton(
-                //           icon: const Icon(Icons.tune),
-                //           color: AppColors.greyLight,
-                //           onPressed: () {
-                //             final PersistentBottomSheetController
-                //                 sheetController = showBottomSheet(
-                //               context: context,
-                //               builder: (context) =>
-                //                   HomeBottomSheetWorkoutsettings(),
-                //             );
-
-                //             sheetController.closed.then((value) =>
-                //                 _workoutStore.generateCurrentWorkout());
-                //           }),
-                //     )),
                 Expanded(
                   //= Add Workout Item
                   child: IconButton(

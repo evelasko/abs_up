@@ -38,7 +38,7 @@ class WorkoutItemWidget extends StatelessWidget {
           primary: false),
       onDismissed: (direction) =>
           removeItem(Scaffold.of(context), workoutItem, workout),
-      // TODO implement the swippable action to replace the exercise of a workout item
+      // TODO *** implement the swippable action to replace the exercise of a workout item
       // confirmDismiss: (direction) async { return true;},
       child: WorkoutItemBody(workoutItem: workoutItem, workout: workout),
     );

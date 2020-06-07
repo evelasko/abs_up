@@ -5,8 +5,7 @@ abstract class UserSettingsInterace {
   /// Workout settings
   Map<String, dynamic> get currentWorkoutSettings;
 
-  // TODO the expression below should only set the default workout settings...
-  Future<void> setWorkoutSettings();
+  Future<void> setWorkoutSettingsDefaults();
 
   /// User data and settings
   String get userId;

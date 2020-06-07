@@ -1,3 +1,4 @@
+import 'package:abs_up/constants.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:hive/hive.dart';
 
@@ -62,12 +63,16 @@ class Workout extends HiveObject {
       items.map((e) => e.exercise.intensity).toList().reduce((a, b) => a + b) ~/
       items.length;
 
+  String get intensityAverageString => intensityToString(intensityAverage);
+
   int get difficultyAverage =>
       items
           .map((e) => e.exercise.difficulty)
           .toList()
           .reduce((a, b) => a + b) ~/
       items.length;
+
+  String get difficultyAverageString => difficultyToString(difficultyAverage);
 
   /// Custom methods
   Future<void> reorderItems(int oldIndex, int newIndex) async {
