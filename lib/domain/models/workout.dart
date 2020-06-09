@@ -80,7 +80,8 @@ class Workout extends HiveObject {
     final item = items.removeAt(oldIndex);
     items.insert(_index, item);
     refreshOrder();
-    save();
+    await save();
+    print('reordered item');
   }
 
   void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
@@ -92,9 +93,13 @@ class Workout extends HiveObject {
     if (isInBox) await save();
   }
 
-  Workout copyWith({String name, List<WorkoutItem> items}) => Workout(
-      name: name ?? this.name + DateTime.now().toIso8601String(),
-      items: items ?? this.items);
+  // Workout copyWith({String name, List<WorkoutItem> items }) => Workout(
+  //     name: name ?? this.name + DateTime.now().toIso8601String(),
+  //     items: items ?? this.items
+  //       .map((item) => WorkoutItem(
+
+  //       )).toList(),
+  //       );
 
   Workout copy() => Workout(name: name, items: items);
 

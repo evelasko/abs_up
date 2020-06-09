@@ -69,9 +69,10 @@ class WorkoutDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _workoutsStore = WorkoutsStore(WorkoutService());
+    final _workoutsStore = WorkoutsStore(WorkoutService(),
+        workoutKey: workoutKey ?? CURRENT_WORKOUT_KEY);
     return ValueListenableBuilder(
-        valueListenable: _workoutsStore.getWorkoutListenable(workoutKey),
+        valueListenable: _workoutsStore.getWorkoutListenable(),
         builder: (_, Box<Workout> box, __) {
           final Workout workout =
               box.get(workoutKey, defaultValue: box.get(CURRENT_WORKOUT_KEY));
@@ -121,13 +122,14 @@ class WorkoutDetailsPage extends StatelessWidget {
                         workoutSettings: _workoutsStore.workoutSettings,
                       )),
                 ),
-                //= Workout Listenable
+                //= Workout List
                 body: ReorderableListView(
                   onReorder: (oldIndex, newIndex) async =>
                       workout.reorderItems(oldIndex, newIndex),
                   children: workout.items
                       .map((item) => WorkoutItemWidget(
-                          key: Key('${workout.key}/item:${item.exercise.key}'),
+                          key: ValueKey(
+                              '${workout.name ?? 'untitled!'}/item:${item.order}/'),
                           workoutItem: item))
                       .toList(),
                 ),

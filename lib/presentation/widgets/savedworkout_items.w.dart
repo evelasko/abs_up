@@ -52,8 +52,7 @@ class SavedWorkoutItem extends StatelessWidget {
       ),
       child: ListItemWrapper(
         child: GestureDetector(
-          onTap: () => Navigator.pushNamed(
-              context,
+          onTap: () => Navigator.of(context).pushNamed(
               FluroRouter.getWorkoutDetailsLink(
                   workoutKey: workout.key.toString())),
           child: Container(

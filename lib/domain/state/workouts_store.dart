@@ -25,60 +25,11 @@ abstract class _WorkoutsStore with Store {
     workouts = workoutService.allWorkouts
         .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
         .toList();
-    workoutBox.listenable().addListener(() => workouts = workoutService
-        .allWorkouts
-        .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
-        .toList());
 
-    if (workoutKey != null) {
-      workout = workoutBox.get(workoutKey,
-          defaultValue: workoutBox.get(CURRENT_WORKOUT_KEY));
-      workoutBox.listenable(
-          keys: [workoutKey ?? CURRENT_WORKOUT_KEY]).addListener(() {
-        workout = workoutBox.get(workoutKey,
-            defaultValue: workoutBox.get(CURRENT_WORKOUT_KEY));
-      });
-    }
+    workout = workoutBox.get(workoutKey ?? CURRENT_WORKOUT_KEY);
   }
-
-  ValueListenable get workoutsListenable => workoutService.workoutsListenable;
-
-  Future<void> deleteSavedWorkout(String workoutKey) =>
-      workoutBox.delete(workoutKey);
-
-  ValueListenable<Box<Workout>> getWorkoutListenable(String workoutKey) =>
-      PDataService.workoutsBox
-          .listenable(keys: [workoutKey ?? CURRENT_WORKOUT_KEY]);
-
-  /// This workouts list includes the current workout
-  List<Workout> get all => workoutService.allWorkouts;
-
-  /// This workouts list excludes the current workout
-  List<Workout> get allButCurrent => workoutService.allWorkouts
-      .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
-      .toList();
-
   @observable
   Workout workout;
-
-  Workout workoutFromKey(String workoutKey) => workoutBox.get(workoutKey,
-      defaultValue: workoutBox.get(CURRENT_WORKOUT_KEY));
-
-  @computed
-  ValueListenable<Box<Workout>> get currentWorkoutListenable =>
-      workoutBox.listenable(keys: [workout?.key ?? CURRENT_WORKOUT_KEY]);
-  @computed
-  WorkoutSettings get workoutSettings => workoutService.workoutSettings;
-  @computed
-  bool get isCurrent => workoutKey == CURRENT_WORKOUT_KEY;
-
-  @action
-  Future<void> saveCurrentWorkoutAs(String name) async =>
-      workoutService.saveCurrentWorkoutAs(name);
-
-  Future<void> Function() get generateCurrentWorkout =>
-      workoutService.generateCurrentWorkout;
-
   @observable
   String searchString = '';
   @observable
@@ -91,4 +42,32 @@ abstract class _WorkoutsStore with Store {
   bool sortByDifficulty = false;
   @observable
   List<Workout> workouts;
+  @computed
+  WorkoutSettings get workoutSettings => workoutService.workoutSettings;
+
+  ValueListenable get workoutsListenable => workoutService.workoutsListenable;
+
+  Future<void> deleteSavedWorkout(String workoutKey) =>
+      workoutBox.delete(workoutKey);
+
+  ValueListenable<Box<Workout>> getWorkoutListenable([String workoutKey]) =>
+      PDataService.workoutsBox.listenable();
+
+  /// This workouts list includes the current workout
+  List<Workout> get all => workoutService.allWorkouts;
+
+  /// This workouts list excludes the current workout
+  List<Workout> get allButCurrent => workoutService.allWorkouts
+      .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
+      .toList();
+
+  Workout workoutFromKey(String workoutKey) => workoutBox.get(workoutKey,
+      defaultValue: workoutBox.get(CURRENT_WORKOUT_KEY));
+
+  @action
+  Future<void> saveCurrentWorkoutAs(String name) async =>
+      workoutService.saveCurrentWorkoutAs(name);
+
+  Future<void> Function() get generateCurrentWorkout =>
+      workoutService.generateCurrentWorkout;
 }

@@ -55,8 +55,8 @@ class WorkoutService implements WorkoutInterface {
   int get roughtExerciseAmount =>
       workoutSettings.length <= 1 ? 9 : workoutSettings.length == 2 ? 18 : 20;
 
-  ValueListenable<Box<Workout>> get listenable =>
-      PDataService.workoutsBox.listenable(keys: [workoutKey]);
+  // ValueListenable<Box<Workout>> get listenable =>
+  //     PDataService.workoutsBox.listenable(keys: [workoutKey]);
 
   @override
   Future<void> initWorkoutSettings() async {
@@ -116,8 +116,18 @@ class WorkoutService implements WorkoutInterface {
   Future<void> saveCurrentWorkoutAs(String name) async {
     final Workout currentWorkout =
         PDataService.workoutsBox.get(CURRENT_WORKOUT_KEY);
-    PDataService.workoutsBox
-        .put(generateUniqueWorkoutKey(), currentWorkout.copyWith(name: name));
+    final List<WorkoutItem> _items = currentWorkout.items
+        .map((item) => WorkoutItem(
+              order: item.order,
+              exercise: PDataService.exercisesBox.get(item.exercise.key),
+              duration: item.duration,
+              weight: item.weight,
+              progress: item.progress,
+            ))
+        .toList();
+
+    await PDataService.workoutsBox
+        .put(generateUniqueWorkoutKey(), Workout(name: name, items: _items));
   }
 
   @override
@@ -129,7 +139,7 @@ class WorkoutService implements WorkoutInterface {
           Workout(
             name: 'log entry',
             items: items,
-            sourceWorkout: sourceWorkout,
+            // sourceWorkout: sourceWorkout,
           ));
 
   //: Helper Methods_____________________________________________

@@ -1,7 +1,7 @@
 name: abs_up
 description: Abs Up from the Misfit Coach
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 # to update application ip change here and run:
 # flutter pub run flutter_application_id:main -f pubspec.yaml

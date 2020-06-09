@@ -9,25 +9,12 @@ part of 'workouts_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WorkoutsStore on _WorkoutsStore, Store {
-  Computed<ValueListenable<Box<Workout>>> _$currentWorkoutListenableComputed;
-
-  @override
-  ValueListenable<Box<Workout>> get currentWorkoutListenable =>
-      (_$currentWorkoutListenableComputed ??=
-              Computed<ValueListenable<Box<Workout>>>(
-                  () => super.currentWorkoutListenable))
-          .value;
   Computed<WorkoutSettings> _$workoutSettingsComputed;
 
   @override
   WorkoutSettings get workoutSettings => (_$workoutSettingsComputed ??=
           Computed<WorkoutSettings>(() => super.workoutSettings))
       .value;
-  Computed<bool> _$isCurrentComputed;
-
-  @override
-  bool get isCurrent =>
-      (_$isCurrentComputed ??= Computed<bool>(() => super.isCurrent)).value;
 
   final _$workoutAtom = Atom(name: '_WorkoutsStore.workout');
 
@@ -159,7 +146,7 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   @override
   String toString() {
     final string =
-        'workout: ${workout.toString()},searchString: ${searchString.toString()},equipmentFilter: ${equipmentFilter.toString()},targetFilter: ${targetFilter.toString()},sortByIntensity: ${sortByIntensity.toString()},sortByDifficulty: ${sortByDifficulty.toString()},workouts: ${workouts.toString()},currentWorkoutListenable: ${currentWorkoutListenable.toString()},workoutSettings: ${workoutSettings.toString()},isCurrent: ${isCurrent.toString()}';
+        'workout: ${workout.toString()},searchString: ${searchString.toString()},equipmentFilter: ${equipmentFilter.toString()},targetFilter: ${targetFilter.toString()},sortByIntensity: ${sortByIntensity.toString()},sortByDifficulty: ${sortByDifficulty.toString()},workouts: ${workouts.toString()},workoutSettings: ${workoutSettings.toString()}';
     return '{$string}';
   }
 }
