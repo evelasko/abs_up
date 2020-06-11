@@ -1,3 +1,4 @@
+import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,8 +22,13 @@ class WorkoutLogsService implements WorkoutLogsInterface {
     final String _workoutKey = workoutKey ?? CURRENT_WORKOUT_KEY;
     final currentWorkout = PDataService.workoutsBox.get(_workoutKey);
     final workoutToPerformKey = uuid.v4();
-    await PDataService.workoutLogsBox
-        .put(workoutToPerformKey, currentWorkout.copy());
+    await PDataService.workoutLogsBox.put(
+        workoutToPerformKey,
+        WorkoutLog(
+          items: currentWorkout.items,
+          sourceWorkoutId: currentWorkout.key.toString(),
+          sourceWorkoutName: currentWorkout.name,
+        ));
     return workoutToPerformKey;
   }
 }

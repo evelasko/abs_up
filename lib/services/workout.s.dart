@@ -3,6 +3,7 @@ import 'package:abs_up/domain/interfaces/workout.i.dart';
 import 'package:abs_up/domain/models/exercise.dart';
 import 'package:abs_up/domain/models/workout.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
+import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:abs_up/domain/models/workout_settings.dart';
 import 'package:abs_up/services/p_data.s.dart';
 import 'package:flutter/foundation.dart';
@@ -136,10 +137,11 @@ class WorkoutService implements WorkoutInterface {
           @required String sourceWorkout}) async =>
       PDataService.workoutLogsBox.put(
           uuid.v4(),
-          Workout(
+          WorkoutLog(
             name: 'log entry',
             items: items,
-            // sourceWorkout: sourceWorkout,
+            sourceWorkoutId: sourceWorkout,
+            // TODO add the sourceWorkout name when saving a log item
           ));
 
   //: Helper Methods_____________________________________________

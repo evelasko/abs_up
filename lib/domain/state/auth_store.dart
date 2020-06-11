@@ -1,33 +1,54 @@
-import 'package:abs_up/domain/core/failures.dart';
-import 'package:abs_up/domain/core/value_objects.dart';
-import 'package:abs_up/domain/interfaces/auth.i.dart';
-import 'package:abs_up/domain/models/user.dart';
-import 'package:abs_up/domain/state/auth_form_states.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
+import '../core/failures.dart';
+import '../core/value_objects.dart';
+import '../interfaces/auth.i.dart';
+import '../models/user.dart';
+import 'auth_form_states.dart';
+import 'auth_state.dart';
+
 part 'auth_store.g.dart';
 
 @injectable
 class AuthStore extends _AuthStore with _$AuthStore {
-  AuthStore(AuthInterface authFacade) : super(authFacade);
+  AuthStore(AuthInterface authService) : super(authService);
 }
 
 abstract class _AuthStore with Store {
-  final AuthInterface authFacade;
-  _AuthStore(this.authFacade);
+  final AuthInterface authService;
+  _AuthStore(this.authService);
 
   @observable
   AuthFormState authFormState;
 
   @observable
-  Option<User> user;
+  Option<User> user = none<User>();
+
+  @observable
+  AuthState authState = const AuthState.initial();
 
   @action
-  Future<void> getUser() async {
-    user = await authFacade.getLoggedInUser();
+  Future<Option<User>> getUser() async {
+    final Option<User> _user = await authService.getLoggedInUser();
+    user = _user;
+    return _user;
+  }
+
+  @action
+  Future<bool> authCheck() async {
+    try {
+      final _user = await getUser();
+      _user.fold(
+        () => authState = const AuthState.initial(),
+        (user) => authState = const AuthState.authenticated(),
+      );
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   @action
@@ -43,33 +64,37 @@ abstract class _AuthStore with Store {
           password: Password(password), authFailureOrSuccessOption: none()));
 
   @action
-  Future<void> registerWithEmailAndPassword() async {
-    _performActionOnAuthFacadeWithEmailAndPassword(
-        authFacade.registerWithEmailAndPassword);
-  }
+  Future<void> registerWithEmailAndPassword() async =>
+      _performActionOnauthServiceWithEmailAndPassword(
+          authService.registerWithEmailAndPassword);
 
   @action
-  Future<void> logInWithEmailAndPassword() async {
-    _performActionOnAuthFacadeWithEmailAndPassword(
-        authFacade.loginWithEmailAndPassword);
-  }
+  Future<void> logInWithEmailAndPassword() async =>
+      _performActionOnauthServiceWithEmailAndPassword(
+          authService.loginWithEmailAndPassword);
 
   @action
   Future<void> signInWithGooglePressed() async {
     updateAuthFormState(authFormState.copyWith(
         isSubmitting: true, authFailureOrSuccessOption: none()));
 
-    final failureOrSuccess = await authFacade.loginWithGoogle();
+    final failureOrSuccess = await authService.loginWithGoogle();
     updateAuthFormState(authFormState.copyWith(
         isSubmitting: false,
         authFailureOrSuccessOption: some(failureOrSuccess)));
   }
 
+  @action
+  void logOutUser() => authService.logOut().then((_) {
+        getUser();
+        authState = const AuthState.unauthenticated();
+      });
+
   // ignore: use_setters_to_change_properties
   /// Helpers
   void updateAuthFormState(AuthFormState newState) => authFormState = newState;
 
-  Future<void> _performActionOnAuthFacadeWithEmailAndPassword(
+  Future<void> _performActionOnauthServiceWithEmailAndPassword(
       Future<Either<AuthFailure, Unit>> Function(
               {@required EmailAddress emailAddress,
               @required Password password})

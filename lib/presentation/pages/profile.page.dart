@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/state/auth_store.dart';
 import '../theme/colors.t.dart';
+import '../widgets/login_dialog.w.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key key}) : super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -13,43 +16,39 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   AuthStore _authStore;
 
-  final List<Tab> userTabs = const <Tab>[
-    Tab(
-      icon: Icon(FontAwesomeIcons.clipboardList),
-    ),
-    Tab(
-      icon: Icon(FontAwesomeIcons.stream),
-    ),
-  ];
-
   @override
-  Future<void> didChangeDependencies() async {
-    _authStore ??= Provider.of<AuthStore>(context);
-    await _authStore.getUser();
+  void didChangeDependencies() {
+    _authStore = Provider.of<AuthStore>(context);
     super.didChangeDependencies();
   }
 
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: userTabs.length,
-        child: NestedScrollView(
-          headerSliverBuilder:
-              (BuildContext context, bool innerBoxIsScrolled) => [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                automaticallyImplyLeading: false,
-                floating: true,
-                // pinned: true,
-                expandedHeight: 280,
-                flexibleSpace: const FlexibleSpaceBar(
-                  stretchModes: [
+  Widget build(BuildContext context) {
+    const List<Tab> userTabs = <Tab>[
+      Tab(icon: Icon(FontAwesomeIcons.clipboardList)),
+      Tab(icon: Icon(FontAwesomeIcons.stream)),
+    ];
+    return DefaultTabController(
+      length: userTabs.length,
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+            [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: SliverAppBar(
+              automaticallyImplyLeading: false,
+              floating: true,
+              expandedHeight: 280,
+              flexibleSpace: Observer(
+                builder: (_) => FlexibleSpaceBar(
+                  stretchModes: const [
                     StretchMode.blurBackground,
                     StretchMode.fadeTitle
                   ],
-                  background: Padding(
+                  background: const Padding(
                     padding: EdgeInsets.only(bottom: 100),
                     child: Center(
+                      //= User Avatar
                       child: CircleAvatar(
                         radius: 60,
                         backgroundColor: AppColors.greyDark,
@@ -61,51 +60,77 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                  titlePadding: EdgeInsets.only(bottom: 90),
+                  titlePadding: const EdgeInsets.only(bottom: 90),
+                  //= User Name
                   title: Text(
-                    'Guest User',
-                    style: TextStyle(
+                    _authStore.user?.fold(
+                      () => 'Guest User',
+                      (user) =>
+                          user?.id?.value
+                              ?.fold((l) => l.toString(), (r) => r) ??
+                          'Guest User',
+                    ),
+                    style: const TextStyle(
                         color: AppColors.greyLight,
                         fontSize: 16,
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                leading: IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () => Scaffold.of(context).openDrawer()),
-                actions: [
-                  IconButton(icon: const Icon(Icons.person), onPressed: () {})
-                ],
-                bottom: TabBar(
-                  tabs: userTabs,
-                ),
               ),
+              //= Menu button
+              leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer()),
+              actions: [
+                Observer(
+                  builder: (_) => _authStore.user.fold(
+                    //= Sign In Button
+                    () => IconButton(
+                      icon: const Icon(FontAwesomeIcons.signInAlt),
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              const LoginDialog()),
+                    ),
+                    //= Sign Out Button
+                    (r) => IconButton(
+                      icon: const Icon(FontAwesomeIcons.signOutAlt),
+                      onPressed: () => _authStore.logOutUser(),
+                    ),
+                  ),
+                ),
+              ],
+              bottom: const TabBar(
+                tabs: userTabs,
+              ),
+            ),
+          )
+        ],
+        body: TabBarView(
+          children: [
+            //= User Logs
+            UserContentTabView(
+              childCount: 10,
+              delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => ListTile(
+                        title: Text('User Log Item $index'),
+                      ),
+                  childCount: 5),
+            ),
+            //= User stream
+            UserContentTabView(
+              childCount: 10,
+              delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => ListTile(
+                        title: Text('User Stream Item $index'),
+                      ),
+                  childCount: 10),
             )
           ],
-          body: TabBarView(
-            children: [
-              //= User Logs
-              UserContentTabView(
-                childCount: 10,
-                delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) => ListTile(
-                          title: Text('User Log Item $index'),
-                        ),
-                    childCount: 5),
-              ),
-              //= User stream
-              UserContentTabView(
-                childCount: 10,
-                delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) => ListTile(
-                          title: Text('User Stream Item $index'),
-                        ),
-                    childCount: 10),
-              )
-            ],
-          ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 class UserContentTabView extends StatelessWidget {

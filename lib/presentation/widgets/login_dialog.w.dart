@@ -10,33 +10,6 @@ import '../theme/colors.t.dart';
 import 'shared/app_full_logo.w.dart';
 import 'shared/buttons.w.dart';
 
-InputDecoration authFormDecoration(
-        {@required String labelText, @required IconData icon}) =>
-    InputDecoration(
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(color: Colors.transparent)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(color: Colors.white)),
-        errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide:
-                const BorderSide(color: AppColors.coquelicot, width: 3)),
-        errorStyle: const TextStyle(fontSize: 14, color: Colors.white),
-        labelText: labelText,
-        labelStyle: const TextStyle(
-          color: Colors.white54,
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: Colors.white54,
-        ),
-        filled: true,
-        fillColor: Colors.white38);
-
 class LoginDialog extends StatefulWidget {
   const LoginDialog({Key key}) : super(key: key);
 
@@ -94,7 +67,11 @@ class _LoginDialogState extends State<LoginDialog> {
                   children: [
                     //= Login button
                     PrimaryActionButton(
-                        onTap: () => _authStore.logInWithEmailAndPassword(),
+                        onTap: () => _authStore
+                            .logInWithEmailAndPassword()
+                            .then((_) => _authStore.getUser())
+                            .then((user) => user.fold(() => null,
+                                (u) => Navigator.of(context).pop(true))),
                         text: 'Login'),
                     Padding(
                       padding: const EdgeInsets.all(20),
@@ -135,79 +112,73 @@ class _LoginDialogState extends State<LoginDialog> {
                         ]),
                   ],
                 )),
-            body: CustomScrollView(
-                // padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                slivers: [
-                  SliverAppBar(
-                    leading: Container(),
-                    actions: [
-                      //= Close dialog button
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        color: Colors.white,
-                        onPressed: () => Navigator.pop(context),
-                      )
-                    ],
-                    backgroundColor: Colors.transparent,
-                    expandedHeight: 250,
-                    pinned: true,
-                    flexibleSpace: const FlexibleSpaceBar(title: AppFullLogo()),
-                  ),
-                  SliverList(
-                      delegate: SliverChildListDelegate.fixed([
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 20),
-                      child: Form(
-                        autovalidate:
-                            _authStore.authFormState.showErrorMessages,
-                        child: Column(children: [
-                          //= Email text field
-                          TextFormField(
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                              onChanged: _authStore.emailChanged,
-                              validator: (_) => _authStore
-                                  .authFormState.emailAddress.value
-                                  .fold(
-                                      (f) => f.maybeMap(
-                                          invalidEmail: (_) => 'Invalid Email',
-                                          orElse: () => null),
-                                      (r) => null),
-                              autocorrect: false,
-                              decoration: authFormDecoration(
-                                  labelText: 'Email',
-                                  icon: Icons.mail_outline)),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          //= Password text field
-                          TextFormField(
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                            onChanged: _authStore.passwordChanged,
-                            validator: (_) =>
-                                _authStore.authFormState.password.value.fold(
-                                    (f) => f.maybeMap(
-                                        insecurePassword: (_) =>
-                                            'Password too weak',
-                                        orElse: () => null),
-                                    (r) => null),
-                            autocorrect: false,
-                            obscureText: true,
-                            decoration: authFormDecoration(
-                                labelText: 'Password',
-                                icon: Icons.lock_outline),
-                          ),
-                        ]),
+            body: CustomScrollView(slivers: [
+              SliverAppBar(
+                leading: Container(),
+                actions: [
+                  //= Close dialog button
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    color: Colors.white,
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+                backgroundColor: Colors.transparent,
+                expandedHeight: 250,
+                pinned: true,
+                flexibleSpace: const FlexibleSpaceBar(title: AppFullLogo()),
+              ),
+              SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: Form(
+                    autovalidate: _authStore.authFormState.showErrorMessages,
+                    child: Column(children: [
+                      //= Email text field
+                      TextFormField(
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                          onChanged: _authStore.emailChanged,
+                          validator: (_) =>
+                              _authStore.authFormState.emailAddress.value.fold(
+                                  (f) => f.maybeMap(
+                                      invalidEmail: (_) => 'Invalid Email',
+                                      orElse: () => null),
+                                  (r) => null),
+                          autocorrect: false,
+                          decoration: authFormDecoration(
+                              labelText: 'Email', icon: Icons.mail_outline)),
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ]))
-                ])),
+                      //= Password text field
+                      TextFormField(
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                        onChanged: _authStore.passwordChanged,
+                        validator: (_) =>
+                            _authStore.authFormState.password.value.fold(
+                                (f) => f.maybeMap(
+                                    insecurePassword: (_) =>
+                                        'Password too weak',
+                                    orElse: () => null),
+                                (r) => null),
+                        autocorrect: false,
+                        obscureText: true,
+                        decoration: authFormDecoration(
+                            labelText: 'Password', icon: Icons.lock_outline),
+                      ),
+                    ]),
+                  ),
+                ),
+              ]))
+            ])),
       ),
     );
   }
@@ -231,7 +202,7 @@ class CircularIconButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(size * 2)),
             color: Colors.white38),
         child: GestureDetector(
-            onTap: () {},
+            onTap: onTap,
             child: SizedBox(
               width: size,
               height: size,
@@ -244,3 +215,30 @@ class CircularIconButton extends StatelessWidget {
             )));
   }
 }
+
+InputDecoration authFormDecoration(
+        {@required String labelText, @required IconData icon}) =>
+    InputDecoration(
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(color: Colors.transparent)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(color: Colors.white)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide:
+                const BorderSide(color: AppColors.coquelicot, width: 3)),
+        errorStyle: const TextStyle(fontSize: 14, color: Colors.white),
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          color: Colors.white54,
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+        ),
+        prefixIcon: Icon(
+          icon,
+          color: Colors.white54,
+        ),
+        filled: true,
+        fillColor: Colors.white38);

@@ -9,6 +9,12 @@ part of 'workouts_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WorkoutsStore on _WorkoutsStore, Store {
+  Computed<Option<List<Workout>>> _$workoutsComputed;
+
+  @override
+  Option<List<Workout>> get workouts => (_$workoutsComputed ??=
+          Computed<Option<List<Workout>>>(() => super.workouts))
+      .value;
   Computed<WorkoutSettings> _$workoutSettingsComputed;
 
   @override
@@ -116,23 +122,6 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
       super.sortByDifficulty = value;
       _$sortByDifficultyAtom.reportChanged();
     }, _$sortByDifficultyAtom, name: '${_$sortByDifficultyAtom.name}_set');
-  }
-
-  final _$workoutsAtom = Atom(name: '_WorkoutsStore.workouts');
-
-  @override
-  List<Workout> get workouts {
-    _$workoutsAtom.context.enforceReadPolicy(_$workoutsAtom);
-    _$workoutsAtom.reportObserved();
-    return super.workouts;
-  }
-
-  @override
-  set workouts(List<Workout> value) {
-    _$workoutsAtom.context.conditionallyRunInAction(() {
-      super.workouts = value;
-      _$workoutsAtom.reportChanged();
-    }, _$workoutsAtom, name: '${_$workoutsAtom.name}_set');
   }
 
   final _$saveCurrentWorkoutAsAsyncAction = AsyncAction('saveCurrentWorkoutAs');

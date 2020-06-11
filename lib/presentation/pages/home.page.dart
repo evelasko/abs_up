@@ -1,19 +1,10 @@
-import 'package:abs_up/domain/state/auth_store.dart';
-import 'package:abs_up/presentation/pages/profile.page.dart';
-import 'package:abs_up/presentation/widgets/drawer.w.dart';
-import 'package:abs_up/services/auth.s.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
 
-import '../../domain/state/exercises_store.dart';
-import '../../domain/state/workouts_store.dart';
-import '../../services/exercise.s.dart';
-import '../../services/workout.s.dart';
 import '../theme/colors.t.dart';
+import '../widgets/drawer.w.dart';
 import 'exercises.page.dart';
 import 'main.page.dart';
+import 'profile.page.dart';
 import 'workouts.page.dart';
 
 /// Home Page
@@ -25,10 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  final WorkoutService _workoutService = WorkoutService();
 
   int _selectedIndex = 2;
-
   void _onTabSelected(int index) => setState(() => _selectedIndex = index);
 
   @override
@@ -38,26 +27,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       //= Body Content
       body: SizedBox.expand(
         child: <Widget>[
-          //= Exercises Page
-          Provider(
-            create: (context) => ExercisesStore(ExerciseService()),
-            child: const ExercisesPage(),
-          ),
-          //= Saved Workouts Page
-          Provider(
-            create: (context) => WorkoutsStore(_workoutService),
-            child: WorkoutsPage(),
-          ),
-          //= Main Page
-          Provider(create: (context) => _workoutService, child: MainPage()),
-          //= Feed Page
+          const ExercisesPage(), //= Exercises Page
+          const WorkoutsPage(), //= Saved Workouts Page
+          const MainPage(), //= Main Page
           // TODO implement the feed page
-          const Center(child: Text('Feed Section')),
-          //= Settings & Profile Page
-          Provider(
-              create: (context) => AuthStore(
-                  FirebaseAuthService(FirebaseAuth.instance, GoogleSignIn())),
-              child: ProfilePage()),
+          const Center(child: Text('Feed')), //= Feed Page
+          const ProfilePage(), //= Settings & Profile Page
         ].elementAt(_selectedIndex),
       ),
       //= App Drawer

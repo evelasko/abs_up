@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,10 +23,6 @@ abstract class _WorkoutsStore with Store {
   final String workoutKey;
 
   _WorkoutsStore(this.workoutService, {this.workoutKey}) {
-    workouts = workoutService.allWorkouts
-        .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
-        .toList();
-
     workout = workoutBox.get(workoutKey ?? CURRENT_WORKOUT_KEY);
   }
   @observable
@@ -40,8 +37,14 @@ abstract class _WorkoutsStore with Store {
   bool sortByIntensity = false;
   @observable
   bool sortByDifficulty = false;
-  @observable
-  List<Workout> workouts;
+  @computed
+  Option<List<Workout>> get workouts {
+    final List<Workout> _workouts = workoutService.allWorkouts
+        .where((workout) => workout.key != CURRENT_WORKOUT_KEY)
+        .toList();
+    return _workouts.isEmpty ? none() : some(_workouts);
+  }
+
   @computed
   WorkoutSettings get workoutSettings => workoutService.workoutSettings;
 

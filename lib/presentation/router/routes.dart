@@ -11,7 +11,6 @@ import '../pages/help_support.page.dart';
 import '../pages/home.page.dart';
 import '../pages/workout_details.page.dart';
 import '../pages/workout_item_details.page.dart';
-import '../pages/workout_logs.page.dart';
 import '../pages/workout_perform.page.dart';
 import '../pages/workouts.page.dart';
 
@@ -83,10 +82,10 @@ class FluroRouter {
           WorkoutPerformPage(params['sourceWorkoutKey'][0].toString()));
 
   //= Workout Logs
-  static const workoutLogsLink = 'workout/logs';
-  static final Handler _workoutLogs = Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutLogsPage());
+  // static const workoutLogsLink = 'workout/logs';
+  // static final Handler _workoutLogs = Handler(
+  //     handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
+  //         WorkoutLogsPage());
 
   //= About Page
   static final Handler _about = Handler(
@@ -132,8 +131,8 @@ class FluroRouter {
     router.define(workoutPerformLink,
         handler: _workoutPerform, transitionType: TransitionType.inFromRight);
     //= Workout Logs
-    router.define(WORKOUT_LOGS_LINK,
-        handler: _workoutLogs, transitionType: TransitionType.inFromRight);
+    // router.define(WORKOUT_LOGS_LINK,
+    //     handler: _workoutLogs, transitionType: TransitionType.inFromRight);
     //= About
     router.define(ABOUT_LINK,
         handler: _about, transitionType: TransitionType.inFromRight);

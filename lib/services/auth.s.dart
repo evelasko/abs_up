@@ -17,7 +17,10 @@ class FirebaseAuthService implements AuthInterface {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthService(this._firebaseAuth, this._googleSignIn);
+  FirebaseAuthService(
+    this._firebaseAuth,
+    this._googleSignIn,
+  );
 
   @override
   Future<Either<AuthFailure, Unit>> loginWithEmailAndPassword(
@@ -74,7 +77,7 @@ class FirebaseAuthService implements AuthInterface {
   @override
   Future<Option<User>> getLoggedInUser() => _firebaseAuth
       .currentUser()
-      .then((firebaseUser) => optionOf(firebaseUser?.toDomain()));
+      .then((firebaseUser) => optionOf<User>(firebaseUser?.toDomain()));
 
   @override
   Future<void> logOut() => Future.wait([

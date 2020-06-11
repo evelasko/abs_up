@@ -43,11 +43,35 @@ mixin _$AuthStore on _AuthStore, Store {
     }, _$userAtom, name: '${_$userAtom.name}_set');
   }
 
+  final _$authStateAtom = Atom(name: '_AuthStore.authState');
+
+  @override
+  AuthState get authState {
+    _$authStateAtom.context.enforceReadPolicy(_$authStateAtom);
+    _$authStateAtom.reportObserved();
+    return super.authState;
+  }
+
+  @override
+  set authState(AuthState value) {
+    _$authStateAtom.context.conditionallyRunInAction(() {
+      super.authState = value;
+      _$authStateAtom.reportChanged();
+    }, _$authStateAtom, name: '${_$authStateAtom.name}_set');
+  }
+
   final _$getUserAsyncAction = AsyncAction('getUser');
 
   @override
-  Future<void> getUser() {
+  Future<Option<User>> getUser() {
     return _$getUserAsyncAction.run(() => super.getUser());
+  }
+
+  final _$authCheckAsyncAction = AsyncAction('authCheck');
+
+  @override
+  Future<bool> authCheck() {
+    return _$authCheckAsyncAction.run(() => super.authCheck());
   }
 
   final _$registerWithEmailAndPasswordAsyncAction =
@@ -110,9 +134,19 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   @override
+  void logOutUser() {
+    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    try {
+      return super.logOutUser();
+    } finally {
+      _$_AuthStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'authFormState: ${authFormState.toString()},user: ${user.toString()}';
+        'authFormState: ${authFormState.toString()},user: ${user.toString()},authState: ${authState.toString()}';
     return '{$string}';
   }
 }

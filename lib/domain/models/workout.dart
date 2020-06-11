@@ -81,7 +81,6 @@ class Workout extends HiveObject {
     items.insert(_index, item);
     refreshOrder();
     await save();
-    print('reordered item');
   }
 
   void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
