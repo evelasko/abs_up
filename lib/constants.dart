@@ -9,9 +9,13 @@ const String WORKOUT_ITEM_DETAILS_LINK = 'workout/item/';
 const String WORKOUT_PERFORM_LINK = 'workout/perform/';
 const String WORKOUT_LOGS_LINK = 'workout/logs';
 const String SETTINGS_LINK = 'settings';
-const String ABOUT_LINK = 'about';
 const String FEEDBACK_LINK = 'feedback';
 const String SUPPORT_LINK = 'support';
+const String EXTERNAL_WEB_LINK = 'web/';
+
+/// Web Links
+const String PRIVACY_POLICY_WWW_LINK = 'https://misfitcoders.com/privacy';
+const String PROJECT_PAGE_WWW_LINK = 'https://misfitcoders.com';
 
 /// Hive Box Names
 const String EXERCISE_BOX_NAME = 'exercises';

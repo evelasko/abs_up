@@ -1,3 +1,4 @@
+import 'package:abs_up/presentation/widgets/bottom_sheet_menu.w.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,23 +8,12 @@ import '../../domain/state/auth_store.dart';
 import '../theme/colors.t.dart';
 import '../widgets/login_dialog.w.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({Key key}) : super(key: key);
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  AuthStore _authStore;
-
-  @override
-  void didChangeDependencies() {
-    _authStore = Provider.of<AuthStore>(context);
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final _authStore = Provider.of<AuthStore>(context);
     const List<Tab> userTabs = <Tab>[
       Tab(icon: Icon(FontAwesomeIcons.clipboardList)),
       Tab(icon: Icon(FontAwesomeIcons.stream)),
@@ -77,10 +67,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              //= Menu button
+              //= Bottom Sheet Menu button
               leading: IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => Scaffold.of(context).openDrawer()),
+                icon: const Icon(Icons.menu),
+                onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    builder: (context) => const BottomSheetMenu(),
+                    backgroundColor: AppColors.greyDarkest),
+              ),
               actions: [
                 Observer(
                   builder: (_) => _authStore.user.fold(

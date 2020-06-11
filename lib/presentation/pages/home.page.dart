@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../theme/colors.t.dart';
-import '../widgets/drawer.w.dart';
 import 'exercises.page.dart';
 import 'main.page.dart';
 import 'profile.page.dart';
@@ -35,8 +34,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           const ProfilePage(), //= Settings & Profile Page
         ].elementAt(_selectedIndex),
       ),
-      //= App Drawer
-      drawer: const AppDrawer(),
       //= Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,

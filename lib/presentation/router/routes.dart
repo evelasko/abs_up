@@ -2,10 +2,10 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../pages/about.page.dart';
 import '../pages/exercise_details.page.dart';
 import '../pages/exercises.page.dart';
 import '../pages/exercises_selector.page.dart';
+import '../pages/external_web.page.dart';
 import '../pages/feedback_contact.page.dart';
 import '../pages/help_support.page.dart';
 import '../pages/home.page.dart';
@@ -13,6 +13,7 @@ import '../pages/workout_details.page.dart';
 import '../pages/workout_item_details.page.dart';
 import '../pages/workout_perform.page.dart';
 import '../pages/workouts.page.dart';
+import '../utils/url_params.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class FluroRouter {
@@ -61,7 +62,7 @@ class FluroRouter {
   //= Workout List
   static final Handler _workoutList = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          WorkoutsPage());
+          const WorkoutsPage());
 
   //= Workout Details
   static const workoutDetailsLink = '$WORKOUT_DETAILS_LINK:workoutKey';
@@ -81,16 +82,17 @@ class FluroRouter {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           WorkoutPerformPage(params['sourceWorkoutKey'][0].toString()));
 
-  //= Workout Logs
-  // static const workoutLogsLink = 'workout/logs';
-  // static final Handler _workoutLogs = Handler(
-  //     handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-  //         WorkoutLogsPage());
-
-  //= About Page
-  static final Handler _about = Handler(
+  //= External Web Page
+  static const webViewLink = '$EXTERNAL_WEB_LINK:title/:url';
+  static String getWebViewLink(
+          {@required String title, @required String url}) =>
+      '$EXTERNAL_WEB_LINK$title/${encodeUrlForParams(url)}';
+  static final Handler _externalWeb = Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
-          AboutPage());
+          ExternalWebPage(
+            title: params['title'][0] as String,
+            url: decodeUrlFromParams(params['url'][0] as String),
+          ));
 
   //= Feedback - Contact Page
   static final Handler _feedback = Handler(
@@ -133,14 +135,14 @@ class FluroRouter {
     //= Workout Logs
     // router.define(WORKOUT_LOGS_LINK,
     //     handler: _workoutLogs, transitionType: TransitionType.inFromRight);
-    //= About
-    router.define(ABOUT_LINK,
-        handler: _about, transitionType: TransitionType.inFromRight);
     //= Feedback
     router.define(FEEDBACK_LINK,
         handler: _feedback, transitionType: TransitionType.inFromRight);
     //= Support
     router.define(SUPPORT_LINK,
         handler: _support, transitionType: TransitionType.inFromRight);
+    //= External Web View
+    router.define(webViewLink,
+        handler: _externalWeb, transitionType: TransitionType.inFromRight);
   }
 }

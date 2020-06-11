@@ -31,6 +31,7 @@ dependencies:
   native_video_view: ^0.2.1
   flutter_launcher_icons: ^0.7.5
   sign_in_with_apple: ^2.4.0
+  webview_flutter: ^0.3.22+1
 
   # Firebase Dependencies
   cloud_firestore: ^0.13.6
