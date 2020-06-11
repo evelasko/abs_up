@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:wiredash/wiredash.dart';
 
 import '../../domain/state/auth_store.dart';
 import '../theme/colors.t.dart';
@@ -70,10 +71,12 @@ class ProfilePage extends StatelessWidget {
               //= Bottom Sheet Menu button
               leading: IconButton(
                 icon: const Icon(Icons.menu),
-                onPressed: () => showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) => const BottomSheetMenu(),
-                    backgroundColor: Colors.transparent),
+                onPressed: () => showModalBottomSheet<bool>(
+                        context: context,
+                        builder: (context) => const BottomSheetMenu(),
+                        backgroundColor: Colors.transparent)
+                    .then(
+                        (value) => value ? Wiredash.of(context).show() : null),
               ),
               actions: [
                 Observer(

@@ -1,3 +1,5 @@
+import 'package:abs_up/presentation/theme/colors.t.dart';
+import 'package:abs_up/secrets.dart';
 import 'package:abs_up/services/auth.s.dart';
 import 'package:abs_up/services/workout.s.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:wiredash/wiredash.dart';
 
 import 'constants.dart';
 import 'domain/state/auth_store.dart';
@@ -21,6 +24,7 @@ class AbsUp extends StatefulWidget {
 
 class _AbsUpState extends State<AbsUp> {
   final WorkoutService _workoutService = WorkoutService();
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   final AuthStore _authStore = AuthStore(
     FirebaseAuthService(
@@ -44,11 +48,26 @@ class _AbsUpState extends State<AbsUp> {
                   Provider(create: (_) => _workoutService),
                   Provider(create: (_) => _authStore),
                 ],
-                child: MaterialApp(
-                  title: 'Abs Up',
-                  theme: appTheme,
-                  onGenerateRoute: FluroRouter.router.generator,
-                  initialRoute: HOME_LINK,
+                child: Wiredash(
+                  projectId: WIREDASH_PROJECT_ID,
+                  secret: WIREDASH_API_SECRET,
+                  options: WiredashOptionsData(
+                    showDebugFloatingEntryPoint: false,
+                  ),
+                  theme: WiredashThemeData(
+                      brightness: Brightness.dark,
+                      backgroundColor: AppColors.greyDarkest,
+                      primaryTextColor: AppColors.greyLight,
+                      primaryColor: AppColors.rudy,
+                      secondaryColor: AppColors.orange),
+                  navigatorKey: _navigatorKey,
+                  child: MaterialApp(
+                    title: 'Abs Up',
+                    theme: appTheme,
+                    onGenerateRoute: FluroRouter.router.generator,
+                    navigatorKey: _navigatorKey,
+                    initialRoute: HOME_LINK,
+                  ),
                 ),
               ),
       );

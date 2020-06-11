@@ -690,6 +690,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.7+3"
+  shared_preferences_macos:
+    dependency: transitive
+    description:
+      name: shared_preferences_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1+10"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
+  shared_preferences_web:
+    dependency: transitive
+    description:
+      name: shared_preferences_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2+7"
   shelf:
     dependency: transitive
     description:
@@ -842,6 +870,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.22+1"
+  wiredash:
+    dependency: "direct main"
+    description:
+      name: wiredash
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   xml:
     dependency: transitive
     description:
@@ -857,5 +892,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.8.0-dev.16.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.8 <2.0.0"
+  dart: ">=2.8.0 <3.0.0"
+  flutter: ">=1.17.0 <2.0.0"
