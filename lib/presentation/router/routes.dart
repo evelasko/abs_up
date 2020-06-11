@@ -132,12 +132,9 @@ class FluroRouter {
     //= Workout Perform
     router.define(workoutPerformLink,
         handler: _workoutPerform, transitionType: TransitionType.inFromRight);
-    //= Workout Logs
-    // router.define(WORKOUT_LOGS_LINK,
-    //     handler: _workoutLogs, transitionType: TransitionType.inFromRight);
     //= Feedback
     router.define(FEEDBACK_LINK,
-        handler: _feedback, transitionType: TransitionType.inFromRight);
+        handler: _feedback, transitionType: TransitionType.inFromBottom);
     //= Support
     router.define(SUPPORT_LINK,
         handler: _support, transitionType: TransitionType.inFromRight);

@@ -10,14 +10,32 @@ class BottomSheetMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 360,
-      padding: const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 10),
+      height: 420,
+      decoration: const BoxDecoration(
+          color: AppColors.greyDarkest,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 10),
       child: Column(
         children: [
+          Container(
+            width: 50,
+            height: 5,
+            margin: const EdgeInsets.only(top: 8, bottom: 10),
+            decoration: const BoxDecoration(
+              color: AppColors.greyDark,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+          ),
           BottomSheetRowItem(
             icon: FontAwesomeIcons.question,
             label: 'Help',
             onTap: () => Navigator.of(context).pushNamed(SUPPORT_LINK),
+          ),
+          BottomSheetRowItem(
+            icon: Icons.rate_review,
+            label: 'Feedback',
+            onTap: () {}, // TODO add Wiredash here
           ),
           BottomSheetRowItem(
             icon: Icons.feedback,

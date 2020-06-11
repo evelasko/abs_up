@@ -14,12 +14,28 @@ import '../widgets/shared/workout_details_menu.w.dart';
 import '../widgets/shared/workout_details_panel.w.dart';
 import '../widgets/workout_items.w.dart';
 
-class WorkoutDetailsPage extends StatelessWidget {
+class WorkoutDetailsPage extends StatefulWidget {
   final String workoutKey;
-  WorkoutDetailsPage(this.workoutKey);
+  const WorkoutDetailsPage(this.workoutKey);
+  @override
+  _WorkoutDetailsPageState createState() => _WorkoutDetailsPageState();
+}
 
-  final TextEditingController savedWorkoutNameController =
-      TextEditingController();
+class _WorkoutDetailsPageState extends State<WorkoutDetailsPage> {
+  TextEditingController savedWorkoutNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    savedWorkoutNameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    savedWorkoutNameController.dispose();
+    super.dispose();
+  }
+
   final GlobalKey<ScaffoldState> workoutDetailsScaffoldKey =
       GlobalKey<ScaffoldState>(debugLabel: 'workoutDetailsScaffoldKey');
 
@@ -70,13 +86,13 @@ class WorkoutDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _workoutsStore = WorkoutsStore(WorkoutService(),
-        workoutKey: workoutKey ?? CURRENT_WORKOUT_KEY);
+        workoutKey: widget.workoutKey ?? CURRENT_WORKOUT_KEY);
     return ValueListenableBuilder(
         valueListenable: _workoutsStore.getWorkoutListenable(),
         builder: (_, Box<Workout> box, __) {
-          final Workout workout =
-              box.get(workoutKey, defaultValue: box.get(CURRENT_WORKOUT_KEY));
-          final bool isCurrent = workoutKey == CURRENT_WORKOUT_KEY;
+          final Workout workout = box.get(widget.workoutKey,
+              defaultValue: box.get(CURRENT_WORKOUT_KEY));
+          final bool isCurrent = widget.workoutKey == CURRENT_WORKOUT_KEY;
           return Provider<Workout>(
             create: (_) => workout,
             child: Observer(

@@ -9,13 +9,30 @@ import '../widgets/shared/counter_chip.w.dart';
 import '../widgets/shared/filter_chip.w.dart';
 import '../widgets/shared/filter_label.w.dart';
 
-class ExercisesPage extends StatelessWidget {
+class ExercisesPage extends StatefulWidget {
   const ExercisesPage({Key key}) : super(key: key);
+  @override
+  _ExercisesPageState createState() => _ExercisesPageState();
+}
+
+class _ExercisesPageState extends State<ExercisesPage> {
+  TextEditingController _searchTextController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final ExercisesStore _exercisesStore = Provider.of<ExercisesStore>(context);
-    final TextEditingController _searchTextController = TextEditingController();
     return Observer(
       builder: (_) =>
           CustomScrollView(

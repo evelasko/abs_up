@@ -73,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                 onPressed: () => showModalBottomSheet<void>(
                     context: context,
                     builder: (context) => const BottomSheetMenu(),
-                    backgroundColor: AppColors.greyDarkest),
+                    backgroundColor: Colors.transparent),
               ),
               actions: [
                 Observer(
