@@ -34,10 +34,6 @@ class ExerciseDetailsBody extends StatelessWidget {
               if (!currently) controller.play();
             },
           ),
-          // const Image(
-          //   image: AssetImage('assets/exercise_images/_default.jpg'),
-          //   fit: BoxFit.cover,
-          // ),
         ),
         DataRow(
             label: 'equipment',

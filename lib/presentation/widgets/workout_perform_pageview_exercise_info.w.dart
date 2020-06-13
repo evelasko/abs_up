@@ -14,11 +14,12 @@ class WorkoutPerformPageViewNextExerciseInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 10, top: 2),
+        const Padding(
+          padding: EdgeInsets.only(right: 15, top: 2),
           child: Text(
-            'Next\nUp'.toUpperCase(),
+            'NEXT\nUP',
             textAlign: TextAlign.right,
+            style: TextStyle(color: AppColors.black),
           ),
         ),
         Expanded(

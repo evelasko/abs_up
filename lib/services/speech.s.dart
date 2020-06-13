@@ -5,13 +5,16 @@ class SpeechService implements SpeechInterface {
   FlutterTts _flutterTts;
   dynamic languages;
   String language;
-  double volume = 0.5;
+  double volume = 1.0;
   double pitch = 1.0;
   double rate = 0.5;
   SpeechState speechState;
   void Function() startHandler;
   void Function() completionHandler;
   void Function() errorHandler;
+
+  void Function() _doOnceOnCompletion;
+  void Function() _doOnceOnStart;
 
   SpeechService() {
     _flutterTts = FlutterTts();
@@ -21,11 +24,19 @@ class SpeechService implements SpeechInterface {
     _flutterTts.setStartHandler(() {
       speechState = SpeechState.playing;
       if (startHandler != null) startHandler();
+      if (_doOnceOnStart != null) {
+        _doOnceOnStart();
+        _doOnceOnStart = null;
+      }
     });
 
     _flutterTts.setCompletionHandler(() {
       speechState = SpeechState.stopped;
       if (completionHandler != null) completionHandler();
+      if (_doOnceOnCompletion != null) {
+        _doOnceOnCompletion();
+        _doOnceOnCompletion = null;
+      }
     });
 
     _flutterTts.setErrorHandler((msg) {
@@ -51,6 +62,13 @@ class SpeechService implements SpeechInterface {
         if (result == 1) speechState = SpeechState.playing;
       }
     }
+  }
+
+  @override
+  Future<void> speakAndDo(
+      String newVoiceText, void Function() effectWhenStop) async {
+    _doOnceOnCompletion = effectWhenStop;
+    await speak(newVoiceText);
   }
 
   @override

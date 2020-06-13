@@ -131,7 +131,7 @@ class FluroRouter {
         transitionType: TransitionType.inFromBottom);
     //= Workout Perform
     router.define(workoutPerformLink,
-        handler: _workoutPerform, transitionType: TransitionType.inFromRight);
+        handler: _workoutPerform, transitionType: TransitionType.fadeIn);
     //= Feedback
     router.define(FEEDBACK_LINK,
         handler: _feedback, transitionType: TransitionType.inFromBottom);

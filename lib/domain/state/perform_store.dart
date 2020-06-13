@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:abs_up/constants.dart';
 import 'package:abs_up/services/p_data.s.dart';
 import 'package:mobx/mobx.dart';
 
@@ -21,15 +22,45 @@ enum WorkoutItemStatus {
   done,
   performed
 }
-enum PerformState { loading, initial, presenting, started, paused }
+enum PerformState { loading, welcoming, initial, presenting, started, paused }
 
 class PerformStore extends _PerformStore with _$PerformStore {
-  PerformStore(SpeechService speechFacade) : super(speechFacade);
+  PerformStore(
+    SpeechService speechFacade,
+    String sourceWorkoutKey,
+  ) : super(
+          speechFacade,
+          sourceWorkoutKey,
+        );
 }
 
 abstract class _PerformStore with Store {
   final SpeechService speechFacade;
-  _PerformStore(this.speechFacade);
+  final String sourceWorkoutKey;
+
+  _PerformStore(
+    this.speechFacade,
+    this.sourceWorkoutKey,
+  ) {
+    state = PerformState.loading;
+    final Workout workoutBlueprint = PDataService.workoutsBox.get(
+      sourceWorkoutKey,
+      defaultValue: PDataService.workoutsBox.get(CURRENT_WORKOUT_KEY),
+    );
+    overallDuration = const Duration();
+    for (final item in workoutBlueprint.items) {
+      overallDuration += Duration(seconds: item.duration);
+    }
+    timeRemaining = overallDuration;
+    workoutItems = workoutBlueprint.items;
+    currentItem = workoutItems[0];
+    currentItemIndex = 0;
+    currentItemProgress = currentItem.progress;
+    currentItemStatus = WorkoutItemStatus.initial;
+    currentItemIsLast = false;
+    sourceWorkout = sourceWorkoutKey;
+    state = PerformState.welcoming;
+  }
 
   final WorkoutService workoutService = WorkoutService();
 
@@ -86,6 +117,19 @@ abstract class _PerformStore with Store {
   }
 
   /// Actions
+
+  /// Welcome workout
+  @action
+  void welcomeWorkout() {
+    final minutes = timeRemaining.inMinutes;
+    final seconds = (Duration(seconds: timeRemaining.inSeconds) -
+            Duration(minutes: timeRemaining.inMinutes))
+        .inSeconds;
+    speechFacade.speakAndDo(
+        'You are about to start an abs training session of $minutes minutes and $seconds seconds... make sure to have your equipment ready',
+        () => state = PerformState.initial);
+  }
+
   /// Increment progress of current item by one unit (1 second)
   @action
   void _incrementCurrentItemProgressByOneUnit() {
@@ -137,7 +181,9 @@ abstract class _PerformStore with Store {
   /// Switch the item at current item
   @action
   void switchCurrentItem(int itemIndex) {
-    if (itemIndex > workoutItems.length - 1) return;
+    if (itemIndex > workoutItems.length - 1 || currentItemIndex == itemIndex) {
+      return;
+    }
     if (performing) stopCurrentTimer();
     if (speechFacade.speechState == SpeechState.playing) stopSpeech();
 
@@ -230,41 +276,12 @@ abstract class _PerformStore with Store {
     speechFacade.speak(greeting);
   }
 
-  /// Abandon and reset the store (it might not be needed)
-  void abandonWorkout() {
-    // TODO implement abandon workout
-  }
-
   /// Stop any running speaking action
   @action
   Future<void> stopSpeech() async {
     if (speechFacade.speechState != SpeechState.playing) return;
     speechFacade.completionHandler = null;
     await speechFacade.stop();
-  }
-
-  /// Initialize state for new workout to perform
-  @action
-  Future<void> initNew(String sourceWorkoutKey) async {
-    // if (workoutLogKey == sourceWorkoutKey) return;
-    state = PerformState.loading;
-    final Workout workoutBlueprint =
-        PDataService.workoutsBox.get(sourceWorkoutKey);
-
-    overallDuration = const Duration();
-    for (final item in workoutBlueprint.items) {
-      overallDuration += Duration(seconds: item.duration);
-    }
-    timeRemaining = overallDuration;
-
-    workoutItems = workoutBlueprint.items;
-    currentItem = workoutItems[0];
-    currentItemIndex = 0;
-    currentItemProgress = currentItem.progress;
-    currentItemStatus = WorkoutItemStatus.initial;
-    currentItemIsLast = false;
-    sourceWorkout = sourceWorkoutKey;
-    state = PerformState.initial;
   }
 
   /// Change current item's exercise for a random one
@@ -290,4 +307,16 @@ abstract class _PerformStore with Store {
   Future<void> saveWorkoutLogEntry() async =>
       workoutService.saveNewWorkoutLogEntry(
           items: workoutItems, sourceWorkout: sourceWorkout);
+
+  /// Abandon and reset the store (it might not be needed)
+  @action
+  void abandonWorkout() {
+    // TODO implement abandon workout
+  }
+
+  /// Dispose the entire store
+  @action
+  void dispose() {
+    // TODO implement the dispose method for performStore
+  }
 }

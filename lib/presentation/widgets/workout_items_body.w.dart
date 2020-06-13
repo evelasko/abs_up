@@ -48,9 +48,9 @@ class WorkoutItemBody extends StatelessWidget {
                   // ignore: prefer_if_elements_to_conditional_expressions
                   workoutItem.exercise.name == 'Rest'
                       ? Container()
-                      : const Image(
-                          image:
-                              AssetImage('assets/exercise_images/_default.jpg'),
+                      : Image(
+                          image: AssetImage(workoutItem.exercise.thumb ??
+                              'assets/exercise_images/_default.jpg'),
                           fit: BoxFit.cover,
                         ),
                   //= Item Number Badge
@@ -59,7 +59,7 @@ class WorkoutItemBody extends StatelessWidget {
                     workoutItem.order.toString(),
                     style: const TextStyle(
                         height: 1.05,
-                        color: Colors.black38,
+                        color: Colors.black26,
                         fontSize: 50,
                         fontWeight: FontWeight.w800),
                   ))

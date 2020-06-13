@@ -304,15 +304,18 @@ mixin _$PerformStore on _PerformStore, Store {
     return _$stopSpeechAsyncAction.run(() => super.stopSpeech());
   }
 
-  final _$initNewAsyncAction = AsyncAction('initNew');
-
-  @override
-  Future<void> initNew(String sourceWorkoutKey) {
-    return _$initNewAsyncAction.run(() => super.initNew(sourceWorkoutKey));
-  }
-
   final _$_PerformStoreActionController =
       ActionController(name: '_PerformStore');
+
+  @override
+  void welcomeWorkout() {
+    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    try {
+      return super.welcomeWorkout();
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void _incrementCurrentItemProgressByOneUnit() {
@@ -379,6 +382,26 @@ mixin _$PerformStore on _PerformStore, Store {
     final _$actionInfo = _$_PerformStoreActionController.startAction();
     try {
       return super.updateCurrentItemsExercise(exercise);
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void abandonWorkout() {
+    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    try {
+      return super.abandonWorkout();
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void dispose() {
+    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    try {
+      return super.dispose();
     } finally {
       _$_PerformStoreActionController.endAction(_$actionInfo);
     }

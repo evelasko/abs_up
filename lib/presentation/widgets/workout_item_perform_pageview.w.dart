@@ -14,14 +14,10 @@ import 'workout_perform_pageview_menu.w.dart';
 
 class WorkoutItemPerformPageView extends StatefulWidget {
   final int pageIndex;
-  // final Future<void> Function({Duration duration, Curve curve}) goToNext;
   final PageController pageController;
 
   const WorkoutItemPerformPageView(
-      {Key key,
-      this.pageIndex,
-      // this.goToNext,
-      this.pageController})
+      {Key key, this.pageIndex, this.pageController})
       : super(key: key);
 
   @override
@@ -31,16 +27,6 @@ class WorkoutItemPerformPageView extends StatefulWidget {
 
 class _WorkoutItemPerformPageViewState
     extends State<WorkoutItemPerformPageView> {
-  bool focus = false;
-  bool started = false;
-  bool done = false;
-  bool paused = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   /// Switch to next workout item
   void goToNext() => widget.pageController
       .nextPage(duration: const Duration(seconds: 1), curve: Curves.easeOut);
@@ -67,14 +53,16 @@ class _WorkoutItemPerformPageViewState
         outputStart: generalWidthPadding * 2,
         outputEnd: availablelWidth - (generalWidthPadding * 2));
 
-    /// reactions: Present workout item if is in initial state
+    //= Reaction: When the current workout item is the same as the one of the page and is in initial state
+    //= Effect:   Present workout item
     when(
         (_) =>
             _performStore.currentItemIndex == widget.pageIndex &&
             _performStore.currentItemStatus == WorkoutItemStatus.initial,
         () => _performStore.presentCurrentItem());
 
-    /// reaction: Start performing workout item if is in ready state
+    //= Reaction: When the item of this page is in ready state
+    //= Effect:   Start performing this workout item
     when(
         (_) =>
             _performStore.currentItemIndex == widget.pageIndex &&
@@ -83,7 +71,8 @@ class _WorkoutItemPerformPageViewState
       if (!_performStore.performing) _performStore.performCurrentItem();
     });
 
-    /// reaction: Switch to next workout item if item has been marked as done
+    //= Reaction: If item has been marked as done
+    //= Effect:   Switch to next workout item
     when(
         (_) =>
             _performStore.currentItemIndex == widget.pageIndex &&
@@ -141,11 +130,11 @@ class _WorkoutItemPerformPageViewState
                       nextExercise: nextExercise),
                   //= Menu Buttons
                   WorkoutPerformPageViewMenu(
-                    moreInfo: () {},
-                    replaceExercise: () {},
+                    moreInfo: () {}, // TODO show exercise details
+                    replaceExercise: () {}, // TODO replace exercise
                     shuffleExercise: () =>
                         _performStore.shuffleCurrentItemsExercise(),
-                    skipToNext: () {},
+                    skipToNext: () {}, // TODO skip to next exercise
                   )
                 ],
               ),

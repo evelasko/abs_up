@@ -3,6 +3,7 @@ import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
+import 'package:native_video_view/native_video_view.dart';
 
 class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
   const WorkoutPerformPageViewExerciseDetails(
@@ -19,7 +20,6 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         // = Exercise Header
         Padding(
@@ -36,46 +36,17 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
                     fontWeight: FontWeight.w800)),
           ),
         ),
-        // = Exercise info
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  const Text(
-                    'INTENSITY: ',
-                    style: AppTextStyles.listItemBottomInfo,
-                  ),
-                  Text(
-                    exercise.intensityString.toUpperCase(),
-                    style: AppTextStyles.listItemBottomInfo
-                        .copyWith(color: AppColors.greyDark),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  const Text(
-                    'DIFFICULTY: ',
-                    style: AppTextStyles.listItemBottomInfo,
-                  ),
-                  Text(
-                    exercise.difficultyString.toUpperCase(),
-                    style: AppTextStyles.listItemBottomInfo
-                        .copyWith(color: AppColors.greyDark),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
         //= Image
-        Container(
-          width: double.maxFinite,
-          height: 200,
-          color: AppColors.coquelicot,
+        NativeVideoView(
+          keepAspectRatio: true,
+          onCreated: (controller) => controller.setVideoSource(exercise.media,
+              sourceType: VideoSourceType.asset),
+          onPrepared: (controller, info) => controller.play(),
+          onCompletion: (controller) async {
+            await controller.seekTo(0);
+            final bool currently = await controller.isPlaying();
+            if (!currently) controller.play();
+          },
         ),
         // = Info Row
         Container(
@@ -95,6 +66,7 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
                       child: Icon(
                     exercise.equipmentIcon,
                     size: 65,
+                    color: AppColors.greyDark,
                   )),
                 ),
               ),
@@ -126,10 +98,10 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10))),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      '1/1',
-                      style: TextStyle(
+                      exercise.sided ? '1/2' : '1/1',
+                      style: const TextStyle(
                           fontSize: 42,
                           color: AppColors.greyDark,
                           fontWeight: FontWeight.w900,
