@@ -33,6 +33,7 @@ dependencies:
   sign_in_with_apple: ^2.4.0
   webview_flutter: ^0.3.22+1
   wiredash: ^0.2.0
+  simple_moment: ^1.0.5+1
 
   # Google Dependencies
   cloud_firestore: ^0.13.6

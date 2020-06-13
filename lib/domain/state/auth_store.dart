@@ -1,3 +1,5 @@
+import 'package:abs_up/domain/models/workout_log.dart';
+import 'package:abs_up/services/workout_logs.s.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -21,6 +23,8 @@ abstract class _AuthStore with Store {
   final AuthInterface authService;
   _AuthStore(this.authService);
 
+  final WorkoutLogsService logsService = WorkoutLogsService();
+
   @observable
   AuthFormState authFormState;
 
@@ -29,6 +33,9 @@ abstract class _AuthStore with Store {
 
   @observable
   AuthState authState = const AuthState.initial();
+
+  @computed
+  Option<List<WorkoutLog>> get userLogs => logsService.userLogs;
 
   @action
   Future<Option<User>> getUser() async {

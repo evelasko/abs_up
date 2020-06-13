@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:abs_up/constants.dart';
 import 'package:abs_up/services/p_data.s.dart';
+import 'package:abs_up/services/workout_logs.s.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../services/speech.s.dart';
@@ -305,8 +306,10 @@ abstract class _PerformStore with Store {
 
   /// Saves the entire state as a new workout log entry and resets the store
   Future<void> saveWorkoutLogEntry() async =>
-      workoutService.saveNewWorkoutLogEntry(
-          items: workoutItems, sourceWorkout: sourceWorkout);
+      WorkoutLogsService().saveNewWorkoutLogEntry(
+        items: workoutItems,
+        sourceWorkoutKey: sourceWorkout,
+      );
 
   /// Abandon and reset the store (it might not be needed)
   @action

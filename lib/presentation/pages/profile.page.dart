@@ -1,8 +1,12 @@
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
+import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:abs_up/presentation/widgets/bottom_sheet_menu.w.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_moment/simple_moment.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../domain/state/auth_store.dart';
@@ -107,21 +111,28 @@ class ProfilePage extends StatelessWidget {
           children: [
             //= User Logs
             UserContentTabView(
-              childCount: 10,
-              delegate: SliverChildBuilderDelegate(
+              delegate: _authStore.userLogs.fold(
+                () => null,
+                (logs) => SliverChildBuilderDelegate(
                   (BuildContext context, int index) => ListTile(
-                        title: Text('User Log Item $index'),
-                      ),
-                  childCount: 5),
+                    title: Text('Workout $index'),
+                    subtitle: Text(
+                      Moment.fromDate(logs[index].performedAt)
+                          .from(DateTime.now()),
+                    ),
+                  ),
+                  childCount: logs.length,
+                ),
+              ),
             ),
             //= User stream
             UserContentTabView(
-              childCount: 10,
               delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) => ListTile(
-                        title: Text('User Stream Item $index'),
-                      ),
-                  childCount: 10),
+                (BuildContext context, int index) => ListTile(
+                  title: Text('User Stream Item $index'),
+                ),
+                childCount: 10,
+              ),
             )
           ],
         ),

@@ -9,6 +9,13 @@ part of 'auth_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AuthStore on _AuthStore, Store {
+  Computed<Option<List<WorkoutLog>>> _$userLogsComputed;
+
+  @override
+  Option<List<WorkoutLog>> get userLogs => (_$userLogsComputed ??=
+          Computed<Option<List<WorkoutLog>>>(() => super.userLogs))
+      .value;
+
   final _$authFormStateAtom = Atom(name: '_AuthStore.authFormState');
 
   @override
@@ -146,7 +153,7 @@ mixin _$AuthStore on _AuthStore, Store {
   @override
   String toString() {
     final string =
-        'authFormState: ${authFormState.toString()},user: ${user.toString()},authState: ${authState.toString()}';
+        'authFormState: ${authFormState.toString()},user: ${user.toString()},authState: ${authState.toString()},userLogs: ${userLogs.toString()}';
     return '{$string}';
   }
 }

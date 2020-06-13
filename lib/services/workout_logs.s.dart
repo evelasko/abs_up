@@ -1,5 +1,8 @@
+import 'package:abs_up/domain/models/workout.dart';
 import 'package:abs_up/domain/models/workout_log.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 import '../constants.dart';
@@ -9,12 +12,20 @@ import 'p_data.s.dart';
 
 class WorkoutLogsService implements WorkoutLogsInterface {
   final Uuid uuid = Uuid();
+  final Box<Workout> workoutsBox = PDataService.workoutsBox;
+  final Box<WorkoutLog> workoutLogsBox = PDataService.workoutLogsBox;
 
   @override
   Future<void> saveNewWorkoutLogEntry(
       {@required List<WorkoutItem> items,
-      @required String sourceWorkout}) async {
-    return;
+      @required String sourceWorkoutKey}) async {
+    final Workout workout = workoutsBox.get(sourceWorkoutKey);
+    await workoutLogsBox.put(
+        Uuid().v4(),
+        WorkoutLog(
+            items: [...items],
+            sourceWorkoutName: workout.name ?? 'No name',
+            sourceWorkoutId: workout.key.toString() ?? 'No key'));
   }
 
   @override
@@ -31,4 +42,7 @@ class WorkoutLogsService implements WorkoutLogsInterface {
         ));
     return workoutToPerformKey;
   }
+
+  Option<List<WorkoutLog>> get userLogs =>
+      optionOf(workoutLogsBox.values.toList());
 }
