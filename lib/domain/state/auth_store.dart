@@ -1,9 +1,11 @@
 import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:abs_up/services/workout_logs.s.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../core/failures.dart';
 import '../core/value_objects.dart';
@@ -31,11 +33,18 @@ abstract class _AuthStore with Store {
   @observable
   Option<User> user = none<User>();
 
+  @computed
+  Option<String> get displayName =>
+      user.fold(() => none<String>(), (result) => result.displayName);
+
   @observable
   AuthState authState = const AuthState.initial();
 
   @computed
   Option<List<WorkoutLog>> get userLogs => logsService.userLogs;
+
+  @computed
+  Option<List<String>> get userActivity => none();
 
   @action
   Future<Option<User>> getUser() async {
@@ -44,9 +53,18 @@ abstract class _AuthStore with Store {
     return _user;
   }
 
+  @observable
+  bool signInWithAppleAvailable = false;
+  @action
+  Future<void> checkSignInWithAppleAvailability() async {
+    final bool available = await SignInWithApple.isAvailable();
+    signInWithAppleAvailable = available;
+  }
+
   @action
   Future<bool> authCheck() async {
     try {
+      checkSignInWithAppleAvailability();
       final _user = await getUser();
       _user.fold(
         () => authState = const AuthState.initial(),
@@ -57,6 +75,10 @@ abstract class _AuthStore with Store {
     }
     return true;
   }
+
+  @action
+  Future<Option<String>> getUserDisplayName() async =>
+      authService.getUserDisplayName();
 
   @action
   void initAuthForm() => updateAuthFormState(AuthFormState.initial());
@@ -86,6 +108,17 @@ abstract class _AuthStore with Store {
         isSubmitting: true, authFailureOrSuccessOption: none()));
 
     final failureOrSuccess = await authService.loginWithGoogle();
+    updateAuthFormState(authFormState.copyWith(
+        isSubmitting: false,
+        authFailureOrSuccessOption: some(failureOrSuccess)));
+  }
+
+  @action
+  Future<void> signInWithApplePressed() async {
+    updateAuthFormState(authFormState.copyWith(
+        isSubmitting: true, authFailureOrSuccessOption: none()));
+
+    final failureOrSuccess = await authService.loginWithApple();
     updateAuthFormState(authFormState.copyWith(
         isSubmitting: false,
         authFailureOrSuccessOption: some(failureOrSuccess)));

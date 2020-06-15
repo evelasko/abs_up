@@ -39,6 +39,8 @@ class _LoginDialogState extends State<LoginDialog> {
             (either) => either.fold(
                 (failure) => FlushbarHelper.createError(
                         message: failure.map(
+                            appleSignInNotAvailable: (_) =>
+                                'Apple Sign In is not available',
                             cancelledByUser: (_) => 'Cancelled',
                             serverError: (_) => 'Server Error',
                             emailAlreadyInUse: (_) =>
@@ -108,7 +110,8 @@ class _LoginDialogState extends State<LoginDialog> {
                               onTap: () {}, icon: FontAwesomeIcons.facebookF),
                           //= Sign in with Apple
                           CircularIconButton(
-                              onTap: () {}, icon: FontAwesomeIcons.apple)
+                              onTap: _authStore.signInWithApplePressed,
+                              icon: FontAwesomeIcons.apple)
                         ]),
                   ],
                 )),

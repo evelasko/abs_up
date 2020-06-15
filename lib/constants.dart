@@ -1,3 +1,11 @@
+/// URIs
+const SIGN_IN_WITH_APPLE_SESSION_ENDPOINT_SCHEME = 'https';
+const SIGN_IN_WITH_APPLE_SESSION_ENDPOINT_HOST =
+    'round-automatic-mousepad.glitch.me';
+const SIGN_IN_WITH_APPLE_SESSION_ENDPOINT_PATH = '/sign_in_with_apple';
+const String PRIVACY_POLICY_WWW_LINK = 'https://misfitcoders.com/privacy';
+const String PROJECT_PAGE_WWW_LINK = 'https://misfitcoders.com';
+
 /// Route Links
 const String HOME_LINK = 'home';
 const String EXERCISES_LIST_LINK = 'exercises';
@@ -12,10 +20,6 @@ const String SETTINGS_LINK = 'settings';
 const String FEEDBACK_LINK = 'feedback';
 const String SUPPORT_LINK = 'support';
 const String EXTERNAL_WEB_LINK = 'web/';
-
-/// Web Links
-const String PRIVACY_POLICY_WWW_LINK = 'https://misfitcoders.com/privacy';
-const String PROJECT_PAGE_WWW_LINK = 'https://misfitcoders.com';
 
 /// Hive Box Names
 const String EXERCISE_BOX_NAME = 'exercises';

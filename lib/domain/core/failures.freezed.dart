@@ -623,6 +623,10 @@ class _$AuthFailureTearOff {
   InvalidCredentials invalidCredentials() {
     return const InvalidCredentials();
   }
+
+  AppleSignInNotAvailable appleSignInNotAvailable() {
+    return const AppleSignInNotAvailable();
+  }
 }
 
 // ignore: unused_element
@@ -635,6 +639,7 @@ mixin _$AuthFailure {
     @required Result serverError(),
     @required Result emailAlreadyInUse(),
     @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -642,6 +647,7 @@ mixin _$AuthFailure {
     Result serverError(),
     Result emailAlreadyInUse(),
     Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -650,6 +656,7 @@ mixin _$AuthFailure {
     @required Result serverError(ServerError value),
     @required Result emailAlreadyInUse(EmailAlreadyInUse value),
     @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -657,6 +664,7 @@ mixin _$AuthFailure {
     Result serverError(ServerError value),
     Result emailAlreadyInUse(EmailAlreadyInUse value),
     Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
     @required Result orElse(),
   });
 }
@@ -715,11 +723,13 @@ class _$CancelledByUser implements CancelledByUser {
     @required Result serverError(),
     @required Result emailAlreadyInUse(),
     @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return cancelledByUser();
   }
 
@@ -730,6 +740,7 @@ class _$CancelledByUser implements CancelledByUser {
     Result serverError(),
     Result emailAlreadyInUse(),
     Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -746,11 +757,13 @@ class _$CancelledByUser implements CancelledByUser {
     @required Result serverError(ServerError value),
     @required Result emailAlreadyInUse(EmailAlreadyInUse value),
     @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return cancelledByUser(this);
   }
 
@@ -761,6 +774,7 @@ class _$CancelledByUser implements CancelledByUser {
     Result serverError(ServerError value),
     Result emailAlreadyInUse(EmailAlreadyInUse value),
     Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -814,11 +828,13 @@ class _$ServerError implements ServerError {
     @required Result serverError(),
     @required Result emailAlreadyInUse(),
     @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return serverError();
   }
 
@@ -829,6 +845,7 @@ class _$ServerError implements ServerError {
     Result serverError(),
     Result emailAlreadyInUse(),
     Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -845,11 +862,13 @@ class _$ServerError implements ServerError {
     @required Result serverError(ServerError value),
     @required Result emailAlreadyInUse(EmailAlreadyInUse value),
     @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return serverError(this);
   }
 
@@ -860,6 +879,7 @@ class _$ServerError implements ServerError {
     Result serverError(ServerError value),
     Result emailAlreadyInUse(EmailAlreadyInUse value),
     Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -914,11 +934,13 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     @required Result serverError(),
     @required Result emailAlreadyInUse(),
     @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return emailAlreadyInUse();
   }
 
@@ -929,6 +951,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     Result serverError(),
     Result emailAlreadyInUse(),
     Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -945,11 +968,13 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     @required Result serverError(ServerError value),
     @required Result emailAlreadyInUse(EmailAlreadyInUse value),
     @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return emailAlreadyInUse(this);
   }
 
@@ -960,6 +985,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     Result serverError(ServerError value),
     Result emailAlreadyInUse(EmailAlreadyInUse value),
     Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1014,11 +1040,13 @@ class _$InvalidCredentials implements InvalidCredentials {
     @required Result serverError(),
     @required Result emailAlreadyInUse(),
     @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return invalidCredentials();
   }
 
@@ -1029,6 +1057,7 @@ class _$InvalidCredentials implements InvalidCredentials {
     Result serverError(),
     Result emailAlreadyInUse(),
     Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1045,11 +1074,13 @@ class _$InvalidCredentials implements InvalidCredentials {
     @required Result serverError(ServerError value),
     @required Result emailAlreadyInUse(EmailAlreadyInUse value),
     @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
   }) {
     assert(cancelledByUser != null);
     assert(serverError != null);
     assert(emailAlreadyInUse != null);
     assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
     return invalidCredentials(this);
   }
 
@@ -1060,6 +1091,7 @@ class _$InvalidCredentials implements InvalidCredentials {
     Result serverError(ServerError value),
     Result emailAlreadyInUse(EmailAlreadyInUse value),
     Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1072,4 +1104,110 @@ class _$InvalidCredentials implements InvalidCredentials {
 
 abstract class InvalidCredentials implements AuthFailure {
   const factory InvalidCredentials() = _$InvalidCredentials;
+}
+
+abstract class $AppleSignInNotAvailableCopyWith<$Res> {
+  factory $AppleSignInNotAvailableCopyWith(AppleSignInNotAvailable value,
+          $Res Function(AppleSignInNotAvailable) then) =
+      _$AppleSignInNotAvailableCopyWithImpl<$Res>;
+}
+
+class _$AppleSignInNotAvailableCopyWithImpl<$Res>
+    extends _$AuthFailureCopyWithImpl<$Res>
+    implements $AppleSignInNotAvailableCopyWith<$Res> {
+  _$AppleSignInNotAvailableCopyWithImpl(AppleSignInNotAvailable _value,
+      $Res Function(AppleSignInNotAvailable) _then)
+      : super(_value, (v) => _then(v as AppleSignInNotAvailable));
+
+  @override
+  AppleSignInNotAvailable get _value => super._value as AppleSignInNotAvailable;
+}
+
+class _$AppleSignInNotAvailable implements AppleSignInNotAvailable {
+  const _$AppleSignInNotAvailable();
+
+  @override
+  String toString() {
+    return 'AuthFailure.appleSignInNotAvailable()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is AppleSignInNotAvailable);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result cancelledByUser(),
+    @required Result serverError(),
+    @required Result emailAlreadyInUse(),
+    @required Result invalidCredentials(),
+    @required Result appleSignInNotAvailable(),
+  }) {
+    assert(cancelledByUser != null);
+    assert(serverError != null);
+    assert(emailAlreadyInUse != null);
+    assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
+    return appleSignInNotAvailable();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result cancelledByUser(),
+    Result serverError(),
+    Result emailAlreadyInUse(),
+    Result invalidCredentials(),
+    Result appleSignInNotAvailable(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (appleSignInNotAvailable != null) {
+      return appleSignInNotAvailable();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result cancelledByUser(CancelledByUser value),
+    @required Result serverError(ServerError value),
+    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
+    @required Result invalidCredentials(InvalidCredentials value),
+    @required Result appleSignInNotAvailable(AppleSignInNotAvailable value),
+  }) {
+    assert(cancelledByUser != null);
+    assert(serverError != null);
+    assert(emailAlreadyInUse != null);
+    assert(invalidCredentials != null);
+    assert(appleSignInNotAvailable != null);
+    return appleSignInNotAvailable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result cancelledByUser(CancelledByUser value),
+    Result serverError(ServerError value),
+    Result emailAlreadyInUse(EmailAlreadyInUse value),
+    Result invalidCredentials(InvalidCredentials value),
+    Result appleSignInNotAvailable(AppleSignInNotAvailable value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (appleSignInNotAvailable != null) {
+      return appleSignInNotAvailable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AppleSignInNotAvailable implements AuthFailure {
+  const factory AppleSignInNotAvailable() = _$AppleSignInNotAvailable;
 }

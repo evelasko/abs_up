@@ -2,6 +2,7 @@ import 'package:abs_up/domain/models/exercise.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:abs_up/presentation/widgets/bottom_sheet_menu.w.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,16 +41,25 @@ class ProfilePage extends StatelessWidget {
                     StretchMode.blurBackground,
                     StretchMode.fadeTitle
                   ],
-                  background: const Padding(
-                    padding: EdgeInsets.only(bottom: 100),
+                  background: Padding(
+                    padding: const EdgeInsets.only(bottom: 100),
                     child: Center(
                       //= User Avatar
                       child: CircleAvatar(
                         radius: 60,
                         backgroundColor: AppColors.greyDark,
                         child: Text(
-                          'GU',
-                          style: TextStyle(
+                          _authStore.displayName.foldRight(
+                              'GU',
+                              (result, _) =>
+                                  result
+                                      .splitMapJoin(RegExp('(?<=^| )[a-zA-Z]'),
+                                          onMatch: (m) => m.group(0),
+                                          onNonMatch: (n) => '')
+                                      .substring(0, 2)
+                                      .toUpperCase() ??
+                                  'NA'),
+                          style: const TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 30),
                         ),
                       ),
@@ -58,13 +68,8 @@ class ProfilePage extends StatelessWidget {
                   titlePadding: const EdgeInsets.only(bottom: 90),
                   //= User Name
                   title: Text(
-                    _authStore.user?.fold(
-                      () => 'Guest User',
-                      (user) =>
-                          user?.id?.value
-                              ?.fold((l) => l.toString(), (r) => r) ??
-                          'Guest User',
-                    ),
+                    _authStore.displayName
+                        .foldRight<String>('Guest User', (result, _) => result),
                     style: const TextStyle(
                         color: AppColors.greyLight,
                         fontSize: 16,
@@ -115,11 +120,14 @@ class ProfilePage extends StatelessWidget {
                 () => null,
                 (logs) => SliverChildBuilderDelegate(
                   (BuildContext context, int index) => ListTile(
-                    title: Text('Workout $index'),
-                    subtitle: Text(
-                      Moment.fromDate(logs[index].performedAt)
-                          .from(DateTime.now()),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(logs[index].sourceWorkoutName ?? 'Random Workout'),
+                        Text(logs[index].totalDurationString)
+                      ],
                     ),
+                    subtitle: Text(Moment.now().from(logs[index].performedAt)),
                   ),
                   childCount: logs.length,
                 ),
@@ -127,11 +135,14 @@ class ProfilePage extends StatelessWidget {
             ),
             //= User stream
             UserContentTabView(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) => ListTile(
-                  title: Text('User Stream Item $index'),
+              delegate: _authStore.userActivity.fold(
+                () => null,
+                (activities) => SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => ListTile(
+                    title: Text(activities[index]),
+                  ),
+                  childCount: activities.length,
                 ),
-                childCount: 10,
               ),
             )
           ],

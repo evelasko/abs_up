@@ -1,8 +1,9 @@
-import 'package:abs_up/domain/models/user.dart';
 import 'package:dartz/dartz.dart';
-import 'package:abs_up/domain/core/failures.dart';
 import 'package:flutter/foundation.dart';
+
+import '../core/failures.dart';
 import '../core/value_objects.dart';
+import '../models/user.dart';
 
 abstract class AuthInterface {
   /// Retreive a registered and signed in user
@@ -19,6 +20,12 @@ abstract class AuthInterface {
   /// Register and log in a user with Google
   Future<Either<AuthFailure, Unit>> loginWithGoogle();
 
+  /// Register and log in a user with Apple
+  Future<Either<AuthFailure, Unit>> loginWithApple();
+
   /// Log out an already logged in user
   Future<void> logOut();
+
+  /// Retrieve the display name of the user
+  Future<Option<String>> getUserDisplayName();
 }
