@@ -45,12 +45,12 @@ dependencies:
   uuid: ^2.0.4
   flushbar: ^1.10.4
   fluro: ^1.6.3
-  hive: 1.4.1+1
-  hive_flutter: 0.3.0+2
+  # hive: 1.4.1+1
+  # hive_flutter: 0.3.0+2
   path_provider:
-  mobx: ^1.1.1
+  mobx: ^1.2.1
   flutter_mobx: ^1.1.0
-  provider: ^4.0.5
+  provider: ^4.1.3
   dartz: ^0.9.1
   freezed_annotation: ^0.7.1
   json_annotation: ^3.0.1
@@ -60,18 +60,43 @@ dependencies:
   get_it: ^4.0.2
   injectable: ^0.3.0
   flutter_markdown: ^0.3.5
+  path: ^1.7.0
 
 dev_dependencies:
-  # flutter_test:
-  #   sdk: flutter
+  flutter_test:
+    sdk: flutter
   lint: ^1.2.0
-  hive_generator: ^0.7.0+2
-  mobx_codegen: ^1.0.3
-  build_runner: ^1.9.0
+  # hive_generator: ^0.7.0+2
+  mobx_codegen: ^1.1.0
+  build_runner: ^1.10.0
   freezed: ^0.10.8
   json_serializable: ^3.2.5
   injectable_generator: ^0.3.5
   flutter_application_id: "^1.0.0"
+
+# override to comply with hive_flutter not compatible with flutter_test sdk
+dependency_overrides:
+  path: ^1.6.4
+  dartx: ^0.3.0
+  characters: ^0.3.0
+  hive:
+    git:
+      url: https://github.com/hivedb/hive
+      path: hive
+      # uncomment below to get a working commit
+      #ref: d7ee72537a3b7ce1284bcbf5ee5f86e617a4f6fc
+  hive_generator:
+    git:
+      url: https://github.com/hivedb/hive
+      path: hive_generator
+      # uncomment below to get a working commit
+      #ref: d7ee72537a3b7ce1284bcbf5ee5f86e617a4f6fc
+  hive_flutter:
+    git:
+      url: https://github.com/hivedb/hive
+      path: hive_flutter
+      # uncomment below to get a working commit
+      #ref: d7ee72537a3b7ce1284bcbf5ee5f86e617a4f6fc
 
 flutter:
   uses-material-design: true

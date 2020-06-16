@@ -1,16 +1,15 @@
-import 'package:abs_up/domain/models/workout_log.dart';
-import 'package:abs_up/services/workout_logs.s.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../services/workout_logs.s.dart';
 import '../core/failures.dart';
 import '../core/value_objects.dart';
 import '../interfaces/auth.i.dart';
 import '../models/user.dart';
+import '../models/workout_log.dart';
 import 'auth_form_states.dart';
 import 'auth_state.dart';
 

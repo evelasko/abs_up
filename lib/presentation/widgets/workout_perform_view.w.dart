@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
 import '../../domain/state/perform_store.dart';
 import '../theme/colors.t.dart';
 import 'shared/workout_perform_dialogs.w.dart';

@@ -42,8 +42,7 @@ class _FeedbackContactPageState extends State<FeedbackContactPage> {
           ),
           actions: [
             GestureDetector(
-              onTap: () =>
-                  print(_controller.text), // TODO implement form submission
+              onTap: () => {}, // TODO implement form submission
               child: const Center(
                 child: Padding(
                   padding: EdgeInsets.only(right: 5),

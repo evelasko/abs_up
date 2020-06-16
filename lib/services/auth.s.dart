@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/domain/models/user.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -9,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:http/http.dart' as http;
 
 import '../domain/core/failures.dart';
 import '../domain/core/value_objects.dart';
 import '../domain/interfaces/auth.i.dart';
+import '../domain/models/user.dart';
 import './core/firebase_user_mapper.dart';
 
 @lazySingleton
