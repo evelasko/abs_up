@@ -44,4 +44,10 @@ app.*.map.json
 
 /android/app/google-services.json
 
+# Env configuration and keys
 **/secrets.dart
+config/
+
+# Code coverage internal html report
+/coverage/html/**/*.*
+/coverage/html

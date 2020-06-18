@@ -1,7 +1,3 @@
-import 'package:abs_up/presentation/theme/colors.t.dart';
-import 'package:abs_up/secrets.dart';
-import 'package:abs_up/services/auth.s.dart';
-import 'package:abs_up/services/workout.s.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,13 +5,17 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:wiredash/wiredash.dart';
 
+import 'config.dart';
 import 'constants.dart';
 import 'domain/state/auth_store.dart';
 import 'domain/state/exercises_store.dart';
 import 'domain/state/workouts_store.dart';
 import 'presentation/router/routes.dart';
+import 'presentation/theme/colors.t.dart';
 import 'presentation/theme/theme.t.dart';
+import 'services/auth.s.dart';
 import 'services/exercise.s.dart';
+import 'services/workout.s.dart';
 
 class AbsUp extends StatefulWidget {
   @override
@@ -49,8 +49,8 @@ class _AbsUpState extends State<AbsUp> {
                   Provider(create: (_) => _authStore),
                 ],
                 child: Wiredash(
-                  projectId: WIREDASH_PROJECT_ID,
-                  secret: WIREDASH_API_SECRET,
+                  projectId: Config.getWiredashProjectId(),
+                  secret: Config.getWiredashApiKey(),
                   options: WiredashOptionsData(
                     showDebugFloatingEntryPoint: false,
                   ),
