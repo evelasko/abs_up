@@ -22,7 +22,6 @@ final ThemeData appTheme = ThemeData(
     textTheme: textTheme(),
   ),
   bottomAppBarColor: AppColors.greyDarkest,
-  // ignore: undefined_named_parameter, undefined_class
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       elevation: 0,
       type: BottomNavigationBarType.fixed,
