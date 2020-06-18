@@ -13,132 +13,120 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   String get timeRemainingString => (_$timeRemainingStringComputed ??=
-          Computed<String>(() => super.timeRemainingString))
+          Computed<String>(() => super.timeRemainingString,
+              name: '_PerformStore.timeRemainingString'))
       .value;
   Computed<int> _$workoutProgressComputed;
 
   @override
   int get workoutProgress =>
-      (_$workoutProgressComputed ??= Computed<int>(() => super.workoutProgress))
+      (_$workoutProgressComputed ??= Computed<int>(() => super.workoutProgress,
+              name: '_PerformStore.workoutProgress'))
           .value;
 
   final _$sourceWorkoutAtom = Atom(name: '_PerformStore.sourceWorkout');
 
   @override
   String get sourceWorkout {
-    _$sourceWorkoutAtom.context.enforceReadPolicy(_$sourceWorkoutAtom);
-    _$sourceWorkoutAtom.reportObserved();
+    _$sourceWorkoutAtom.reportRead();
     return super.sourceWorkout;
   }
 
   @override
   set sourceWorkout(String value) {
-    _$sourceWorkoutAtom.context.conditionallyRunInAction(() {
+    _$sourceWorkoutAtom.reportWrite(value, super.sourceWorkout, () {
       super.sourceWorkout = value;
-      _$sourceWorkoutAtom.reportChanged();
-    }, _$sourceWorkoutAtom, name: '${_$sourceWorkoutAtom.name}_set');
+    });
   }
 
   final _$stateAtom = Atom(name: '_PerformStore.state');
 
   @override
   PerformState get state {
-    _$stateAtom.context.enforceReadPolicy(_$stateAtom);
-    _$stateAtom.reportObserved();
+    _$stateAtom.reportRead();
     return super.state;
   }
 
   @override
   set state(PerformState value) {
-    _$stateAtom.context.conditionallyRunInAction(() {
+    _$stateAtom.reportWrite(value, super.state, () {
       super.state = value;
-      _$stateAtom.reportChanged();
-    }, _$stateAtom, name: '${_$stateAtom.name}_set');
+    });
   }
 
   final _$workoutItemsAtom = Atom(name: '_PerformStore.workoutItems');
 
   @override
   List<WorkoutItem> get workoutItems {
-    _$workoutItemsAtom.context.enforceReadPolicy(_$workoutItemsAtom);
-    _$workoutItemsAtom.reportObserved();
+    _$workoutItemsAtom.reportRead();
     return super.workoutItems;
   }
 
   @override
   set workoutItems(List<WorkoutItem> value) {
-    _$workoutItemsAtom.context.conditionallyRunInAction(() {
+    _$workoutItemsAtom.reportWrite(value, super.workoutItems, () {
       super.workoutItems = value;
-      _$workoutItemsAtom.reportChanged();
-    }, _$workoutItemsAtom, name: '${_$workoutItemsAtom.name}_set');
+    });
   }
 
   final _$overallDurationAtom = Atom(name: '_PerformStore.overallDuration');
 
   @override
   Duration get overallDuration {
-    _$overallDurationAtom.context.enforceReadPolicy(_$overallDurationAtom);
-    _$overallDurationAtom.reportObserved();
+    _$overallDurationAtom.reportRead();
     return super.overallDuration;
   }
 
   @override
   set overallDuration(Duration value) {
-    _$overallDurationAtom.context.conditionallyRunInAction(() {
+    _$overallDurationAtom.reportWrite(value, super.overallDuration, () {
       super.overallDuration = value;
-      _$overallDurationAtom.reportChanged();
-    }, _$overallDurationAtom, name: '${_$overallDurationAtom.name}_set');
+    });
   }
 
   final _$timeRemainingAtom = Atom(name: '_PerformStore.timeRemaining');
 
   @override
   Duration get timeRemaining {
-    _$timeRemainingAtom.context.enforceReadPolicy(_$timeRemainingAtom);
-    _$timeRemainingAtom.reportObserved();
+    _$timeRemainingAtom.reportRead();
     return super.timeRemaining;
   }
 
   @override
   set timeRemaining(Duration value) {
-    _$timeRemainingAtom.context.conditionallyRunInAction(() {
+    _$timeRemainingAtom.reportWrite(value, super.timeRemaining, () {
       super.timeRemaining = value;
-      _$timeRemainingAtom.reportChanged();
-    }, _$timeRemainingAtom, name: '${_$timeRemainingAtom.name}_set');
+    });
   }
 
   final _$currentItemIndexAtom = Atom(name: '_PerformStore.currentItemIndex');
 
   @override
   int get currentItemIndex {
-    _$currentItemIndexAtom.context.enforceReadPolicy(_$currentItemIndexAtom);
-    _$currentItemIndexAtom.reportObserved();
+    _$currentItemIndexAtom.reportRead();
     return super.currentItemIndex;
   }
 
   @override
   set currentItemIndex(int value) {
-    _$currentItemIndexAtom.context.conditionallyRunInAction(() {
+    _$currentItemIndexAtom.reportWrite(value, super.currentItemIndex, () {
       super.currentItemIndex = value;
-      _$currentItemIndexAtom.reportChanged();
-    }, _$currentItemIndexAtom, name: '${_$currentItemIndexAtom.name}_set');
+    });
   }
 
   final _$currentItemAtom = Atom(name: '_PerformStore.currentItem');
 
   @override
   WorkoutItem get currentItem {
-    _$currentItemAtom.context.enforceReadPolicy(_$currentItemAtom);
-    _$currentItemAtom.reportObserved();
+    _$currentItemAtom.reportRead();
     return super.currentItem;
   }
 
   @override
   set currentItem(WorkoutItem value) {
-    _$currentItemAtom.context.conditionallyRunInAction(() {
+    _$currentItemAtom.reportWrite(value, super.currentItem, () {
       super.currentItem = value;
-      _$currentItemAtom.reportChanged();
-    }, _$currentItemAtom, name: '${_$currentItemAtom.name}_set');
+    });
   }
 
   final _$currentItemProgressAtom =
@@ -146,141 +134,124 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   int get currentItemProgress {
-    _$currentItemProgressAtom.context
-        .enforceReadPolicy(_$currentItemProgressAtom);
-    _$currentItemProgressAtom.reportObserved();
+    _$currentItemProgressAtom.reportRead();
     return super.currentItemProgress;
   }
 
   @override
   set currentItemProgress(int value) {
-    _$currentItemProgressAtom.context.conditionallyRunInAction(() {
+    _$currentItemProgressAtom.reportWrite(value, super.currentItemProgress, () {
       super.currentItemProgress = value;
-      _$currentItemProgressAtom.reportChanged();
-    }, _$currentItemProgressAtom,
-        name: '${_$currentItemProgressAtom.name}_set');
+    });
   }
 
   final _$currentItemStatusAtom = Atom(name: '_PerformStore.currentItemStatus');
 
   @override
   WorkoutItemStatus get currentItemStatus {
-    _$currentItemStatusAtom.context.enforceReadPolicy(_$currentItemStatusAtom);
-    _$currentItemStatusAtom.reportObserved();
+    _$currentItemStatusAtom.reportRead();
     return super.currentItemStatus;
   }
 
   @override
   set currentItemStatus(WorkoutItemStatus value) {
-    _$currentItemStatusAtom.context.conditionallyRunInAction(() {
+    _$currentItemStatusAtom.reportWrite(value, super.currentItemStatus, () {
       super.currentItemStatus = value;
-      _$currentItemStatusAtom.reportChanged();
-    }, _$currentItemStatusAtom, name: '${_$currentItemStatusAtom.name}_set');
+    });
   }
 
   final _$currentItemIsLastAtom = Atom(name: '_PerformStore.currentItemIsLast');
 
   @override
   bool get currentItemIsLast {
-    _$currentItemIsLastAtom.context.enforceReadPolicy(_$currentItemIsLastAtom);
-    _$currentItemIsLastAtom.reportObserved();
+    _$currentItemIsLastAtom.reportRead();
     return super.currentItemIsLast;
   }
 
   @override
   set currentItemIsLast(bool value) {
-    _$currentItemIsLastAtom.context.conditionallyRunInAction(() {
+    _$currentItemIsLastAtom.reportWrite(value, super.currentItemIsLast, () {
       super.currentItemIsLast = value;
-      _$currentItemIsLastAtom.reportChanged();
-    }, _$currentItemIsLastAtom, name: '${_$currentItemIsLastAtom.name}_set');
+    });
   }
 
   final _$_speechFutureAtom = Atom(name: '_PerformStore._speechFuture');
 
   @override
   ObservableFuture<void> get _speechFuture {
-    _$_speechFutureAtom.context.enforceReadPolicy(_$_speechFutureAtom);
-    _$_speechFutureAtom.reportObserved();
+    _$_speechFutureAtom.reportRead();
     return super._speechFuture;
   }
 
   @override
   set _speechFuture(ObservableFuture<void> value) {
-    _$_speechFutureAtom.context.conditionallyRunInAction(() {
+    _$_speechFutureAtom.reportWrite(value, super._speechFuture, () {
       super._speechFuture = value;
-      _$_speechFutureAtom.reportChanged();
-    }, _$_speechFutureAtom, name: '${_$_speechFutureAtom.name}_set');
+    });
   }
 
   final _$speechStateAtom = Atom(name: '_PerformStore.speechState');
 
   @override
   SpeechState get speechState {
-    _$speechStateAtom.context.enforceReadPolicy(_$speechStateAtom);
-    _$speechStateAtom.reportObserved();
+    _$speechStateAtom.reportRead();
     return super.speechState;
   }
 
   @override
   set speechState(SpeechState value) {
-    _$speechStateAtom.context.conditionallyRunInAction(() {
+    _$speechStateAtom.reportWrite(value, super.speechState, () {
       super.speechState = value;
-      _$speechStateAtom.reportChanged();
-    }, _$speechStateAtom, name: '${_$speechStateAtom.name}_set');
+    });
   }
 
   final _$currentTimerAtom = Atom(name: '_PerformStore.currentTimer');
 
   @override
   Timer get currentTimer {
-    _$currentTimerAtom.context.enforceReadPolicy(_$currentTimerAtom);
-    _$currentTimerAtom.reportObserved();
+    _$currentTimerAtom.reportRead();
     return super.currentTimer;
   }
 
   @override
   set currentTimer(Timer value) {
-    _$currentTimerAtom.context.conditionallyRunInAction(() {
+    _$currentTimerAtom.reportWrite(value, super.currentTimer, () {
       super.currentTimer = value;
-      _$currentTimerAtom.reportChanged();
-    }, _$currentTimerAtom, name: '${_$currentTimerAtom.name}_set');
+    });
   }
 
   final _$performingAtom = Atom(name: '_PerformStore.performing');
 
   @override
   bool get performing {
-    _$performingAtom.context.enforceReadPolicy(_$performingAtom);
-    _$performingAtom.reportObserved();
+    _$performingAtom.reportRead();
     return super.performing;
   }
 
   @override
   set performing(bool value) {
-    _$performingAtom.context.conditionallyRunInAction(() {
+    _$performingAtom.reportWrite(value, super.performing, () {
       super.performing = value;
-      _$performingAtom.reportChanged();
-    }, _$performingAtom, name: '${_$performingAtom.name}_set');
+    });
   }
 
   final _$errorMessageAtom = Atom(name: '_PerformStore.errorMessage');
 
   @override
   String get errorMessage {
-    _$errorMessageAtom.context.enforceReadPolicy(_$errorMessageAtom);
-    _$errorMessageAtom.reportObserved();
+    _$errorMessageAtom.reportRead();
     return super.errorMessage;
   }
 
   @override
   set errorMessage(String value) {
-    _$errorMessageAtom.context.conditionallyRunInAction(() {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
       super.errorMessage = value;
-      _$errorMessageAtom.reportChanged();
-    }, _$errorMessageAtom, name: '${_$errorMessageAtom.name}_set');
+    });
   }
 
-  final _$presentCurrentItemAsyncAction = AsyncAction('presentCurrentItem');
+  final _$presentCurrentItemAsyncAction =
+      AsyncAction('_PerformStore.presentCurrentItem');
 
   @override
   Future<dynamic> presentCurrentItem() {
@@ -289,7 +260,7 @@ mixin _$PerformStore on _PerformStore, Store {
   }
 
   final _$prepareToAbandonWorkoutAsyncAction =
-      AsyncAction('prepareToAbandonWorkout');
+      AsyncAction('_PerformStore.prepareToAbandonWorkout');
 
   @override
   Future<void> prepareToAbandonWorkout({bool silently = false}) {
@@ -297,7 +268,7 @@ mixin _$PerformStore on _PerformStore, Store {
         .run(() => super.prepareToAbandonWorkout(silently: silently));
   }
 
-  final _$stopSpeechAsyncAction = AsyncAction('stopSpeech');
+  final _$stopSpeechAsyncAction = AsyncAction('_PerformStore.stopSpeech');
 
   @override
   Future<void> stopSpeech() {
@@ -309,7 +280,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void welcomeWorkout() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.welcomeWorkout');
     try {
       return super.welcomeWorkout();
     } finally {
@@ -319,7 +291,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void _incrementCurrentItemProgressByOneUnit() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore._incrementCurrentItemProgressByOneUnit');
     try {
       return super._incrementCurrentItemProgressByOneUnit();
     } finally {
@@ -329,7 +302,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void performCurrentItem() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.performCurrentItem');
     try {
       return super.performCurrentItem();
     } finally {
@@ -339,7 +313,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void stopCurrentTimer() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.stopCurrentTimer');
     try {
       return super.stopCurrentTimer();
     } finally {
@@ -349,7 +324,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void switchCurrentItem(int itemIndex) {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.switchCurrentItem');
     try {
       return super.switchCurrentItem(itemIndex);
     } finally {
@@ -359,7 +335,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void countdownCurrentItem({int seconds = 3}) {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.countdownCurrentItem');
     try {
       return super.countdownCurrentItem(seconds: seconds);
     } finally {
@@ -369,7 +346,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void shuffleCurrentItemsExercise() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.shuffleCurrentItemsExercise');
     try {
       return super.shuffleCurrentItemsExercise();
     } finally {
@@ -379,7 +357,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void updateCurrentItemsExercise(Exercise exercise) {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.updateCurrentItemsExercise');
     try {
       return super.updateCurrentItemsExercise(exercise);
     } finally {
@@ -389,7 +368,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void abandonWorkout() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.abandonWorkout');
     try {
       return super.abandonWorkout();
     } finally {
@@ -399,7 +379,8 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   void dispose() {
-    final _$actionInfo = _$_PerformStoreActionController.startAction();
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.dispose');
     try {
       return super.dispose();
     } finally {
@@ -409,8 +390,23 @@ mixin _$PerformStore on _PerformStore, Store {
 
   @override
   String toString() {
-    final string =
-        'sourceWorkout: ${sourceWorkout.toString()},state: ${state.toString()},workoutItems: ${workoutItems.toString()},overallDuration: ${overallDuration.toString()},timeRemaining: ${timeRemaining.toString()},currentItemIndex: ${currentItemIndex.toString()},currentItem: ${currentItem.toString()},currentItemProgress: ${currentItemProgress.toString()},currentItemStatus: ${currentItemStatus.toString()},currentItemIsLast: ${currentItemIsLast.toString()},speechState: ${speechState.toString()},currentTimer: ${currentTimer.toString()},performing: ${performing.toString()},errorMessage: ${errorMessage.toString()},timeRemainingString: ${timeRemainingString.toString()},workoutProgress: ${workoutProgress.toString()}';
-    return '{$string}';
+    return '''
+sourceWorkout: ${sourceWorkout},
+state: ${state},
+workoutItems: ${workoutItems},
+overallDuration: ${overallDuration},
+timeRemaining: ${timeRemaining},
+currentItemIndex: ${currentItemIndex},
+currentItem: ${currentItem},
+currentItemProgress: ${currentItemProgress},
+currentItemStatus: ${currentItemStatus},
+currentItemIsLast: ${currentItemIsLast},
+speechState: ${speechState},
+currentTimer: ${currentTimer},
+performing: ${performing},
+errorMessage: ${errorMessage},
+timeRemainingString: ${timeRemainingString},
+workoutProgress: ${workoutProgress}
+    ''';
   }
 }

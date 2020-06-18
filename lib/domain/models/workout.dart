@@ -1,8 +1,8 @@
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:hive/hive.dart';
 
+import '../../constants.dart';
 import 'exercise.dart';
+import 'workout_item.dart';
 
 part 'workout.g.dart';
 
@@ -17,7 +17,11 @@ class Workout extends HiveObject {
   @HiveField(3)
   String sourceWorkout;
 
-  Workout({this.name = 'untitled', this.items, this.sourceWorkout}) {
+  Workout({
+    this.name = 'untitled',
+    this.items = const [],
+    this.sourceWorkout = CURRENT_WORKOUT_KEY,
+  }) {
     createdAt = DateTime.now();
   }
 
@@ -31,24 +35,20 @@ class Workout extends HiveObject {
     final WorkoutItem oldItem = items[index];
     if (oldItem == null) return;
     items.replaceRange(index, index + 1, [
-      WorkoutItem(
-          exercise: exercise ?? oldItem.exercise,
-          order: order ?? oldItem.order,
-          duration: duration ?? oldItem.duration,
-          weight: weight ?? oldItem.weight,
-          progress: progress ?? oldItem.progress)
+      oldItem.copyWith(
+        exercise: exercise,
+        order: order,
+        duration: duration,
+        weight: weight,
+        progress: progress,
+      )
     ]);
     if (isInBox) await save();
   }
 
   /// Getters
-  Duration get totalDuration {
-    Duration totalDuration = const Duration();
-    for (final item in items) {
-      totalDuration += Duration(seconds: item.duration);
-    }
-    return totalDuration;
-  }
+  Duration get totalDuration => Duration(
+      seconds: items.fold(0, (prev, element) => prev + element.duration));
 
   String get totalDurationString =>
       RegExp(r'\d{2}\:\d{2}(?=\.)').stringMatch(totalDuration.toString()) ??
@@ -79,16 +79,16 @@ class Workout extends HiveObject {
     final int _index = newIndex > oldIndex ? newIndex - 1 : newIndex;
     final item = items.removeAt(oldIndex);
     items.insert(_index, item);
-    refreshOrder();
-    await save();
+    _refreshOrder();
+    if (isInBox) await save();
   }
 
-  void refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
+  void _refreshOrder() => Iterable.generate(items.length, (x) => x + 1).forEach(
       (iterationNumber) => items[iterationNumber - 1].order = iterationNumber);
 
   Future<void> removeItem(WorkoutItem item) async {
     items.removeWhere((workoutItem) => workoutItem == item);
-    refreshOrder();
+    _refreshOrder();
     if (isInBox) await save();
   }
 
@@ -101,14 +101,4 @@ class Workout extends HiveObject {
   //       );
 
   Workout copy() => Workout(name: name, items: items);
-
-  /// Class overrides
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-    return o is Workout && o.name == name && o.items.length == items.length;
-  }
-
-  @override
-  int get hashCode => name.hashCode;
 }

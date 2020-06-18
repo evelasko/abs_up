@@ -43,4 +43,7 @@ abstract class WorkoutInterface {
   /// * to deprecate
   /// Create a ne workout log entry with the current workout
   Future<void> saveNewWorkoutLogEntry();
+
+  /// return the status of a single equipment in workout settings
+  bool checkEquipmentStatus(String equipmentKey);
 }

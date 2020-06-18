@@ -73,4 +73,8 @@ abstract class _WorkoutsStore with Store {
 
   Future<void> Function() get generateCurrentWorkout =>
       workoutService.generateCurrentWorkout;
+
+  @action
+  bool checkEquipmentStatus(String equipmentKey) =>
+      workoutService.checkEquipmentStatus(equipmentKey);
 }

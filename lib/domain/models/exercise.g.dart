@@ -64,4 +64,14 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(12)
       ..write(obj.thumb);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExerciseAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

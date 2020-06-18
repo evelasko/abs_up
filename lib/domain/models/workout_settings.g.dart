@@ -40,4 +40,14 @@ class WorkoutSettingsAdapter extends TypeAdapter<WorkoutSettings> {
       ..writeByte(4)
       ..write(obj.equipment);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WorkoutSettingsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

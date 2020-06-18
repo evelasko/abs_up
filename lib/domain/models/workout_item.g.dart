@@ -40,4 +40,14 @@ class WorkoutItemAdapter extends TypeAdapter<WorkoutItem> {
       ..writeByte(4)
       ..write(obj.progress);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WorkoutItemAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

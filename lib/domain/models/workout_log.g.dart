@@ -39,4 +39,14 @@ class WorkoutLogAdapter extends TypeAdapter<WorkoutLog> {
       ..writeByte(4)
       ..write(obj.sourceWorkoutId);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WorkoutLogAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

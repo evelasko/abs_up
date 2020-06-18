@@ -40,6 +40,10 @@ class WorkoutService implements WorkoutInterface {
   WorkoutSettings get workoutSettings =>
       PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
 
+  @override
+  bool checkEquipmentStatus(String equipmentKey) =>
+      workoutSettings.equipment.contains(equipmentKey);
+
   ValueListenable<Box<WorkoutSettings>> get workoutSettingsListenable =>
       PDataService.workoutSettingsBox.listenable(keys: [WORKOUT_SETTINGS_KEY]);
 

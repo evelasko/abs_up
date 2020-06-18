@@ -65,6 +65,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^4.1.1
   lint: ^1.2.0
   # hive_generator: ^0.7.0+2
   mobx_codegen: ^1.1.0
@@ -102,6 +103,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - config/
+
     - assets/app_images/
     - assets/data/exercises.json
     - assets/exercise_images/

@@ -605,6 +605,116 @@ abstract class TextTooLong<T> implements ValueFailure<T> {
   $TextTooLongCopyWith<T, TextTooLong<T>> get copyWith;
 }
 
+class _$CoreFailureTearOff {
+  const _$CoreFailureTearOff();
+
+  InternalError<T> internalError<T>({@required T message}) {
+    return InternalError<T>(
+      message: message,
+    );
+  }
+}
+
+// ignore: unused_element
+const $CoreFailure = _$CoreFailureTearOff();
+
+mixin _$CoreFailure<T> {
+  T get message;
+
+  $CoreFailureCopyWith<T, CoreFailure<T>> get copyWith;
+}
+
+abstract class $CoreFailureCopyWith<T, $Res> {
+  factory $CoreFailureCopyWith(
+          CoreFailure<T> value, $Res Function(CoreFailure<T>) then) =
+      _$CoreFailureCopyWithImpl<T, $Res>;
+  $Res call({T message});
+}
+
+class _$CoreFailureCopyWithImpl<T, $Res>
+    implements $CoreFailureCopyWith<T, $Res> {
+  _$CoreFailureCopyWithImpl(this._value, this._then);
+
+  final CoreFailure<T> _value;
+  // ignore: unused_field
+  final $Res Function(CoreFailure<T>) _then;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(_value.copyWith(
+      message: message == freezed ? _value.message : message as T,
+    ));
+  }
+}
+
+abstract class $InternalErrorCopyWith<T, $Res>
+    implements $CoreFailureCopyWith<T, $Res> {
+  factory $InternalErrorCopyWith(
+          InternalError<T> value, $Res Function(InternalError<T>) then) =
+      _$InternalErrorCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T message});
+}
+
+class _$InternalErrorCopyWithImpl<T, $Res>
+    extends _$CoreFailureCopyWithImpl<T, $Res>
+    implements $InternalErrorCopyWith<T, $Res> {
+  _$InternalErrorCopyWithImpl(
+      InternalError<T> _value, $Res Function(InternalError<T>) _then)
+      : super(_value, (v) => _then(v as InternalError<T>));
+
+  @override
+  InternalError<T> get _value => super._value as InternalError<T>;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(InternalError<T>(
+      message: message == freezed ? _value.message : message as T,
+    ));
+  }
+}
+
+class _$InternalError<T> implements InternalError<T> {
+  const _$InternalError({@required this.message}) : assert(message != null);
+
+  @override
+  final T message;
+
+  @override
+  String toString() {
+    return 'CoreFailure<$T>.internalError(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is InternalError<T> &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+
+  @override
+  $InternalErrorCopyWith<T, InternalError<T>> get copyWith =>
+      _$InternalErrorCopyWithImpl<T, InternalError<T>>(this, _$identity);
+}
+
+abstract class InternalError<T> implements CoreFailure<T> {
+  const factory InternalError({@required T message}) = _$InternalError<T>;
+
+  @override
+  T get message;
+  @override
+  $InternalErrorCopyWith<T, InternalError<T>> get copyWith;
+}
+
 class _$AuthFailureTearOff {
   const _$AuthFailureTearOff();
 

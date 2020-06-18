@@ -1,4 +1,3 @@
-//: Data model: Workout Settings
 import 'package:abs_up/constants.dart';
 import 'package:abs_up/domain/models/equipment.dart';
 
@@ -41,37 +40,39 @@ class WorkoutSettings extends HiveObject {
 
   /// Data UI Set & Save
   Future<void> intensitySetAndSave(String newValue) async {
-    intensity = intensityToInt(newValue ?? INTENSITY_DEFAULT as String);
-    await save();
+    intensity =
+        intensityToInt(newValue ?? intensityToString(INTENSITY_DEFAULT));
+    if (isInBox) await save();
   }
 
   Future<void> difficultySetAndSave(String newValue) async {
-    difficulty = difficultyToInt(newValue ?? DIFFICULTY_DEFAULT as String);
-    await save();
+    difficulty =
+        difficultyToInt(newValue ?? intensityToString(DIFFICULTY_DEFAULT));
+    if (isInBox) await save();
   }
 
   Future<void> lengthSetAndSave(String newValue) async {
-    length = lengthToInt(newValue ?? LENGTH_DEFAULT as String);
-    await save();
+    length = lengthToInt(newValue ?? lengthToString(LENGTH_DEFAULT));
+    if (isInBox) await save();
   }
 
   Future<void> impactSetOrToggleAndSave(bool newValue) async {
     impact = newValue ?? !impact;
-    await save();
+    if (isInBox) await save();
   }
 
   Future<void> addEquipment({String key, Equipment equipment}) async {
-    final String _key = key ?? equipment.key;
-    if (this.equipment.contains(_key)) return;
+    final String _key = key ?? equipment?.key;
+    if (_key == null || this.equipment.contains(_key)) return;
     this.equipment = [...this.equipment, _key];
-    await save();
+    if (isInBox) await save();
   }
 
   Future<void> removeEquipment({String key, Equipment equipment}) async {
-    final String _key = key ?? equipment.key;
-    if (!this.equipment.contains(_key)) return;
+    final String _key = key ?? equipment?.key;
+    if (_key == null || !this.equipment.contains(_key)) return;
     this.equipment = [...this.equipment]..remove(_key);
-    await save();
+    if (isInBox) await save();
   }
 
   /// Comparison checker

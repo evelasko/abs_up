@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -79,66 +80,58 @@ class Exercise extends HiveObject implements ExerciseModel {
   @override
   Future<void> setFavorite() async {
     tag = 1;
-    await save();
+    if (isInBox) await save();
   }
 
   @override
   Future<void> setBlacklist() async {
     tag = 2;
-    await save();
+    if (isInBox) await save();
   }
 
   @override
   Future<void> removeTag() async {
     tag = 0;
-    await save();
+    if (isInBox) await save();
   }
 
   @override
   bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>
-      maybeAnExercise.containsKey(EXERCISE_NAME_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_DIFFICULTY_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_INTENSITY_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_TARGET_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_EQUIPMENT_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_WEIGHTED_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_SIDED_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_IMPACT_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_DESCRIPTION_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_MEDIA_KEY) &&
-      maybeAnExercise.containsKey(EXERCISE_THUMB_KEY);
+      optionOf(maybeAnExercise).foldRight<bool>(
+          false,
+          (value, _) =>
+              value.containsKey(EXERCISE_NAME_KEY) &&
+              value.containsKey(EXERCISE_DIFFICULTY_KEY) &&
+              value.containsKey(EXERCISE_INTENSITY_KEY) &&
+              value.containsKey(EXERCISE_TARGET_KEY) &&
+              value.containsKey(EXERCISE_EQUIPMENT_KEY) &&
+              value.containsKey(EXERCISE_WEIGHTED_KEY) &&
+              value.containsKey(EXERCISE_SIDED_KEY) &&
+              value.containsKey(EXERCISE_IMPACT_KEY) &&
+              value.containsKey(EXERCISE_DESCRIPTION_KEY) &&
+              value.containsKey(EXERCISE_MEDIA_KEY) &&
+              value.containsKey(EXERCISE_THUMB_KEY));
 
   @override
-  Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) => Exercise(
-      name: exerciseMap[EXERCISE_NAME_KEY] as String,
-      difficulty: exerciseMap[EXERCISE_DIFFICULTY_KEY] as int,
-      intensity: exerciseMap[EXERCISE_INTENSITY_KEY] as int,
-      target: exerciseMap[EXERCISE_TARGET_KEY] as String,
-      equipment: exerciseMap[EXERCISE_EQUIPMENT_KEY] as String,
-      weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
-      sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
-      impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
-      group: exerciseMap[EXERCISE_GROUP_KEY] as String,
-      description: exerciseMap[EXERCISE_DESCRIPTION_KEY] as String ?? '',
-      media: exerciseMap[EXERCISE_MEDIA_KEY] as String ?? '',
-      thumb: exerciseMap[EXERCISE_THUMB_KEY] as String ?? '');
+  Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) =>
+      optionOf(exerciseMap).foldRight<Exercise>(
+          null,
+          (value, previous) => hasExerciseKeys(exerciseMap)
+              ? Exercise(
+                  name: exerciseMap[EXERCISE_NAME_KEY] as String,
+                  difficulty: exerciseMap[EXERCISE_DIFFICULTY_KEY] as int,
+                  intensity: exerciseMap[EXERCISE_INTENSITY_KEY] as int,
+                  target: exerciseMap[EXERCISE_TARGET_KEY] as String,
+                  equipment: exerciseMap[EXERCISE_EQUIPMENT_KEY] as String,
+                  weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
+                  sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
+                  impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
+                  group: exerciseMap[EXERCISE_GROUP_KEY] as String,
+                  description:
+                      exerciseMap[EXERCISE_DESCRIPTION_KEY] as String ?? '',
+                  media: exerciseMap[EXERCISE_MEDIA_KEY] as String ?? '',
+                  thumb: exerciseMap[EXERCISE_THUMB_KEY] as String ?? '')
+              : previous);
 
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-    return o is Exercise &&
-        o.name == name &&
-        o.difficulty == difficulty &&
-        o.intensity == intensity &&
-        o.target == target &&
-        o.equipment == equipment &&
-        o.weighted == weighted &&
-        o.sided == sided &&
-        o.media == media &&
-        o.thumb == thumb &&
-        o.description == description;
-  }
-
-  @override
-  int get hashCode => name.hashCode;
+  // TODO add equatable to implement model equality
 }

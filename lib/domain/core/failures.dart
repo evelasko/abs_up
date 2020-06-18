@@ -24,6 +24,13 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
 }
 
 @freezed
+abstract class CoreFailure<T> with _$CoreFailure<T> {
+  const factory CoreFailure.internalError({
+    @required T message,
+  }) = InternalError<T>;
+}
+
+@freezed
 abstract class AuthFailure with _$AuthFailure {
   const factory AuthFailure.cancelledByUser() = CancelledByUser;
   const factory AuthFailure.serverError() = ServerError;

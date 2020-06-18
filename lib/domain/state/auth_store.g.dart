@@ -13,70 +13,67 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   Option<String> get displayName => (_$displayNameComputed ??=
-          Computed<Option<String>>(() => super.displayName))
+          Computed<Option<String>>(() => super.displayName,
+              name: '_AuthStore.displayName'))
       .value;
   Computed<Option<List<WorkoutLog>>> _$userLogsComputed;
 
   @override
   Option<List<WorkoutLog>> get userLogs => (_$userLogsComputed ??=
-          Computed<Option<List<WorkoutLog>>>(() => super.userLogs))
+          Computed<Option<List<WorkoutLog>>>(() => super.userLogs,
+              name: '_AuthStore.userLogs'))
       .value;
   Computed<Option<List<String>>> _$userActivityComputed;
 
   @override
   Option<List<String>> get userActivity => (_$userActivityComputed ??=
-          Computed<Option<List<String>>>(() => super.userActivity))
+          Computed<Option<List<String>>>(() => super.userActivity,
+              name: '_AuthStore.userActivity'))
       .value;
 
   final _$authFormStateAtom = Atom(name: '_AuthStore.authFormState');
 
   @override
   AuthFormState get authFormState {
-    _$authFormStateAtom.context.enforceReadPolicy(_$authFormStateAtom);
-    _$authFormStateAtom.reportObserved();
+    _$authFormStateAtom.reportRead();
     return super.authFormState;
   }
 
   @override
   set authFormState(AuthFormState value) {
-    _$authFormStateAtom.context.conditionallyRunInAction(() {
+    _$authFormStateAtom.reportWrite(value, super.authFormState, () {
       super.authFormState = value;
-      _$authFormStateAtom.reportChanged();
-    }, _$authFormStateAtom, name: '${_$authFormStateAtom.name}_set');
+    });
   }
 
   final _$userAtom = Atom(name: '_AuthStore.user');
 
   @override
   Option<User> get user {
-    _$userAtom.context.enforceReadPolicy(_$userAtom);
-    _$userAtom.reportObserved();
+    _$userAtom.reportRead();
     return super.user;
   }
 
   @override
   set user(Option<User> value) {
-    _$userAtom.context.conditionallyRunInAction(() {
+    _$userAtom.reportWrite(value, super.user, () {
       super.user = value;
-      _$userAtom.reportChanged();
-    }, _$userAtom, name: '${_$userAtom.name}_set');
+    });
   }
 
   final _$authStateAtom = Atom(name: '_AuthStore.authState');
 
   @override
   AuthState get authState {
-    _$authStateAtom.context.enforceReadPolicy(_$authStateAtom);
-    _$authStateAtom.reportObserved();
+    _$authStateAtom.reportRead();
     return super.authState;
   }
 
   @override
   set authState(AuthState value) {
-    _$authStateAtom.context.conditionallyRunInAction(() {
+    _$authStateAtom.reportWrite(value, super.authState, () {
       super.authState = value;
-      _$authStateAtom.reportChanged();
-    }, _$authStateAtom, name: '${_$authStateAtom.name}_set');
+    });
   }
 
   final _$signInWithAppleAvailableAtom =
@@ -84,22 +81,19 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   bool get signInWithAppleAvailable {
-    _$signInWithAppleAvailableAtom.context
-        .enforceReadPolicy(_$signInWithAppleAvailableAtom);
-    _$signInWithAppleAvailableAtom.reportObserved();
+    _$signInWithAppleAvailableAtom.reportRead();
     return super.signInWithAppleAvailable;
   }
 
   @override
   set signInWithAppleAvailable(bool value) {
-    _$signInWithAppleAvailableAtom.context.conditionallyRunInAction(() {
+    _$signInWithAppleAvailableAtom
+        .reportWrite(value, super.signInWithAppleAvailable, () {
       super.signInWithAppleAvailable = value;
-      _$signInWithAppleAvailableAtom.reportChanged();
-    }, _$signInWithAppleAvailableAtom,
-        name: '${_$signInWithAppleAvailableAtom.name}_set');
+    });
   }
 
-  final _$getUserAsyncAction = AsyncAction('getUser');
+  final _$getUserAsyncAction = AsyncAction('_AuthStore.getUser');
 
   @override
   Future<Option<User>> getUser() {
@@ -107,7 +101,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   final _$checkSignInWithAppleAvailabilityAsyncAction =
-      AsyncAction('checkSignInWithAppleAvailability');
+      AsyncAction('_AuthStore.checkSignInWithAppleAvailability');
 
   @override
   Future<void> checkSignInWithAppleAvailability() {
@@ -115,14 +109,15 @@ mixin _$AuthStore on _AuthStore, Store {
         .run(() => super.checkSignInWithAppleAvailability());
   }
 
-  final _$authCheckAsyncAction = AsyncAction('authCheck');
+  final _$authCheckAsyncAction = AsyncAction('_AuthStore.authCheck');
 
   @override
   Future<bool> authCheck() {
     return _$authCheckAsyncAction.run(() => super.authCheck());
   }
 
-  final _$getUserDisplayNameAsyncAction = AsyncAction('getUserDisplayName');
+  final _$getUserDisplayNameAsyncAction =
+      AsyncAction('_AuthStore.getUserDisplayName');
 
   @override
   Future<Option<String>> getUserDisplayName() {
@@ -131,7 +126,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   final _$registerWithEmailAndPasswordAsyncAction =
-      AsyncAction('registerWithEmailAndPassword');
+      AsyncAction('_AuthStore.registerWithEmailAndPassword');
 
   @override
   Future<void> registerWithEmailAndPassword() {
@@ -140,7 +135,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   final _$logInWithEmailAndPasswordAsyncAction =
-      AsyncAction('logInWithEmailAndPassword');
+      AsyncAction('_AuthStore.logInWithEmailAndPassword');
 
   @override
   Future<void> logInWithEmailAndPassword() {
@@ -149,7 +144,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   final _$signInWithGooglePressedAsyncAction =
-      AsyncAction('signInWithGooglePressed');
+      AsyncAction('_AuthStore.signInWithGooglePressed');
 
   @override
   Future<void> signInWithGooglePressed() {
@@ -158,7 +153,7 @@ mixin _$AuthStore on _AuthStore, Store {
   }
 
   final _$signInWithApplePressedAsyncAction =
-      AsyncAction('signInWithApplePressed');
+      AsyncAction('_AuthStore.signInWithApplePressed');
 
   @override
   Future<void> signInWithApplePressed() {
@@ -170,7 +165,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   void initAuthForm() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.initAuthForm');
     try {
       return super.initAuthForm();
     } finally {
@@ -180,7 +176,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   void emailChanged(String email) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.emailChanged');
     try {
       return super.emailChanged(email);
     } finally {
@@ -190,7 +187,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   void passwordChanged(String password) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.passwordChanged');
     try {
       return super.passwordChanged(password);
     } finally {
@@ -200,7 +198,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   void logOutUser() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.logOutUser');
     try {
       return super.logOutUser();
     } finally {
@@ -210,8 +209,14 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   String toString() {
-    final string =
-        'authFormState: ${authFormState.toString()},user: ${user.toString()},authState: ${authState.toString()},signInWithAppleAvailable: ${signInWithAppleAvailable.toString()},displayName: ${displayName.toString()},userLogs: ${userLogs.toString()},userActivity: ${userActivity.toString()}';
-    return '{$string}';
+    return '''
+authFormState: ${authFormState},
+user: ${user},
+authState: ${authState},
+signInWithAppleAvailable: ${signInWithAppleAvailable},
+displayName: ${displayName},
+userLogs: ${userLogs},
+userActivity: ${userActivity}
+    ''';
   }
 }

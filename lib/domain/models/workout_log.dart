@@ -57,18 +57,4 @@ class WorkoutLog extends HiveObject {
       items.length;
 
   String get difficultyAverageString => difficultyToString(difficultyAverage);
-
-  /// Class overrides
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-    return o is WorkoutLog &&
-        o.name == name &&
-        o.items.length == items.length &&
-        o.performedAt == performedAt &&
-        o.sourceWorkoutId == sourceWorkoutId;
-  }
-
-  @override
-  int get hashCode => name.hashCode;
 }
