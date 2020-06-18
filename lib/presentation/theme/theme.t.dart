@@ -1,6 +1,7 @@
-import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
+
 import './colors.t.dart';
+import 'text.t.dart';
 
 final ThemeData appTheme = ThemeData(
   /// Text Theme
