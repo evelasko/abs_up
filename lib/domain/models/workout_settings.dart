@@ -40,19 +40,17 @@ class WorkoutSettings extends HiveObject {
 
   /// Data UI Set & Save
   Future<void> intensitySetAndSave(String newValue) async {
-    intensity =
-        intensityToInt(newValue ?? intensityToString(INTENSITY_DEFAULT));
+    intensity = intensityToInt(newValue);
     if (isInBox) await save();
   }
 
   Future<void> difficultySetAndSave(String newValue) async {
-    difficulty =
-        difficultyToInt(newValue ?? intensityToString(DIFFICULTY_DEFAULT));
+    difficulty = difficultyToInt(newValue);
     if (isInBox) await save();
   }
 
   Future<void> lengthSetAndSave(String newValue) async {
-    length = lengthToInt(newValue ?? lengthToString(LENGTH_DEFAULT));
+    length = lengthToInt(newValue);
     if (isInBox) await save();
   }
 

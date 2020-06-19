@@ -179,8 +179,9 @@ class UserContentTabView extends StatelessWidget {
                       padding: padding,
                       sliver: SliverFixedExtentList(
                         itemExtent: itemExtent,
-                        delegate: delegate ??
-                            SliverChildBuilderDelegate(
+                        delegate: childCount > 0 && delegate != null
+                            ? delegate
+                            : SliverChildBuilderDelegate(
                                 (BuildContext context, int index) =>
                                     emptyFeedback,
                                 childCount: 1),
