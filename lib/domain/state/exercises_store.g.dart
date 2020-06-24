@@ -17,6 +17,21 @@ mixin _$ExercisesStore on _ExercisesStore, Store {
               name: '_ExercisesStore.equipmentSet'))
       .value;
 
+  final _$exercisesAtom = Atom(name: '_ExercisesStore.exercises');
+
+  @override
+  List<Exercise> get exercises {
+    _$exercisesAtom.reportRead();
+    return super.exercises;
+  }
+
+  @override
+  set exercises(List<Exercise> value) {
+    _$exercisesAtom.reportWrite(value, super.exercises, () {
+      super.exercises = value;
+    });
+  }
+
   final _$searchStringAtom = Atom(name: '_ExercisesStore.searchString');
 
   @override
@@ -120,21 +135,6 @@ mixin _$ExercisesStore on _ExercisesStore, Store {
   set sortByDifficulty(bool value) {
     _$sortByDifficultyAtom.reportWrite(value, super.sortByDifficulty, () {
       super.sortByDifficulty = value;
-    });
-  }
-
-  final _$exercisesAtom = Atom(name: '_ExercisesStore.exercises');
-
-  @override
-  List<Exercise> get exercises {
-    _$exercisesAtom.reportRead();
-    return super.exercises;
-  }
-
-  @override
-  set exercises(List<Exercise> value) {
-    _$exercisesAtom.reportWrite(value, super.exercises, () {
-      super.exercises = value;
     });
   }
 
@@ -247,6 +247,7 @@ mixin _$ExercisesStore on _ExercisesStore, Store {
   @override
   String toString() {
     return '''
+exercises: ${exercises},
 searchString: ${searchString},
 filterFavorites: ${filterFavorites},
 filterBlacklisted: ${filterBlacklisted},
@@ -254,7 +255,6 @@ equipmentFilter: ${equipmentFilter},
 targetFilter: ${targetFilter},
 sortByIntensity: ${sortByIntensity},
 sortByDifficulty: ${sortByDifficulty},
-exercises: ${exercises},
 workout: ${workout},
 equipmentSet: ${equipmentSet}
     ''';

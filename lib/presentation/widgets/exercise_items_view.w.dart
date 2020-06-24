@@ -1,3 +1,5 @@
+import 'package:abs_up/domain/state/exercises_store.dart';
+import 'package:abs_up/injection.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/exercise.dart';
@@ -18,11 +20,17 @@ class ExerciseItem extends StatelessWidget {
   Future<bool> _addToFavoriteOrBlacklist(DismissDirection direction) async {
     //= add to favorites
     if (direction == DismissDirection.startToEnd) {
-      await exercise.setFavorite();
+      await getIt
+          .get<ExercisesStore>()
+          .exerciseService
+          .setFavorite(exercise.key.toString());
     }
     //= add to blacklist
     else {
-      await exercise.setBlacklist();
+      await getIt
+          .get<ExercisesStore>()
+          .exerciseService
+          .setBlacklist(exercise.key.toString());
     }
     return false;
   }
@@ -33,8 +41,12 @@ class ExerciseItem extends StatelessWidget {
     return isDismissible;
   }
 
-  Future<void> _removeExerciseTag() async =>
-      exercise.tag > 0 ? exercise.removeTag() : null;
+  Future<void> _removeExerciseTag() async => exercise.tag > 0
+      ? getIt
+          .get<ExercisesStore>()
+          .exerciseService
+          .removeTag(exercise.key.toString())
+      : null;
 
   @override
   Widget build(BuildContext context) {

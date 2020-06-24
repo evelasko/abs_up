@@ -1,8 +1,8 @@
-import 'package:abs_up/domain/state/workouts_store.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/workout.dart';
-import '../../services/workout.s.dart';
+import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import '../widgets/workout_item_details_pageview.w.dart';
 
@@ -32,7 +32,7 @@ class _WorkoutItemDetailsPageState extends State<WorkoutItemDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final WorkoutsStore _workoutsStore = WorkoutsStore(WorkoutService());
+    final WorkoutsStore _workoutsStore = getIt.get<WorkoutsStore>();
     final Workout workout = _workoutsStore.workoutFromKey(widget.workoutKey);
     return Scaffold(
       backgroundColor: AppColors.greyDarkest,

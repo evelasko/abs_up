@@ -9,20 +9,42 @@ part of 'workouts_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WorkoutsStore on _WorkoutsStore, Store {
-  Computed<Option<List<Workout>>> _$workoutsComputed;
+  Computed<Workout> _$currentWorkoutComputed;
 
   @override
-  Option<List<Workout>> get workouts => (_$workoutsComputed ??=
-          Computed<Option<List<Workout>>>(() => super.workouts,
-              name: '_WorkoutsStore.workouts'))
+  Workout get currentWorkout => (_$currentWorkoutComputed ??= Computed<Workout>(
+          () => super.currentWorkout,
+          name: '_WorkoutsStore.currentWorkout'))
       .value;
-  Computed<WorkoutSettings> _$workoutSettingsComputed;
+  Computed<Option<List<WorkoutLog>>> _$workoutLogsComputed;
 
   @override
-  WorkoutSettings get workoutSettings => (_$workoutSettingsComputed ??=
-          Computed<WorkoutSettings>(() => super.workoutSettings,
-              name: '_WorkoutsStore.workoutSettings'))
+  Option<List<WorkoutLog>> get workoutLogs => (_$workoutLogsComputed ??=
+          Computed<Option<List<WorkoutLog>>>(() => super.workoutLogs,
+              name: '_WorkoutsStore.workoutLogs'))
       .value;
+  Computed<Option<List<String>>> _$userActivityComputed;
+
+  @override
+  Option<List<String>> get userActivity => (_$userActivityComputed ??=
+          Computed<Option<List<String>>>(() => super.userActivity,
+              name: '_WorkoutsStore.userActivity'))
+      .value;
+
+  final _$listenableAtom = Atom(name: '_WorkoutsStore.listenable');
+
+  @override
+  int get listenable {
+    _$listenableAtom.reportRead();
+    return super.listenable;
+  }
+
+  @override
+  set listenable(int value) {
+    _$listenableAtom.reportWrite(value, super.listenable, () {
+      super.listenable = value;
+    });
+  }
 
   final _$workoutAtom = Atom(name: '_WorkoutsStore.workout');
 
@@ -36,6 +58,21 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   set workout(Workout value) {
     _$workoutAtom.reportWrite(value, super.workout, () {
       super.workout = value;
+    });
+  }
+
+  final _$workoutKeyAtom = Atom(name: '_WorkoutsStore.workoutKey');
+
+  @override
+  String get workoutKey {
+    _$workoutKeyAtom.reportRead();
+    return super.workoutKey;
+  }
+
+  @override
+  set workoutKey(String value) {
+    _$workoutKeyAtom.reportWrite(value, super.workoutKey, () {
+      super.workoutKey = value;
     });
   }
 
@@ -114,6 +151,45 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
     });
   }
 
+  final _$allAtom = Atom(name: '_WorkoutsStore.all');
+
+  @override
+  List<Workout> get all {
+    _$allAtom.reportRead();
+    return super.all;
+  }
+
+  @override
+  set all(List<Workout> value) {
+    _$allAtom.reportWrite(value, super.all, () {
+      super.all = value;
+    });
+  }
+
+  final _$allUserWorkoutsAtom = Atom(name: '_WorkoutsStore.allUserWorkouts');
+
+  @override
+  List<Workout> get allUserWorkouts {
+    _$allUserWorkoutsAtom.reportRead();
+    return super.allUserWorkouts;
+  }
+
+  @override
+  set allUserWorkouts(List<Workout> value) {
+    _$allUserWorkoutsAtom.reportWrite(value, super.allUserWorkouts, () {
+      super.allUserWorkouts = value;
+    });
+  }
+
+  final _$deleteSavedWorkoutAsyncAction =
+      AsyncAction('_WorkoutsStore.deleteSavedWorkout');
+
+  @override
+  Future<void> deleteSavedWorkout(String workoutKey) {
+    return _$deleteSavedWorkoutAsyncAction
+        .run(() => super.deleteSavedWorkout(workoutKey));
+  }
+
   final _$saveCurrentWorkoutAsAsyncAction =
       AsyncAction('_WorkoutsStore.saveCurrentWorkoutAs');
 
@@ -123,8 +199,28 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
         .run(() => super.saveCurrentWorkoutAs(name));
   }
 
+  final _$generateCurrentWorkoutAsyncAction =
+      AsyncAction('_WorkoutsStore.generateCurrentWorkout');
+
+  @override
+  Future<void> generateCurrentWorkout() {
+    return _$generateCurrentWorkoutAsyncAction
+        .run(() => super.generateCurrentWorkout());
+  }
+
   final _$_WorkoutsStoreActionController =
       ActionController(name: '_WorkoutsStore');
+
+  @override
+  Workout workoutFromKey(String workoutKey) {
+    final _$actionInfo = _$_WorkoutsStoreActionController.startAction(
+        name: '_WorkoutsStore.workoutFromKey');
+    try {
+      return super.workoutFromKey(workoutKey);
+    } finally {
+      _$_WorkoutsStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   bool checkEquipmentStatus(String equipmentKey) {
@@ -140,14 +236,19 @@ mixin _$WorkoutsStore on _WorkoutsStore, Store {
   @override
   String toString() {
     return '''
+listenable: ${listenable},
 workout: ${workout},
+workoutKey: ${workoutKey},
 searchString: ${searchString},
 equipmentFilter: ${equipmentFilter},
 targetFilter: ${targetFilter},
 sortByIntensity: ${sortByIntensity},
 sortByDifficulty: ${sortByDifficulty},
-workouts: ${workouts},
-workoutSettings: ${workoutSettings}
+all: ${all},
+allUserWorkouts: ${allUserWorkouts},
+currentWorkout: ${currentWorkout},
+workoutLogs: ${workoutLogs},
+userActivity: ${userActivity}
     ''';
   }
 }

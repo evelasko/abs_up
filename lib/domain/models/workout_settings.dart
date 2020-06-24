@@ -9,16 +9,17 @@ part 'workout_settings.g.dart';
 @HiveType(typeId: 2, adapterName: 'WorkoutSettingsAdapter')
 class WorkoutSettings extends HiveObject {
   @HiveField(0)
-  int length;
+  final int length;
   @HiveField(1)
-  int intensity;
+  final int intensity;
   @HiveField(2)
-  int difficulty;
+  final int difficulty;
   @HiveField(3)
-  bool impact;
+  final bool impact;
   @HiveField(4)
-  List<String> equipment;
+  final List<String> equipment;
 
+  /// Returns a WorkoutSettings instance with *defaults settings* if no parameters are provided
   WorkoutSettings(
       {this.length = LENGTH_DEFAULT,
       this.intensity = INTENSITY_DEFAULT,
@@ -38,40 +39,21 @@ class WorkoutSettings extends HiveObject {
           icon: AbsAppIcons.equipmentIcons[equipmentKey],
           text: EQUIPMENT_TEXT[equipmentKey]));
 
-  /// Data UI Set & Save
-  Future<void> intensitySetAndSave(String newValue) async {
-    intensity = intensityToInt(newValue);
-    if (isInBox) await save();
-  }
+  bool checkEquipmentStatusFor(String equipmentKey) =>
+      equipment.contains(equipmentKey);
 
-  Future<void> difficultySetAndSave(String newValue) async {
-    difficulty = difficultyToInt(newValue);
-    if (isInBox) await save();
-  }
-
-  Future<void> lengthSetAndSave(String newValue) async {
-    length = lengthToInt(newValue);
-    if (isInBox) await save();
-  }
-
-  Future<void> impactSetOrToggleAndSave(bool newValue) async {
-    impact = newValue ?? !impact;
-    if (isInBox) await save();
-  }
-
-  Future<void> addEquipment({String key, Equipment equipment}) async {
-    final String _key = key ?? equipment?.key;
-    if (_key == null || this.equipment.contains(_key)) return;
-    this.equipment = [...this.equipment, _key];
-    if (isInBox) await save();
-  }
-
-  Future<void> removeEquipment({String key, Equipment equipment}) async {
-    final String _key = key ?? equipment?.key;
-    if (_key == null || !this.equipment.contains(_key)) return;
-    this.equipment = [...this.equipment]..remove(_key);
-    if (isInBox) await save();
-  }
+  WorkoutSettings copyWith(
+          {int length,
+          int intensity,
+          int difficulty,
+          bool impact,
+          List<String> equipment}) =>
+      WorkoutSettings(
+          length: length ?? this.length,
+          intensity: intensity ?? this.intensity,
+          difficulty: difficulty ?? this.difficulty,
+          impact: impact ?? this.impact,
+          equipment: equipment ?? this.equipment);
 
   /// Comparison checker
   bool hasWorkoutSettingsKeys(Map<String, dynamic> maybeWorkoutSettings) =>

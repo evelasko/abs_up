@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../domain/state/perform_store.dart';
-import '../../services/speech.s.dart';
+import '../../injection.dart';
 import '../widgets/workout_perform_view.w.dart';
 import '../widgets/workout_perform_welcome.w.dart';
 
@@ -18,10 +18,11 @@ class WorkoutPerformPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final performStore = PerformStore(
-      SpeechService(),
-      sourceWorkoutKey ?? CURRENT_WORKOUT_KEY,
-    )..welcomeWorkout();
+    final PerformStore performStore = getIt.get<PerformStore>();
+    performStore
+      ..initializeFor(sourceWorkoutKey ?? CURRENT_WORKOUT_KEY)
+      ..welcomeWorkout();
+
     return Observer(
       builder: (BuildContext context) => AnimatedCrossFade(
         firstChild: WorkoutPerformWelcome(

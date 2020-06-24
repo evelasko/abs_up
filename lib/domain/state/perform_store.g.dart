@@ -279,6 +279,17 @@ mixin _$PerformStore on _PerformStore, Store {
       ActionController(name: '_PerformStore');
 
   @override
+  void initializeFor(String sourceWorkoutKey) {
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.initializeFor');
+    try {
+      return super.initializeFor(sourceWorkoutKey);
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void welcomeWorkout() {
     final _$actionInfo = _$_PerformStoreActionController.startAction(
         name: '_PerformStore.welcomeWorkout');

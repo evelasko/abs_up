@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/state/perform_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import 'shared/workout_perform_dialogs.w.dart';
 import 'shared/workout_perform_general_indicator.w.dart';
@@ -16,7 +16,8 @@ class WorkoutPerformView extends StatefulWidget {
 }
 
 class _WorkoutPerformViewState extends State<WorkoutPerformView> {
-  PerformStore _performStore;
+  final PerformStore _performStore = getIt.get<PerformStore>();
+
   PageController _pageController;
 
   @override
@@ -30,7 +31,6 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _performStore ??= Provider.of<PerformStore>(context);
 
     //= Reaction: when the current item is the last one and has been performed
     //= Do: (_finishWorkout) show final dialog

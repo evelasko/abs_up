@@ -38,10 +38,10 @@ class Exercise extends HiveObject implements ExerciseModel {
   final bool impact;
   @HiveField(8)
   @override
-  String group;
+  final String group;
   @HiveField(9)
   @override
-  int tag;
+  final int tag;
   @HiveField(10)
   @override
   final String description;
@@ -77,26 +77,7 @@ class Exercise extends HiveObject implements ExerciseModel {
   @override
   String get difficultyString => difficultyToString(difficulty);
 
-  @override
-  Future<void> setFavorite() async {
-    tag = 1;
-    if (isInBox) await save();
-  }
-
-  @override
-  Future<void> setBlacklist() async {
-    tag = 2;
-    if (isInBox) await save();
-  }
-
-  @override
-  Future<void> removeTag() async {
-    tag = 0;
-    if (isInBox) await save();
-  }
-
-  @override
-  bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>
+  static bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) =>
       optionOf(maybeAnExercise).foldRight<bool>(
           false,
           (value, _) =>
@@ -112,26 +93,57 @@ class Exercise extends HiveObject implements ExerciseModel {
               value.containsKey(EXERCISE_MEDIA_KEY) &&
               value.containsKey(EXERCISE_THUMB_KEY));
 
+  // ignore: prefer_constructors_over_static_methods
+  static Exercise fromMap(Map<String, dynamic> exerciseMap) =>
+      optionOf(hasExerciseKeys(exerciseMap) ? exerciseMap : null)
+          .foldRight<Exercise>(
+              null,
+              (value, previous) => hasExerciseKeys(exerciseMap)
+                  ? Exercise(
+                      name: exerciseMap[EXERCISE_NAME_KEY] as String,
+                      difficulty: exerciseMap[EXERCISE_DIFFICULTY_KEY] as int,
+                      intensity: exerciseMap[EXERCISE_INTENSITY_KEY] as int,
+                      target: exerciseMap[EXERCISE_TARGET_KEY] as String,
+                      equipment: exerciseMap[EXERCISE_EQUIPMENT_KEY] as String,
+                      weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
+                      sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
+                      impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
+                      group: exerciseMap[EXERCISE_GROUP_KEY] as String,
+                      description:
+                          exerciseMap[EXERCISE_DESCRIPTION_KEY] as String ?? '',
+                      media: exerciseMap[EXERCISE_MEDIA_KEY] as String ?? '',
+                      thumb: exerciseMap[EXERCISE_THUMB_KEY] as String ?? '')
+                  : previous);
   @override
-  Exercise exerciseFromMap(Map<String, dynamic> exerciseMap) =>
-      optionOf(exerciseMap).foldRight<Exercise>(
-          null,
-          (value, previous) => hasExerciseKeys(exerciseMap)
-              ? Exercise(
-                  name: exerciseMap[EXERCISE_NAME_KEY] as String,
-                  difficulty: exerciseMap[EXERCISE_DIFFICULTY_KEY] as int,
-                  intensity: exerciseMap[EXERCISE_INTENSITY_KEY] as int,
-                  target: exerciseMap[EXERCISE_TARGET_KEY] as String,
-                  equipment: exerciseMap[EXERCISE_EQUIPMENT_KEY] as String,
-                  weighted: exerciseMap[EXERCISE_WEIGHTED_KEY] as bool,
-                  sided: exerciseMap[EXERCISE_SIDED_KEY] as bool,
-                  impact: exerciseMap[EXERCISE_IMPACT_KEY] as bool,
-                  group: exerciseMap[EXERCISE_GROUP_KEY] as String,
-                  description:
-                      exerciseMap[EXERCISE_DESCRIPTION_KEY] as String ?? '',
-                  media: exerciseMap[EXERCISE_MEDIA_KEY] as String ?? '',
-                  thumb: exerciseMap[EXERCISE_THUMB_KEY] as String ?? '')
-              : previous);
+  Exercise copyWith(
+          {String description,
+          String media,
+          String thumb,
+          bool impact,
+          String group,
+          String name,
+          int difficulty,
+          int intensity,
+          String target,
+          String equipment,
+          bool weighted,
+          bool sided,
+          int tag}) =>
+      Exercise(
+        description: description ?? this.description,
+        media: media ?? this.media,
+        thumb: thumb ?? this.thumb,
+        impact: impact ?? this.impact,
+        group: group ?? this.group,
+        name: name ?? this.name,
+        difficulty: difficulty ?? this.difficulty,
+        intensity: intensity ?? this.intensity,
+        target: target ?? this.target,
+        equipment: equipment ?? this.equipment,
+        weighted: weighted ?? this.weighted,
+        sided: sided ?? this.sided,
+        tag: tag ?? this.tag,
+      );
 
   // TODO add equatable to implement model equality
 }

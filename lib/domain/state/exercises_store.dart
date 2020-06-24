@@ -1,32 +1,30 @@
-import 'package:abs_up/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../services/p_data.s.dart';
+import '../../constants.dart';
 import '../interfaces/exercise.i.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
 
 part 'exercises_store.g.dart';
 
+@lazySingleton
 class ExercisesStore extends _ExercisesStore with _$ExercisesStore {
   ExercisesStore(ExerciseInterface exerciseService) : super(exerciseService);
 }
 
 abstract class _ExercisesStore with Store {
   final ExerciseInterface exerciseService;
-  final Box<Exercise> exercisesBox = PDataService.exercisesBox;
 
   _ExercisesStore(this.exerciseService) {
     exercises = exerciseService.allExercises;
-    exerciseService.exercisesListenable.addListener(() => _filterExercises());
+    exerciseService.registerListener(_filterExercises);
   }
 
-  ValueListenable get exercisesListenable =>
-      exerciseService.exercisesListenable;
   List<Exercise> get all => exerciseService.allExercises;
 
+  @observable
+  List<Exercise> exercises;
   @observable
   String searchString = '';
   @observable
@@ -41,8 +39,6 @@ abstract class _ExercisesStore with Store {
   bool sortByIntensity = false;
   @observable
   bool sortByDifficulty = false;
-  @observable
-  List<Exercise> exercises;
 
   @computed
   List<String> get equipmentSet =>
@@ -52,7 +48,7 @@ abstract class _ExercisesStore with Store {
   Workout workout;
 
   @action
-  void _filterExercises() => exercises = exercisesBox.values
+  void _filterExercises() => exercises = all
       .where((Exercise exercise) =>
           exercise.name.contains(searchString.length < 3
               ? ''

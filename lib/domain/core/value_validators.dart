@@ -1,5 +1,3 @@
-//: Validation logic for user inputs
-
 import 'package:dartz/dartz.dart';
 
 import 'failures.dart';
@@ -25,3 +23,11 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
     return left(ValueFailure.insecurePassword(fieldValue: input));
   }
 }
+
+/// Validate string length
+Either<ValueFailure<String>, String> validateMaxStringLength(
+        String input, int maxLength) =>
+    input.length < maxLength
+        ? right(input)
+        : left(
+            ValueFailure.textTooLong(fieldValue: input, maxLength: maxLength));

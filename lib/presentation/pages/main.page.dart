@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../../constants.dart';
 import '../../domain/models/equipment.dart';
-import '../../domain/models/workout_settings.dart';
-import '../../services/workout.s.dart';
+import '../../domain/state/settings_store.dart';
+import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
 import '../router/routes.dart';
 import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
@@ -15,17 +16,14 @@ import '../widgets/shared/extreme_row.w.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    final workoutService = Provider.of<WorkoutService>(context);
-    final WorkoutSettings settings = workoutService.workoutSettings;
-    return Column(
-      children: [
-        Expanded(
-          child: ValueListenableBuilder(
-            valueListenable: workoutService.workoutSettingsListenable,
-            builder: (_, __, ___) => CustomScrollView(
+    final SettingsStore settingsStore = getIt.get<SettingsStore>();
+    return Observer(
+      builder: (_) => Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
               slivers: [
                 SliverAppBar(
                   automaticallyImplyLeading: false,
@@ -75,9 +73,11 @@ class MainPage extends StatelessWidget {
                               key: (key) => key.toString(),
                               value: (value) => Text(value.toString())),
                           onValueChanged: (newValue) {
-                            settings.lengthSetAndSave(newValue);
+                            settingsStore.settingsService
+                                .lengthSetAndSave(newValue);
                           },
-                          groupValue: settings.lengthString,
+                          groupValue:
+                              settingsStore.workoutSettings.lengthString,
                         ),
                       ),
                       //= Intensity Section
@@ -106,9 +106,11 @@ class MainPage extends StatelessWidget {
                               key: (key) => key.toString(),
                               value: (value) => Text(value.toString())),
                           onValueChanged: (newValue) {
-                            settings.intensitySetAndSave(newValue);
+                            settingsStore.settingsService
+                                .intensitySetAndSave(newValue);
                           },
-                          groupValue: settings.intensityString,
+                          groupValue:
+                              settingsStore.workoutSettings.intensityString,
                         ),
                       ),
                       //= Difficulty Section
@@ -137,9 +139,11 @@ class MainPage extends StatelessWidget {
                               key: (key) => key.toString(),
                               value: (value) => Text(value.toString())),
                           onValueChanged: (newValue) {
-                            settings.difficultySetAndSave(newValue);
+                            settingsStore.settingsService
+                                .difficultySetAndSave(newValue);
                           },
-                          groupValue: settings.difficultyString,
+                          groupValue:
+                              settingsStore.workoutSettings.difficultyString,
                         ),
                       ),
                       //= Impact Section
@@ -155,9 +159,10 @@ class MainPage extends StatelessWidget {
                           children: <Widget>[
                             //= Impact choice
                             Switch.adaptive(
-                                value: settings.impact,
+                                value: settingsStore.workoutSettings.impact,
                                 onChanged: (value) {
-                                  settings.impactSetOrToggleAndSave(value);
+                                  settingsStore.settingsService
+                                      .impactSetOrToggleAndSave(value);
                                 }),
                             IconButton(
                                 padding: EdgeInsets.zero,
@@ -195,8 +200,10 @@ class MainPage extends StatelessWidget {
                             .map((key) => EquipmentChip(
                                 Equipment.equipmentFromKey(key),
                                 onSelected: (value) => value
-                                    ? settings.addEquipment(key: key)
-                                    : settings.removeEquipment(key: key)))
+                                    ? settingsStore.settingsService
+                                        .addEquipment(key: key)
+                                    : settingsStore.settingsService
+                                        .removeEquipment(key: key)))
                             .toList(),
                       ),
                       //= End of sliver sections
@@ -206,20 +213,23 @@ class MainPage extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        //= Main button
-        Container(
-          color: AppColors.greyDarkest,
-          padding: const EdgeInsets.only(top: 20),
-          child: PrimaryActionButton(
-            text: 'preview / edit workout',
-            buttonType: ButtonTypes.secondary,
-            onTap: () => workoutService.generateCurrentWorkout().then((_) =>
-                Navigator.of(context)
-                    .pushNamed(FluroRouter.getWorkoutDetailsLink())),
-          ),
-        )
-      ],
+          //= Main button
+          Container(
+            color: AppColors.greyDarkest,
+            padding: const EdgeInsets.only(top: 20),
+            child: PrimaryActionButton(
+              text: 'preview / edit workout',
+              buttonType: ButtonTypes.secondary,
+              onTap: () {
+                final WorkoutsStore workoutStore = getIt.get<WorkoutsStore>();
+                workoutStore.generateCurrentWorkout().then((_) =>
+                    Navigator.of(context)
+                        .pushNamed(FluroRouter.getWorkoutDetailsLink()));
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

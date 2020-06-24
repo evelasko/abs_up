@@ -31,9 +31,10 @@ class _$ValueFailureTearOff {
     );
   }
 
-  TextTooLong<T> textTooLong<T>({@required T fieldValue}) {
+  TextTooLong<T> textTooLong<T>({@required T fieldValue, int maxLength}) {
     return TextTooLong<T>(
       fieldValue: fieldValue,
+      maxLength: maxLength,
     );
   }
 }
@@ -47,14 +48,14 @@ mixin _$ValueFailure<T> {
     @required Result invalidEmail(T failedValue, int maxAllowed),
     @required Result emptyLine(T failedValue),
     @required Result insecurePassword(T fieldValue),
-    @required Result textTooLong(T fieldValue),
+    @required Result textTooLong(T fieldValue, int maxLength),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result invalidEmail(T failedValue, int maxAllowed),
     Result emptyLine(T failedValue),
     Result insecurePassword(T fieldValue),
-    Result textTooLong(T fieldValue),
+    Result textTooLong(T fieldValue, int maxLength),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -161,7 +162,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     @required Result invalidEmail(T failedValue, int maxAllowed),
     @required Result emptyLine(T failedValue),
     @required Result insecurePassword(T fieldValue),
-    @required Result textTooLong(T fieldValue),
+    @required Result textTooLong(T fieldValue, int maxLength),
   }) {
     assert(invalidEmail != null);
     assert(emptyLine != null);
@@ -176,7 +177,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     Result invalidEmail(T failedValue, int maxAllowed),
     Result emptyLine(T failedValue),
     Result insecurePassword(T fieldValue),
-    Result textTooLong(T fieldValue),
+    Result textTooLong(T fieldValue, int maxLength),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -289,7 +290,7 @@ class _$EmptyLine<T> implements EmptyLine<T> {
     @required Result invalidEmail(T failedValue, int maxAllowed),
     @required Result emptyLine(T failedValue),
     @required Result insecurePassword(T fieldValue),
-    @required Result textTooLong(T fieldValue),
+    @required Result textTooLong(T fieldValue, int maxLength),
   }) {
     assert(invalidEmail != null);
     assert(emptyLine != null);
@@ -304,7 +305,7 @@ class _$EmptyLine<T> implements EmptyLine<T> {
     Result invalidEmail(T failedValue, int maxAllowed),
     Result emptyLine(T failedValue),
     Result insecurePassword(T fieldValue),
-    Result textTooLong(T fieldValue),
+    Result textTooLong(T fieldValue, int maxLength),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -415,7 +416,7 @@ class _$InsecurePassword<T> implements InsecurePassword<T> {
     @required Result invalidEmail(T failedValue, int maxAllowed),
     @required Result emptyLine(T failedValue),
     @required Result insecurePassword(T fieldValue),
-    @required Result textTooLong(T fieldValue),
+    @required Result textTooLong(T fieldValue, int maxLength),
   }) {
     assert(invalidEmail != null);
     assert(emptyLine != null);
@@ -430,7 +431,7 @@ class _$InsecurePassword<T> implements InsecurePassword<T> {
     Result invalidEmail(T failedValue, int maxAllowed),
     Result emptyLine(T failedValue),
     Result insecurePassword(T fieldValue),
-    Result textTooLong(T fieldValue),
+    Result textTooLong(T fieldValue, int maxLength),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -484,7 +485,7 @@ abstract class $TextTooLongCopyWith<T, $Res> {
   factory $TextTooLongCopyWith(
           TextTooLong<T> value, $Res Function(TextTooLong<T>) then) =
       _$TextTooLongCopyWithImpl<T, $Res>;
-  $Res call({T fieldValue});
+  $Res call({T fieldValue, int maxLength});
 }
 
 class _$TextTooLongCopyWithImpl<T, $Res>
@@ -500,22 +501,27 @@ class _$TextTooLongCopyWithImpl<T, $Res>
   @override
   $Res call({
     Object fieldValue = freezed,
+    Object maxLength = freezed,
   }) {
     return _then(TextTooLong<T>(
       fieldValue: fieldValue == freezed ? _value.fieldValue : fieldValue as T,
+      maxLength: maxLength == freezed ? _value.maxLength : maxLength as int,
     ));
   }
 }
 
 class _$TextTooLong<T> implements TextTooLong<T> {
-  const _$TextTooLong({@required this.fieldValue}) : assert(fieldValue != null);
+  const _$TextTooLong({@required this.fieldValue, this.maxLength})
+      : assert(fieldValue != null);
 
   @override
   final T fieldValue;
+  @override
+  final int maxLength;
 
   @override
   String toString() {
-    return 'ValueFailure<$T>.textTooLong(fieldValue: $fieldValue)';
+    return 'ValueFailure<$T>.textTooLong(fieldValue: $fieldValue, maxLength: $maxLength)';
   }
 
   @override
@@ -524,12 +530,17 @@ class _$TextTooLong<T> implements TextTooLong<T> {
         (other is TextTooLong<T> &&
             (identical(other.fieldValue, fieldValue) ||
                 const DeepCollectionEquality()
-                    .equals(other.fieldValue, fieldValue)));
+                    .equals(other.fieldValue, fieldValue)) &&
+            (identical(other.maxLength, maxLength) ||
+                const DeepCollectionEquality()
+                    .equals(other.maxLength, maxLength)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(fieldValue);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(fieldValue) ^
+      const DeepCollectionEquality().hash(maxLength);
 
   @override
   $TextTooLongCopyWith<T, TextTooLong<T>> get copyWith =>
@@ -541,13 +552,13 @@ class _$TextTooLong<T> implements TextTooLong<T> {
     @required Result invalidEmail(T failedValue, int maxAllowed),
     @required Result emptyLine(T failedValue),
     @required Result insecurePassword(T fieldValue),
-    @required Result textTooLong(T fieldValue),
+    @required Result textTooLong(T fieldValue, int maxLength),
   }) {
     assert(invalidEmail != null);
     assert(emptyLine != null);
     assert(insecurePassword != null);
     assert(textTooLong != null);
-    return textTooLong(fieldValue);
+    return textTooLong(fieldValue, maxLength);
   }
 
   @override
@@ -556,12 +567,12 @@ class _$TextTooLong<T> implements TextTooLong<T> {
     Result invalidEmail(T failedValue, int maxAllowed),
     Result emptyLine(T failedValue),
     Result insecurePassword(T fieldValue),
-    Result textTooLong(T fieldValue),
+    Result textTooLong(T fieldValue, int maxLength),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (textTooLong != null) {
-      return textTooLong(fieldValue);
+      return textTooLong(fieldValue, maxLength);
     }
     return orElse();
   }
@@ -599,9 +610,11 @@ class _$TextTooLong<T> implements TextTooLong<T> {
 }
 
 abstract class TextTooLong<T> implements ValueFailure<T> {
-  const factory TextTooLong({@required T fieldValue}) = _$TextTooLong<T>;
+  const factory TextTooLong({@required T fieldValue, int maxLength}) =
+      _$TextTooLong<T>;
 
   T get fieldValue;
+  int get maxLength;
   $TextTooLongCopyWith<T, TextTooLong<T>> get copyWith;
 }
 

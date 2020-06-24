@@ -1,9 +1,9 @@
-import 'package:abs_up/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 
+import '../../constants.dart';
 import '../../domain/state/exercises_store.dart';
+import '../../injection.dart';
 import 'shared/filter_chip.w.dart';
 import 'shared/filter_label.w.dart';
 
@@ -19,7 +19,7 @@ class ExerciseFiltersRow extends StatefulWidget {
 class _ExerciseFiltersRowState extends State<ExerciseFiltersRow> {
   @override
   Widget build(BuildContext context) {
-    final ExercisesStore _exercisesStore = Provider.of<ExercisesStore>(context);
+    final ExercisesStore _exercisesStore = getIt.get<ExercisesStore>();
     return Observer(
       builder: (_) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,

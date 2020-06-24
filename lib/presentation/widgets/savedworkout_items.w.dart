@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/models/workout.dart';
 import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
 import '../router/routes.dart';
 import '../theme/colors.t.dart';
 import '../theme/text.t.dart';
@@ -20,7 +20,7 @@ class SavedWorkoutItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WorkoutsStore store = Provider.of<WorkoutsStore>(context);
+    final WorkoutsStore store = getIt.get<WorkoutsStore>();
     return Dismissible(
       key: Key(workout.key.toString()),
       direction: DismissDirection.endToStart,

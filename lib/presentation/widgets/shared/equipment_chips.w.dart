@@ -1,10 +1,10 @@
-import 'package:abs_up/domain/state/workouts_store.dart';
-import 'package:abs_up/presentation/theme/colors.t.dart';
-import 'package:abs_up/presentation/theme/text.t.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../domain/models/equipment.dart';
+import '../../../domain/state/workouts_store.dart';
+import '../../../injection.dart';
+import '../../theme/colors.t.dart';
+import '../../theme/text.t.dart';
 
 class EquipmentChip extends StatelessWidget {
   final Equipment equipment;
@@ -15,8 +15,8 @@ class EquipmentChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool status = Provider.of<WorkoutsStore>(context, listen: false)
-        .checkEquipmentStatus(equipment.key);
+    final bool status =
+        getIt.get<WorkoutsStore>().checkEquipmentStatus(equipment.key);
     return FilterChip(
       label: Text(equipment.text,
           style: status

@@ -16,20 +16,6 @@ mixin _$AuthStore on _AuthStore, Store {
           Computed<Option<String>>(() => super.displayName,
               name: '_AuthStore.displayName'))
       .value;
-  Computed<Option<List<WorkoutLog>>> _$userLogsComputed;
-
-  @override
-  Option<List<WorkoutLog>> get userLogs => (_$userLogsComputed ??=
-          Computed<Option<List<WorkoutLog>>>(() => super.userLogs,
-              name: '_AuthStore.userLogs'))
-      .value;
-  Computed<Option<List<String>>> _$userActivityComputed;
-
-  @override
-  Option<List<String>> get userActivity => (_$userActivityComputed ??=
-          Computed<Option<List<String>>>(() => super.userActivity,
-              name: '_AuthStore.userActivity'))
-      .value;
 
   final _$authFormStateAtom = Atom(name: '_AuthStore.authFormState');
 
@@ -214,9 +200,7 @@ authFormState: ${authFormState},
 user: ${user},
 authState: ${authState},
 signInWithAppleAvailable: ${signInWithAppleAvailable},
-displayName: ${displayName},
-userLogs: ${userLogs},
-userActivity: ${userActivity}
+displayName: ${displayName}
     ''';
   }
 }

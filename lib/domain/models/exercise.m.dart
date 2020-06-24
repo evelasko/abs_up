@@ -11,8 +11,8 @@ abstract class ExerciseModel {
   final bool weighted;
   final bool sided;
   final bool impact;
-  String group;
-  int tag;
+  final String group;
+  final int tag;
   final String description;
   final String media;
   final String thumb;
@@ -29,6 +29,8 @@ abstract class ExerciseModel {
     this.description,
     this.media,
     this.thumb,
+    this.group,
+    this.tag,
   );
 
   /// Retrieve the icon for the exercise quipment
@@ -40,18 +42,26 @@ abstract class ExerciseModel {
   /// Returns the string for the exercise's difficulty value
   String get difficultyString;
 
-  /// Tags the exercise as favorite and removes it from blacklist if present
-  Future<void> setFavorite();
-
-  /// Tags the exercise as blacklisted and removes it from favorites if pressent
-  Future<void> setBlacklist();
-
-  /// Tags the exercise as plain exercise
-  Future<void> removeTag();
-
   /// Returns true if the provided map has all the exercise model's required fields
-  bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise);
+  static bool hasExerciseKeys(Map<String, dynamic> maybeAnExercise) => true;
 
   /// Returns an exercise from a map
-  ExerciseModel exerciseFromMap(Map<String, dynamic> exerciseMap);
+  static ExerciseModel fromMap(Map<String, dynamic> exerciseMap) => null;
+
+  /// Duplicates an exercise with the given fields modified
+  ExerciseModel copyWith({
+    String name,
+    int difficulty,
+    int intensity,
+    String target,
+    String equipment,
+    bool weighted,
+    bool sided,
+    bool impact,
+    String description,
+    String media,
+    String thumb,
+    String group,
+    int tag,
+  });
 }

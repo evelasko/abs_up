@@ -1,22 +1,35 @@
-import 'package:abs_up/domain/core/failures.dart';
-import 'package:abs_up/domain/models/exercise.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
+
+import '../core/failures.dart';
+import '../models/exercise.dart';
 
 abstract class ExerciseInterface {
-  /// Change nofitier for the loaded list of exercises
-  ValueListenable get exercisesListenable;
-
-  /// Retrieve all loaded exercises
+  /// Get all exercises in local storage
   List<Exercise> get allExercises;
 
-  /// Fetch exercises from local JSON asset file
-  /// If there is no exercise already stored in the device
-  /// will fetch local json and save it in the device
-  Future<Either<CoreFailure<String>, Map<String, dynamic>>>
+  /// Register listener for changes in exercises list
+  void registerListener(void Function() listener);
+
+  /// Return the exercises from local JSON
+  Future<Either<CoreFailure<String>, Map<String, Exercise>>>
       fetchLocalExercises();
 
-  /// Check for new exercises in remote endopint,
-  /// retrieves and saves them in the device
-  Future<void> updateExerciseList();
+  /// Saves an exercise for the given key with validity checks
+  Future<Either<CoreFailure<String>, String>> saveNewExercise(
+      String key, Exercise exercise);
+
+  /// Saves an exercise for the given key
+  Future<void> setExercise(String exerciseKey, Exercise exercise);
+
+  /// Retrieves the exercise for the given key
+  Exercise exerciseFromKey(String exerciseKey);
+
+  /// Tags the exercise as favorite and removes it from blacklist if present
+  Future<void> setFavorite(String exerciseKey);
+
+  /// Tags the exercise as blacklisted and removes it from favorites if pressent
+  Future<void> setBlacklist(String exerciseKey);
+
+  /// Tags the exercise as plain exercise
+  Future<void> removeTag(String exerciseKey);
 }

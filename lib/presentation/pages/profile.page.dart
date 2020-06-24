@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_moment/simple_moment.dart';
 import 'package:wiredash/wiredash.dart';
 
 import '../../domain/state/auth_store.dart';
+import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import '../widgets/bottom_sheet_menu.w.dart';
 import '../widgets/login_dialog.w.dart';
@@ -15,7 +16,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _authStore = Provider.of<AuthStore>(context);
+    final AuthStore _authStore = getIt.get<AuthStore>();
+    final WorkoutsStore _workoutsStore = getIt.get<WorkoutsStore>();
     const List<Tab> userTabs = <Tab>[
       Tab(icon: Icon(FontAwesomeIcons.clipboardList)),
       Tab(icon: Icon(FontAwesomeIcons.stream)),
@@ -112,7 +114,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             //= User Logs
             UserContentTabView(
-              delegate: _authStore.userLogs.fold(
+              delegate: _workoutsStore.workoutLogs.fold(
                 () => null,
                 (logs) => SliverChildBuilderDelegate(
                   (BuildContext context, int index) => ListTile(
@@ -131,7 +133,7 @@ class ProfilePage extends StatelessWidget {
             ),
             //= User stream
             UserContentTabView(
-              delegate: _authStore.userActivity.fold(
+              delegate: _workoutsStore.userActivity.fold(
                 () => null,
                 (activities) => SliverChildBuilderDelegate(
                   (BuildContext context, int index) => ListTile(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/models/workout.dart';
-import '../../services/p_data.s.dart';
-import '../../services/workout.s.dart';
+import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
 
 class ExercisesSelectorPage extends StatefulWidget {
   final String workoutKey;
@@ -15,13 +13,13 @@ class ExercisesSelectorPage extends StatefulWidget {
 }
 
 class _ExercisesSelectorPageState extends State<ExercisesSelectorPage> {
+  final WorkoutsStore workoutsStore = getIt.get<WorkoutsStore>();
   Workout _workout;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _workout =
-        widget.workoutKey == null ? null : WorkoutService().currentWorkout;
+    _workout = widget.workoutKey == null ? null : workoutsStore.currentWorkout;
   }
 
   @override
@@ -31,13 +29,14 @@ class _ExercisesSelectorPageState extends State<ExercisesSelectorPage> {
       appBar: AppBar(
         title: _workout == null ? null : Text('add to ${_workout.name}'),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: PDataService.exercisesBox.listenable(),
-        builder: (_, __, ___) => Provider<Workout>(
-          create: (_) => _workout,
-          child: const Center(child: Text('list...')),
-        ),
-      ),
+      // TODO ValueListenableBuilder not yet refactored
+      // body: ValueListenableBuilder(
+      //   valueListenable: PDataService.exercisesBox.listenable(),
+      //   builder: (_, __, ___) => Provider<Workout>(
+      //     create: (_) => _workout,
+      //     child: const Center(child: Text('list...')),
+      //   ),
+      // ),
     );
   }
 }

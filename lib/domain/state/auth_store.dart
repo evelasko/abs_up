@@ -4,18 +4,16 @@ import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../services/workout_logs.s.dart';
 import '../core/failures.dart';
 import '../core/value_objects.dart';
 import '../interfaces/auth.i.dart';
 import '../models/user.dart';
-import '../models/workout_log.dart';
 import 'auth_form_states.dart';
 import 'auth_state.dart';
 
 part 'auth_store.g.dart';
 
-@injectable
+@lazySingleton
 class AuthStore extends _AuthStore with _$AuthStore {
   AuthStore(AuthInterface authService) : super(authService);
 }
@@ -23,8 +21,6 @@ class AuthStore extends _AuthStore with _$AuthStore {
 abstract class _AuthStore with Store {
   final AuthInterface authService;
   _AuthStore(this.authService);
-
-  final WorkoutLogsService logsService = WorkoutLogsService();
 
   @observable
   AuthFormState authFormState;
@@ -38,12 +34,6 @@ abstract class _AuthStore with Store {
 
   @observable
   AuthState authState = const AuthState.initial();
-
-  @computed
-  Option<List<WorkoutLog>> get userLogs => logsService.userLogs;
-
-  @computed
-  Option<List<String>> get userActivity => none();
 
   @action
   Future<Option<User>> getUser() async {
