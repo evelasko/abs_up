@@ -323,7 +323,7 @@ abstract class _PerformStore with Store {
 
   /// Saves the entire state as a new workout log entry and resets the store
   Future<void> saveWorkoutLogEntry() async =>
-      WorkoutLogsService().saveNewWorkoutLogEntry(
+      workoutLogsService.saveNewWorkoutLogEntry(
         items: workoutItems,
         sourceWorkoutKey: sourceWorkout,
       );

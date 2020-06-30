@@ -14,13 +14,8 @@ import 'utils/generate_unique_key.dart';
 @singleton
 @RegisterAs(WorkoutInterface)
 class WorkoutService implements WorkoutInterface {
-  @factoryMethod
-  static Future<WorkoutService> init() async {
-    final singleton = WorkoutService();
-    return singleton;
-  }
-
-  Box<Workout> get _workoutsBox => Hive.box(WORKOUTS_BOX_NAME);
+  final Box<Workout> workoutsBox;
+  WorkoutService(this.workoutsBox);
 
   @override
   final List<String> availableTargets = [
@@ -33,38 +28,38 @@ class WorkoutService implements WorkoutInterface {
   ];
 
   @override
-  List<Workout> get allWorkouts => _workoutsBox.values.toList();
+  List<Workout> get allWorkouts => workoutsBox.values.toList();
 
   @override
   List<Workout> get allUserWorkouts =>
-      _workoutsBox.values.where((w) => w.key != CURRENT_WORKOUT_KEY).toList();
+      workoutsBox.values.where((w) => w.key != CURRENT_WORKOUT_KEY).toList();
 
   @override
   Workout getWorkout([String key = CURRENT_WORKOUT_KEY]) =>
-      _workoutsBox.get(key ?? CURRENT_WORKOUT_KEY,
-          defaultValue: _workoutsBox.get(CURRENT_WORKOUT_KEY));
+      workoutsBox.get(key ?? CURRENT_WORKOUT_KEY,
+          defaultValue: workoutsBox.get(CURRENT_WORKOUT_KEY));
 
   @override
   void registerListener(void Function() listener) =>
-      _workoutsBox.listenable().addListener(listener);
+      workoutsBox.listenable().addListener(listener);
 
   @override
   Future<void> saveWorkout(
           {String key = CURRENT_WORKOUT_KEY,
           @required Workout workout}) async =>
-      _workoutsBox.put(key, workout);
+      workoutsBox.put(key, workout);
 
   @override
   Future<void> deleteWorkout(String workoutKey) =>
-      _workoutsBox.delete(workoutKey);
+      workoutsBox.delete(workoutKey);
 
   @override
   Future<String> saveCurrentWorkoutAs(String name) async {
     // TODO should check for errors and return an Either
-    final Workout workout = getWorkout().copy()..name = name;
+    final Workout workout = workoutsBox.get(CURRENT_WORKOUT_KEY);
     final String key =
-        generateUniqueKey(_workoutsBox.keys.toList().cast<String>());
-    await _workoutsBox.put(key, workout);
+        generateUniqueKey(workoutsBox.keys.toList().cast<String>());
+    await workoutsBox.put(key, workout.copy()..name = name);
     return key;
   }
 

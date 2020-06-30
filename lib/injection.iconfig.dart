@@ -4,11 +4,16 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:hive/hive.dart';
+import 'package:abs_up/services/core/injectable_modules.dart';
+import 'package:abs_up/domain/models/workout.dart';
+import 'package:abs_up/domain/models/workout_log.dart';
+import 'package:abs_up/domain/models/workout_settings.dart';
 import 'package:abs_up/services/exercise.s.dart';
 import 'package:abs_up/domain/interfaces/exercise.i.dart';
 import 'package:abs_up/domain/state/exercises_store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:abs_up/services/core/injectable_modules.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,6 +35,12 @@ import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
   final injectableModules = _$InjectableModules();
+  g.registerLazySingleton<Box<Exercise>>(() => injectableModules.exercisesBox);
+  g.registerLazySingleton<Box<Workout>>(() => injectableModules.workoutsBox);
+  g.registerLazySingleton<Box<WorkoutLog>>(
+      () => injectableModules.workoutLogsBox);
+  g.registerLazySingleton<Box<WorkoutSettings>>(
+      () => injectableModules.workoutSettingsBox);
   g.registerLazySingleton<ExercisesStore>(
       () => ExercisesStore(g<ExerciseInterface>()));
   g.registerLazySingleton<FirebaseAuth>(() => injectableModules.firebaseAuth);
@@ -58,12 +69,13 @@ void $initGetIt(GetIt g, {String environment}) {
       () => SettingsStore(g<UserSettingsInterface>()));
 
   //Eager singletons must be registered in the right order
-  g.registerSingletonAsync<ExerciseInterface>(() => ExerciseService.init());
+  g.registerSingletonAsync<ExerciseInterface>(
+      () => ExerciseService.init(g<Box<Exercise>>()));
   g.registerSingletonAsync<UserSettingsInterface>(
-      () => UserSettingsService.init());
-  g.registerSingletonAsync<WorkoutInterface>(() => WorkoutService.init());
-  g.registerSingletonAsync<WorkoutLogsInterface>(
-      () => WorkoutLogsService.init());
+      () => UserSettingsService.init(g<Box<WorkoutSettings>>()));
+  g.registerSingleton<WorkoutInterface>(WorkoutService(g<Box<Workout>>()));
+  g.registerSingleton<WorkoutLogsInterface>(
+      WorkoutLogsService(g<Box<WorkoutLog>>()));
 }
 
 class _$InjectableModules extends InjectableModules {}

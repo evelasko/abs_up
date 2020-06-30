@@ -10,42 +10,44 @@ import '../domain/models/workout_settings.dart';
 @singleton
 @RegisterAs(UserSettingsInterface)
 class UserSettingsService implements UserSettingsInterface {
+  final Box<WorkoutSettings> workoutSettingsBox;
+
+  UserSettingsService(this.workoutSettingsBox);
+
   @factoryMethod
-  static Future<UserSettingsService> init() async {
-    final singleton = UserSettingsService();
-    if (singleton._workoutSettingsBox.isEmpty) {
+  static Future<UserSettingsService> init(
+      Box<WorkoutSettings> workoutSettingsBox) async {
+    final singleton = UserSettingsService(workoutSettingsBox);
+    if (singleton.workoutSettingsBox.isEmpty) {
       await singleton.resetWorkoutSettings();
     }
     return singleton;
   }
 
-  Box get _userSettingsBox => Hive.box(USER_SETTINGS_BOX_NAME);
-
-  Box<WorkoutSettings> get _workoutSettingsBox =>
-      Hive.box<WorkoutSettings>(WORKOUT_SETTINGS_BOX_NAME);
+  // Box get userSettingsBox => Hive.box(USER_SETTINGS_BOX_NAME);
 
   @override
-  WorkoutSettings get workoutSettings => _workoutSettingsBox.get(
+  WorkoutSettings get workoutSettings => workoutSettingsBox.get(
         WORKOUT_SETTINGS_KEY,
         defaultValue: WorkoutSettings(),
       );
 
   @override
   void registerWorkoutSettingsListener(void Function() listener) =>
-      _workoutSettingsBox.listenable().addListener(listener);
+      workoutSettingsBox.listenable().addListener(listener);
 
-  void registerUserSettingsListener(void Function() listener) =>
-      _userSettingsBox.listenable().addListener(listener);
+  // void registerUserSettingsListener(void Function() listener) =>
+  //     userSettingsBox.listenable().addListener(listener);
 
   @override
-  Future<void> resetWorkoutSettings() async => _workoutSettingsBox.put(
+  Future<void> resetWorkoutSettings() async => workoutSettingsBox.put(
         WORKOUT_SETTINGS_KEY,
         WorkoutSettings(),
       );
 
   @override
   Future<void> setWorkoutSettings(WorkoutSettings settings) async =>
-      _workoutSettingsBox.put(
+      workoutSettingsBox.put(
         WORKOUT_SETTINGS_KEY,
         settings ?? WorkoutSettings(),
       );

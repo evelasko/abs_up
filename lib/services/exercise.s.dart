@@ -6,7 +6,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-import '../constants.dart';
 import '../domain/core/failures.dart';
 import '../domain/interfaces/exercise.i.dart';
 import '../domain/models/exercise.dart';
@@ -14,12 +13,15 @@ import '../domain/models/exercise.dart';
 @singleton
 @RegisterAs(ExerciseInterface)
 class ExerciseService implements ExerciseInterface {
+  final Box<Exercise> exercisesBox;
+
+  ExerciseService(this.exercisesBox);
   @factoryMethod
-  static Future<ExerciseService> init() async {
-    final singleton = ExerciseService();
+  static Future<ExerciseService> init(Box<Exercise> exercisesBox) async {
+    final singleton = ExerciseService(exercisesBox);
 
     //= initialize exercises
-    if (singleton._exercisesBox.isEmpty) {
+    if (singleton.exercisesBox.isEmpty) {
       //= fetch and save exercises from local JSON
       final Either<CoreFailure<String>, Map<String, Exercise>> localExercises =
           await singleton.fetchLocalExercises();
@@ -35,14 +37,12 @@ class ExerciseService implements ExerciseInterface {
     return singleton;
   }
 
-  Box<Exercise> get _exercisesBox => Hive.box<Exercise>(EXERCISE_BOX_NAME);
-
   @override
-  List<Exercise> get allExercises => _exercisesBox.values.toList();
+  List<Exercise> get allExercises => exercisesBox.values.toList();
 
   @override
   void registerListener(void Function() listener) =>
-      _exercisesBox.listenable().addListener(listener);
+      exercisesBox.listenable().addListener(listener);
 
   @override
   Future<Either<CoreFailure<String>, Map<String, Exercise>>>
@@ -65,7 +65,7 @@ class ExerciseService implements ExerciseInterface {
       return left(const CoreFailure.internalError(
           message: 'The exercise provided to save is invalid'));
     }
-    final List<String> exerciseKey = _exercisesBox.keys.toList().cast<String>();
+    final List<String> exerciseKey = exercisesBox.keys.toList().cast<String>();
     if (exerciseKey.contains(key)) {
       return left(const CoreFailure<String>.internalError(
           message: 'The key provided is already present in the local storage'));
@@ -75,12 +75,11 @@ class ExerciseService implements ExerciseInterface {
   }
 
   @override
-  Exercise exerciseFromKey(String exerciseKey) =>
-      _exercisesBox.get(exerciseKey);
+  Exercise exerciseFromKey(String exerciseKey) => exercisesBox.get(exerciseKey);
 
   @override
   Future<void> setExercise(String exerciseKey, Exercise exercise) async =>
-      _exercisesBox.put(exerciseKey, exercise);
+      exercisesBox.put(exerciseKey, exercise);
 
   @override
   Future<void> setFavorite(String exerciseKey) async =>
