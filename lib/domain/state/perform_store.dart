@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/services/p_data.s.dart';
-import 'package:abs_up/services/workout_logs.s.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../services/speech.s.dart';
-import '../../services/workout.s.dart';
+import '../../services/workout_logs.s.dart';
+import '../interfaces/exercise.i.dart';
 import '../interfaces/speech.i.dart';
+import '../interfaces/user_settings.i.dart';
+import '../interfaces/workout.i.dart';
+import '../interfaces/workout_logs.i.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
 import '../models/workout_item.dart';
@@ -25,29 +26,43 @@ enum WorkoutItemStatus {
 }
 enum PerformState { loading, welcoming, initial, presenting, started, paused }
 
+@lazySingleton
 class PerformStore extends _PerformStore with _$PerformStore {
   PerformStore(
-    SpeechService speechFacade,
-    String sourceWorkoutKey,
+    ExerciseInterface exerciseService,
+    WorkoutInterface workoutService,
+    WorkoutLogsInterface workoutLogsService,
+    UserSettingsInterface userSettings,
+    SpeechInterface speechService,
   ) : super(
-          speechFacade,
-          sourceWorkoutKey,
+          exerciseService,
+          workoutService,
+          workoutLogsService,
+          userSettings,
+          speechService,
         );
 }
 
 abstract class _PerformStore with Store {
-  final SpeechService speechFacade;
-  final String sourceWorkoutKey;
+  final ExerciseInterface exerciseService;
+  final WorkoutInterface workoutService;
+  final WorkoutLogsInterface workoutLogsService;
+  final UserSettingsInterface userSettings;
+  final SpeechInterface speechService;
 
   _PerformStore(
-    this.speechFacade,
-    this.sourceWorkoutKey,
-  ) {
+    this.exerciseService,
+    this.workoutService,
+    this.workoutLogsService,
+    this.userSettings,
+    this.speechService,
+  );
+
+  @action
+  void initializeFor(String sourceWorkoutKey) {
     state = PerformState.loading;
-    final Workout workoutBlueprint = PDataService.workoutsBox.get(
-      sourceWorkoutKey,
-      defaultValue: PDataService.workoutsBox.get(CURRENT_WORKOUT_KEY),
-    );
+    final Workout workoutBlueprint =
+        workoutService.getWorkout(sourceWorkoutKey);
     overallDuration = const Duration();
     for (final item in workoutBlueprint.items) {
       overallDuration += Duration(seconds: item.duration);
@@ -62,8 +77,6 @@ abstract class _PerformStore with Store {
     sourceWorkout = sourceWorkoutKey;
     state = PerformState.welcoming;
   }
-
-  final WorkoutService workoutService = WorkoutService();
 
   @observable
   String sourceWorkout;
@@ -126,7 +139,7 @@ abstract class _PerformStore with Store {
     final seconds = (Duration(seconds: timeRemaining.inSeconds) -
             Duration(minutes: timeRemaining.inMinutes))
         .inSeconds;
-    speechFacade.speakAndDo(
+    speechService.speakAndDo(
         'You are about to start an abs training session of $minutes minutes and $seconds seconds... make sure to have your equipment ready',
         () => state = PerformState.initial);
   }
@@ -157,13 +170,13 @@ abstract class _PerformStore with Store {
         // = halfway alert
         if (duration > 30 && progress == (duration / 2).round()) {
           stopSpeech().then((_) =>
-              speechFacade.speak('${(duration / 2).round()} seconds left'));
+              speechService.speak('${(duration / 2).round()} seconds left'));
         }
 
         // = 10 second alert
         if (progress == duration - 10) {
-          stopSpeech().then(
-              (_) => speechFacade.speak('${duration - progress} seconds left'));
+          stopSpeech().then((_) =>
+              speechService.speak('${duration - progress} seconds left'));
         }
 
         // = next progress step
@@ -186,7 +199,7 @@ abstract class _PerformStore with Store {
       return;
     }
     if (performing) stopCurrentTimer();
-    if (speechFacade.speechState == SpeechState.playing) stopSpeech();
+    if (speechService.speechState == SpeechState.playing) stopSpeech();
 
     currentItemIsLast = itemIndex == workoutItems.length - 1;
     currentItemIndex = itemIndex;
@@ -228,10 +241,11 @@ abstract class _PerformStore with Store {
           currentItem.exercise.name != 'Rest' ? 'begin, in' : '';
 
       // = start presentation speech catching completion to follow with countdown if current item is not rest
-      speechFacade.completionHandler = () => currentItem.exercise.name == 'Rest'
-          ? currentItemStatus = WorkoutItemStatus.ready
-          : countdownCurrentItem();
-      _speechFuture = ObservableFuture(speechFacade.speak(
+      speechService.completionHandler = () =>
+          currentItem.exercise.name == 'Rest'
+              ? currentItemStatus = WorkoutItemStatus.ready
+              : countdownCurrentItem();
+      _speechFuture = ObservableFuture(speechService.speak(
           '${currentItem.exercise.name} for $minutes $joint $seconds, $finale'));
       await _speechFuture;
     } catch (e) {
@@ -243,18 +257,18 @@ abstract class _PerformStore with Store {
   @action
   void countdownCurrentItem({int seconds = 3}) {
     if (seconds <= 0) return;
-    speechFacade.completionHandler = null;
+    speechService.completionHandler = null;
     int countdown = seconds;
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (countdown > 0) {
-        speechFacade.speak(countdown.toString());
+        speechService.speak(countdown.toString());
         countdown -= 1;
       } else if (countdown == 0) {
-        speechFacade.completionHandler = () {
+        speechService.completionHandler = () {
           currentItemStatus = WorkoutItemStatus.ready;
-          speechFacade.completionHandler = null;
+          speechService.completionHandler = null;
         };
-        speechFacade.speak('go!');
+        speechService.speak('go!');
         timer.cancel();
       }
     });
@@ -274,15 +288,15 @@ abstract class _PerformStore with Store {
       greeting =
           'Great! You completed the workout... but I know you cand do better';
     }
-    speechFacade.speak(greeting);
+    speechService.speak(greeting);
   }
 
   /// Stop any running speaking action
   @action
   Future<void> stopSpeech() async {
-    if (speechFacade.speechState != SpeechState.playing) return;
-    speechFacade.completionHandler = null;
-    await speechFacade.stop();
+    if (speechService.speechState != SpeechState.playing) return;
+    speechService.completionHandler = null;
+    await speechService.stop();
   }
 
   /// Change current item's exercise for a random one
@@ -292,7 +306,10 @@ abstract class _PerformStore with Store {
     stopCurrentTimer();
     currentItemStatus = WorkoutItemStatus.paused;
     final List<Exercise> availableExercises =
-        workoutService.getAvailableExercises()..shuffle();
+        workoutService.getAvailableExercises(
+      exerciseService.allExercises,
+      userSettings.workoutSettings,
+    )..shuffle();
     updateCurrentItemsExercise(availableExercises.last);
   }
 
@@ -306,7 +323,7 @@ abstract class _PerformStore with Store {
 
   /// Saves the entire state as a new workout log entry and resets the store
   Future<void> saveWorkoutLogEntry() async =>
-      WorkoutLogsService().saveNewWorkoutLogEntry(
+      workoutLogsService.saveNewWorkoutLogEntry(
         items: workoutItems,
         sourceWorkoutKey: sourceWorkout,
       );

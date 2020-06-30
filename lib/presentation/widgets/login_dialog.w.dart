@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/state/auth_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import 'shared/app_full_logo.w.dart';
 import 'shared/buttons.w.dart';
@@ -18,13 +18,12 @@ class LoginDialog extends StatefulWidget {
 }
 
 class _LoginDialogState extends State<LoginDialog> {
-  AuthStore _authStore;
+  final AuthStore _authStore = getIt.get<AuthStore>();
   ReactionDisposer rDisposer;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _authStore ??= Provider.of<AuthStore>(context);
     _authStore.initAuthForm();
   }
 

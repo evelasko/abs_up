@@ -1,20 +1,22 @@
-import 'package:abs_up/constants.dart';
-import 'package:abs_up/domain/interfaces/workout.i.dart';
-import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/domain/models/workout.dart';
-import 'package:abs_up/domain/models/workout_item.dart';
-import 'package:abs_up/domain/models/workout_log.dart';
-import 'package:abs_up/domain/models/workout_settings.dart';
-import 'package:abs_up/services/p_data.s.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 
+import '../constants.dart';
+import '../domain/interfaces/workout.i.dart';
+import '../domain/models/exercise.dart';
+import '../domain/models/workout.dart';
+import '../domain/models/workout_item.dart';
+import '../domain/models/workout_settings.dart';
+import 'utils/generate_unique_key.dart';
+
+@singleton
+@RegisterAs(WorkoutInterface)
 class WorkoutService implements WorkoutInterface {
-  String workoutKey;
-  final Box<Workout> workoutsBox = PDataService.workoutsBox;
-  static final Uuid uuid = Uuid();
+  final Box<Workout> workoutsBox;
+  WorkoutService(this.workoutsBox);
+
   @override
   final List<String> availableTargets = [
     'Core',
@@ -25,67 +27,57 @@ class WorkoutService implements WorkoutInterface {
     // 'Kegel'
   ];
 
-  WorkoutService();
-
-  //: Getters _________________________________________________
-
-  @override
-  ValueListenable<Box<Workout>> get workoutsListenable =>
-      workoutsBox.listenable();
-
   @override
   List<Workout> get allWorkouts => workoutsBox.values.toList();
 
   @override
-  WorkoutSettings get workoutSettings =>
-      PDataService.workoutSettingsBox.get(WORKOUT_SETTINGS_KEY);
+  List<Workout> get allUserWorkouts =>
+      workoutsBox.values.where((w) => w.key != CURRENT_WORKOUT_KEY).toList();
 
   @override
-  bool checkEquipmentStatus(String equipmentKey) =>
-      workoutSettings.equipment.contains(equipmentKey);
-
-  ValueListenable<Box<WorkoutSettings>> get workoutSettingsListenable =>
-      PDataService.workoutSettingsBox.listenable(keys: [WORKOUT_SETTINGS_KEY]);
-
-  bool get isCurrent => workoutKey == CURRENT_WORKOUT_KEY;
+  Workout getWorkout([String key = CURRENT_WORKOUT_KEY]) =>
+      workoutsBox.get(key ?? CURRENT_WORKOUT_KEY,
+          defaultValue: workoutsBox.get(CURRENT_WORKOUT_KEY));
 
   @override
-  Workout get currentWorkout => PDataService.workoutsBox.get(workoutKey);
-
-  Workout workoutFromKey(String key) =>
-      PDataService.workoutsBox.get(key, defaultValue: currentWorkout);
-
-  /// Returns a rough amount exercises to include by the length set in settings
-  @override
-  int get roughtExerciseAmount =>
-      workoutSettings.length <= 1 ? 9 : workoutSettings.length == 2 ? 18 : 20;
-
-  // ValueListenable<Box<Workout>> get listenable =>
-  //     PDataService.workoutsBox.listenable(keys: [workoutKey]);
+  void registerListener(void Function() listener) =>
+      workoutsBox.listenable().addListener(listener);
 
   @override
-  Future<void> initWorkoutSettings() async {
-    if (PDataService.workoutSettingsBox.containsKey(WORKOUT_SETTINGS_KEY)) {
-      return;
-    }
-    await PDataService.workoutSettingsBox
-        .put(WORKOUT_SETTINGS_KEY, WorkoutSettings());
-    await PDataService.workoutsBox
-        .put(CURRENT_WORKOUT_KEY, Workout(name: 'Workout'));
+  Future<void> saveWorkout(
+          {String key = CURRENT_WORKOUT_KEY,
+          @required Workout workout}) async =>
+      workoutsBox.put(key, workout);
+
+  @override
+  Future<void> deleteWorkout(String workoutKey) =>
+      workoutsBox.delete(workoutKey);
+
+  @override
+  Future<String> saveCurrentWorkoutAs(String name) async {
+    // TODO should check for errors and return an Either
+    final Workout workout = workoutsBox.get(CURRENT_WORKOUT_KEY);
+    final String key =
+        generateUniqueKey(workoutsBox.keys.toList().cast<String>());
+    await workoutsBox.put(key, workout.copy()..name = name);
+    return key;
   }
 
   @override
-  Workout generateWorkout() {
+  Workout generateWorkout(List<Exercise> exercises, WorkoutSettings settings) {
     //= filter exercises
-    final List<Exercise> availableExercises = getAvailableExercises();
+    final List<Exercise> availableExercises = getAvailableExercises(
+      exercises,
+      settings,
+    );
 
     //= distribute exercises
     final Map<String, List<Exercise>> distributedExercises =
-        distributeByTargets(availableExercises);
+        _distributeByTargets(availableExercises);
 
     //= randomize by targets
-    final List<Exercise> randomizedExercises =
-        randomizeExercises(distributedExercises);
+    final List<Exercise> randomizedExercises = _randomizeExercises(
+        distributedExercises, _getRoughExerciseAmount(settings));
 
     //= sort randomized exercises by intensity
     randomizedExercises
@@ -96,74 +88,33 @@ class WorkoutService implements WorkoutInterface {
     int total = 0;
     for (final exercise in randomizedExercises) {
       int duration = 0;
-      duration =
-          getWorkoutItemDuration(exercise.intensity, workoutSettings.length);
+      duration = _getWorkoutItemDuration(exercise.intensity, settings.length);
       exerciseItems.add(WorkoutItem(exercise: exercise, duration: duration));
       total += duration;
-      if (total > minWorkoutLength) break;
+      if (total > _getMinWorkoutLength(settings)) break;
     }
 
     //= add rest items
-    final List<WorkoutItem> workoutItems = addRestItems(exerciseItems);
+    final Exercise rest =
+        exercises.where((exercise) => exercise.name == 'Rest').first;
+    final List<WorkoutItem> workoutItems =
+        _addRestItems(exerciseItems, settings, rest);
 
     //= set order of items and return final items
     Iterable.generate(workoutItems.length, (x) => x + 1).forEach(
         (iterationNumber) =>
             workoutItems[iterationNumber - 1].order = iterationNumber);
+
     return Workout(items: workoutItems);
   }
 
-  @override
-  Future<void> generateCurrentWorkout() async =>
-      PDataService.workoutsBox.put(CURRENT_WORKOUT_KEY, generateWorkout());
-
-  @override
-  Future<void> saveCurrentWorkoutAs(String name) async {
-    final Workout currentWorkout =
-        PDataService.workoutsBox.get(CURRENT_WORKOUT_KEY);
-    final List<WorkoutItem> _items = currentWorkout.items
-        .map((item) => WorkoutItem(
-              order: item.order,
-              exercise: PDataService.exercisesBox.get(item.exercise.key),
-              duration: item.duration,
-              weight: item.weight,
-              progress: item.progress,
-            ))
-        .toList();
-
-    await PDataService.workoutsBox
-        .put(generateUniqueWorkoutKey(), Workout(name: name, items: _items));
-  }
-
-  @override
-  Future<void> saveNewWorkoutLogEntry(
-          {@required List<WorkoutItem> items,
-          @required String sourceWorkout}) async =>
-      PDataService.workoutLogsBox.put(
-          uuid.v4(),
-          WorkoutLog(
-            name: 'log entry',
-            items: items,
-            sourceWorkoutId: sourceWorkout,
-            // TODO add the sourceWorkout name when saving a log item
-          ));
-
-  //: Helper Methods_____________________________________________
-
-  /// Generates a unique key to save a new workout
-  String generateUniqueWorkoutKey() {
-    final List<String> savedWorkoutKey =
-        PDataService.workoutsBox.keys.toList().cast<String>();
-    String uniqueKey = uuid.v4();
-    while (savedWorkoutKey.contains(uniqueKey)) {
-      uniqueKey = uuid.v4();
-    }
-    return uniqueKey;
-  }
+  /// Returns a rough amount exercises to include by the length set in settings
+  int _getRoughExerciseAmount(WorkoutSettings settings) =>
+      settings.length <= 1 ? 9 : settings.length == 2 ? 18 : 20;
 
   /// Get minimum workout duration by settings length
-  int get minWorkoutLength {
-    switch (workoutSettings.length) {
+  int _getMinWorkoutLength(WorkoutSettings settings) {
+    switch (settings.length) {
       case 1:
         return MINIMUM_DURATION_SHORT_LENGTH;
       case 2:
@@ -175,7 +126,7 @@ class WorkoutService implements WorkoutInterface {
   }
 
   /// Workout item duration matrix
-  int getWorkoutItemDuration(int intensity, int settingsLength) {
+  int _getWorkoutItemDuration(int intensity, int settingsLength) {
     const int short = WORKOUT_ITEM_DURATION_SHORT;
     const int medium = WORKOUT_ITEM_DURATION_MEDIUM;
     const int long = WORKOUT_ITEM_DURATION_LONG;
@@ -199,20 +150,21 @@ class WorkoutService implements WorkoutInterface {
     }
   }
 
-  /// Filter exercises base on current workout settings
-  List<Exercise> getAvailableExercises() => PDataService.exercisesBox.values
-      .where((exercise) =>
-          intensityFilter(exercise.intensity, workoutSettings.intensity) &&
-          difficultyFilter(exercise.difficulty, workoutSettings.difficulty) &&
-          exercise.impact == workoutSettings.impact &&
-          workoutSettings.equipment
-              .contains(exercise.equipment.toLowerCase()) &&
-          exercise.tag != ExerciseTag.blacklisted.index &&
-          exercise.name != 'Rest')
-      .toList();
+  @override
+  List<Exercise> getAvailableExercises(
+          List<Exercise> allExercises, WorkoutSettings settings) =>
+      allExercises
+          .where((exercise) =>
+              _intensityFilter(exercise.intensity, settings.intensity) &&
+              _difficultyFilter(exercise.difficulty, settings.difficulty) &&
+              exercise.impact == settings.impact &&
+              settings.equipment.contains(exercise.equipment.toLowerCase()) &&
+              exercise.tag != ExerciseTag.blacklisted.index &&
+              exercise.name != 'Rest')
+          .toList();
 
   /// Distributes available exercises into lists based in their targets
-  Map<String, List<Exercise>> distributeByTargets(
+  Map<String, List<Exercise>> _distributeByTargets(
           List<Exercise> availableExercises) =>
       Map.fromIterable(availableTargets,
           key: (target) => target as String,
@@ -221,21 +173,22 @@ class WorkoutService implements WorkoutInterface {
               .toList());
 
   /// Returns random exercises from a list of distributed exercises
-  List<Exercise> randomizeExercises(
-      Map<String, List<Exercise>> distributedExercises) {
+  List<Exercise> _randomizeExercises(
+      Map<String, List<Exercise>> distributedExercises,
+      int roughExerciseAmount) {
     final List<Exercise> randomizedExercises = [];
 
     int currentIndex = 0;
 
-    // consinuously iterate thru all available targets
+    //= consinuously iterate thru all available targets
     Iterator<String> targetIterator = availableTargets.iterator;
-    while (currentIndex <= roughtExerciseAmount) {
+    while (currentIndex <= roughExerciseAmount) {
       if (targetIterator.current == null) targetIterator.moveNext();
       if (distributedExercises[targetIterator.current].isEmpty) continue;
 
-      // shuffle the targeted list
+      //= shuffle the targeted list
       distributedExercises[targetIterator.current].shuffle();
-      // extract the last exercise and add it to the returned list
+      //= extract the last exercise and add it to the returned list
       randomizedExercises
           .add(distributedExercises[targetIterator.current].removeLast());
       if (!targetIterator.moveNext()) {
@@ -247,13 +200,11 @@ class WorkoutService implements WorkoutInterface {
   }
 
   /// Returns the exercise items with rest items included
-  List<WorkoutItem> addRestItems(List<WorkoutItem> exerciseItems) {
+  List<WorkoutItem> _addRestItems(List<WorkoutItem> exerciseItems,
+      WorkoutSettings settings, Exercise rest) {
     //= base duration of rest items
     const int baseInterval = 15;
-
     const List<int> intervalMatrix = [4, 3, 2];
-
-    final WorkoutSettings settings = workoutSettings;
 
     //= set rest interval duration
     final int interval = settings.intensity != 4
@@ -277,18 +228,13 @@ class WorkoutService implements WorkoutInterface {
     Iterable.generate(frequency, (x) => x + 1).forEach((iterationNumber) {
       final int index = exerciseItems.length - (workBlock * iterationNumber);
       exerciseAndRestItems.insert(
-          index,
-          WorkoutItem(
-              exercise: PDataService.exercisesBox.values
-                  .where((exercise) => exercise.name == 'Rest')
-                  .first,
-              duration: interval));
+          index, WorkoutItem(exercise: rest, duration: interval));
     });
     return exerciseAndRestItems;
   }
 
   /// Intensity filter for exercise availability at generating a workout
-  static bool intensityFilter(int exerciseIntensity, int settingsIntensity) {
+  static bool _intensityFilter(int exerciseIntensity, int settingsIntensity) {
     switch (settingsIntensity) {
       case 1:
         return exerciseIntensity <= 3;
@@ -304,7 +250,8 @@ class WorkoutService implements WorkoutInterface {
   }
 
   /// Intensity filter for exercise availability at generating a workout
-  static bool difficultyFilter(int exerciseDifficulty, int settingsDifficulty) {
+  static bool _difficultyFilter(
+      int exerciseDifficulty, int settingsDifficulty) {
     switch (settingsDifficulty) {
       case 1:
         return exerciseDifficulty <= 2;

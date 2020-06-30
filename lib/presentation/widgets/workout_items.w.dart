@@ -1,8 +1,9 @@
+import 'package:abs_up/domain/state/workouts_store.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/models/workout.dart';
 import '../../domain/models/workout_item.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import 'shared/snackbars.w.dart';
 import 'shared/swipable_actions.w.dart';
@@ -22,7 +23,7 @@ class WorkoutItemWidget extends StatelessWidget {
           AppSnackbars.removedWorkoutItem(workoutItem.exercise.name)));
   @override
   Widget build(BuildContext context) {
-    final Workout workout = Provider.of<Workout>(context);
+    final Workout workout = getIt.get<WorkoutsStore>().workout;
     return Dismissible(
       key: Key(workoutItem.exercise.key.toString()),
       background: const SwipableActionBackground(

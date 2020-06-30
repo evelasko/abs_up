@@ -1,19 +1,35 @@
-abstract class UserSettingsInterace {
-  /// User Settings initializer
-  static Future<void> initUserSettings() async {}
+import 'package:abs_up/domain/models/equipment.dart';
 
-  /// Workout settings
-  Map<String, dynamic> get currentWorkoutSettings;
+import '../models/workout_settings.dart';
 
-  Future<void> setWorkoutSettingsDefaults();
+abstract class UserSettingsInterface {
+  /// Register listener for changes in workout settings
+  void registerWorkoutSettingsListener(void Function() listener);
 
-  /// User data and settings
-  String get userId;
-  Future<void> setUserId(String userId);
+  /// Get current workout settings
+  WorkoutSettings get workoutSettings;
 
-  bool get presentationWatched;
+  /// Reset workout settings to defaults
+  Future<void> resetWorkoutSettings();
 
-  DateTime get progressStartDate;
+  /// Change intensity of workout settings
+  Future<void> intensitySetAndSave(String newValue);
 
-  String get weightMeasure;
+  /// Change difficulty of workout settings
+  Future<void> difficultySetAndSave(String newValue);
+
+  /// Change length of workout settings
+  Future<void> lengthSetAndSave(String newValue);
+
+  /// Change or toggle current impact value of workout settings
+  Future<void> impactSetOrToggleAndSave(bool newValue);
+
+  /// Add equipment to workout settings
+  Future<void> addEquipment({String key, Equipment equipment});
+
+  /// Remove equipment from workout settings
+  Future<void> removeEquipment({String key, Equipment equipment});
+
+  /// Set current workout settings to defaults
+  Future<void> setWorkoutSettings(WorkoutSettings settings);
 }

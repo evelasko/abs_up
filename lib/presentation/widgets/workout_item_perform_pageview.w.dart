@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/core/utils.dart';
 import '../../domain/models/exercise.dart';
 import '../../domain/models/workout_item.dart';
 import '../../domain/state/perform_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import 'workout_perform_exercise_details.w.dart';
 import 'workout_perform_pageview_exercise_info.w.dart';
@@ -27,6 +27,8 @@ class WorkoutItemPerformPageView extends StatefulWidget {
 
 class _WorkoutItemPerformPageViewState
     extends State<WorkoutItemPerformPageView> {
+  final PerformStore _performStore = getIt.get<PerformStore>();
+
   /// Switch to next workout item
   void goToNext() => widget.pageController
       .nextPage(duration: const Duration(seconds: 1), curve: Curves.easeOut);
@@ -34,7 +36,6 @@ class _WorkoutItemPerformPageViewState
   /// Build
   @override
   Widget build(BuildContext context) {
-    final PerformStore _performStore = Provider.of<PerformStore>(context);
     final WorkoutItem workoutItem =
         _performStore.workoutItems[widget.pageIndex];
     final Exercise exercise = workoutItem.exercise;

@@ -1,56 +1,78 @@
+import 'package:abs_up/domain/models/equipment.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 
 import '../constants.dart';
 import '../domain/interfaces/user_settings.i.dart';
-import 'p_data.s.dart';
+import '../domain/models/workout_settings.dart';
 
-class UserSettingsService implements UserSettingsInterace {
-  static Box userSettingsBox = PDataService.userSettingsBox;
-  static Box exercisesBox = PDataService.exercisesBox;
+@singleton
+@RegisterAs(UserSettingsInterface)
+class UserSettingsService implements UserSettingsInterface {
+  final Box<WorkoutSettings> workoutSettingsBox;
 
-  // IUserSettingsFacade._();
+  UserSettingsService(this.workoutSettingsBox);
 
-  /// Settings initializer
-  static Future<void> initUserSettings() async {
-    if (userSettingsBox.isEmpty) {
-      await userSettingsBox.put(
-          WORKOUT_SETTINGS_KEY, WORKOUT_SETTINGS_DEFAULTS_MAP);
+  @factoryMethod
+  static Future<UserSettingsService> init(
+      Box<WorkoutSettings> workoutSettingsBox) async {
+    final singleton = UserSettingsService(workoutSettingsBox);
+    if (singleton.workoutSettingsBox.isEmpty) {
+      await singleton.resetWorkoutSettings();
     }
+    return singleton;
   }
 
-  @override
-  Map<String, dynamic> get currentWorkoutSettings {
-    return userSettingsBox.get(WORKOUT_SETTINGS_KEY) as Map<String, dynamic>;
-  }
+  // Box get userSettingsBox => Hive.box(USER_SETTINGS_BOX_NAME);
 
   @override
-  Future<void> setWorkoutSettingsDefaults() =>
-      userSettingsBox.put(WORKOUT_SETTINGS_KEY, WORKOUT_SETTINGS_DEFAULTS_MAP);
+  WorkoutSettings get workoutSettings => workoutSettingsBox.get(
+        WORKOUT_SETTINGS_KEY,
+        defaultValue: WorkoutSettings(),
+      );
 
   @override
-  String get userId =>
-      userSettingsBox.get(USER_ID_KEY, defaultValue: USER_ID_KEY) as String;
-  @override
-  Future<void> setUserId(String userId) =>
-      userSettingsBox.put(USER_ID_KEY, userId);
+  void registerWorkoutSettingsListener(void Function() listener) =>
+      workoutSettingsBox.listenable().addListener(listener);
 
-  String get firstName =>
-      userSettingsBox.get(FIRST_NAME_KEY, defaultValue: FIRST_NAME_KEY)
-          as String;
+  // void registerUserSettingsListener(void Function() listener) =>
+  //     userSettingsBox.listenable().addListener(listener);
 
-  String get lastName =>
-      userSettingsBox.get(LAST_NAME_KEY, defaultValue: LAST_NAME_KEY) as String;
   @override
-  bool get presentationWatched =>
-      userSettingsBox.get(PRESENTATION_WATCHED_KEY, defaultValue: false)
-          as bool;
-  Future<void> setPresentationWatched(bool watched) =>
-      userSettingsBox.put(PRESENTATION_WATCHED_KEY, watched);
+  Future<void> resetWorkoutSettings() async => workoutSettingsBox.put(
+        WORKOUT_SETTINGS_KEY,
+        WorkoutSettings(),
+      );
+
   @override
-  DateTime get progressStartDate =>
-      userSettingsBox.get(PROGRESS_START_DATE_KEY, defaultValue: DateTime.now())
-          as DateTime;
+  Future<void> setWorkoutSettings(WorkoutSettings settings) async =>
+      workoutSettingsBox.put(
+        WORKOUT_SETTINGS_KEY,
+        settings ?? WorkoutSettings(),
+      );
   @override
-  String get weightMeasure =>
-      userSettingsBox.get(WEIGHT_MEASURE_KEY, defaultValue: 'kg') as String;
+  Future<void> intensitySetAndSave(String newValue) async => setWorkoutSettings(
+      workoutSettings.copyWith(intensity: intensityToInt(newValue)));
+  @override
+  Future<void> difficultySetAndSave(String newValue) async =>
+      setWorkoutSettings(
+          workoutSettings.copyWith(difficulty: difficultyToInt(newValue)));
+  @override
+  Future<void> lengthSetAndSave(String newValue) async => setWorkoutSettings(
+      workoutSettings.copyWith(length: lengthToInt(newValue)));
+  @override
+  Future<void> impactSetOrToggleAndSave(bool newValue) async =>
+      setWorkoutSettings(workoutSettings.copyWith(
+          impact: newValue ?? !workoutSettings.impact));
+  @override
+  Future<void> addEquipment({String key, Equipment equipment}) async =>
+      setWorkoutSettings(workoutSettings.copyWith(
+          equipment:
+              {...workoutSettings.equipment, key ?? equipment?.key}.toList()));
+  @override
+  Future<void> removeEquipment({String key, Equipment equipment}) async =>
+      setWorkoutSettings(workoutSettings.copyWith(
+          equipment: [...workoutSettings.equipment]
+            ..remove(key ?? equipment?.key)));
 }

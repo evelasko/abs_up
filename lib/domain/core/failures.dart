@@ -20,6 +20,7 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
 
   const factory ValueFailure.textTooLong({
     @required T fieldValue,
+    int maxLength,
   }) = TextTooLong<T>;
 }
 

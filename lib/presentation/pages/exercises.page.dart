@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/state/exercises_store.dart';
+import '../../injection.dart';
 import '../theme/colors.t.dart';
 import '../widgets/exercise_items_view.w.dart';
 import '../widgets/shared/counter_chip.w.dart';
@@ -32,7 +32,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ExercisesStore _exercisesStore = Provider.of<ExercisesStore>(context);
+    final ExercisesStore _exercisesStore = getIt.get<ExercisesStore>();
     return Observer(
       builder: (_) =>
           CustomScrollView(

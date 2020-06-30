@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../domain/models/workout.dart';
 import '../../domain/state/workouts_store.dart';
+import '../../injection.dart';
+import '../utils/choice.dart';
 import '../widgets/savedworkout_items.w.dart';
 
 class WorkoutsPage extends StatelessWidget {
@@ -9,7 +12,7 @@ class WorkoutsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _workoutsStore = Provider.of<WorkoutsStore>(context);
+    final WorkoutsStore _workoutsStore = getIt.get<WorkoutsStore>();
     return CustomScrollView(
       slivers: <Widget>[
         const SliverAppBar(
@@ -22,25 +25,26 @@ class WorkoutsPage extends StatelessWidget {
           // TODO implement clear filters on workouts page
         ),
         //= Workout Items List
-        ValueListenableBuilder(
-          valueListenable: _workoutsStore.getWorkoutListenable(),
-          builder: (_, __, ___) => _workoutsStore.workouts.fold(
-              () => const SliverFillRemaining(
-                    child: Center(
-                      child: Text('no saved workouts found'),
-                    ),
-                  ),
-              (workouts) => SliverFixedExtentList(
-                    delegate: SliverChildListDelegate(
-                      workouts
-                          .map(
-                            (workout) => SavedWorkoutItem(workout),
-                          )
-                          .toList(),
-                    ),
-                    itemExtent: 90.0,
-                  )),
-        ),
+        Observer(builder: (_) {
+          final List<Workout> workouts = _workoutsStore.allUserWorkouts;
+          return choiceWidget(
+              workouts == null || workouts.isEmpty,
+              const SliverFillRemaining(
+                child: Center(
+                  child: Text('no saved workouts found'),
+                ),
+              ),
+              SliverFixedExtentList(
+                delegate: SliverChildListDelegate(
+                  workouts
+                      .map(
+                        (workout) => SavedWorkoutItem(workout),
+                      )
+                      .toList(),
+                ),
+                itemExtent: 90.0,
+              ));
+        }),
       ],
     );
   }

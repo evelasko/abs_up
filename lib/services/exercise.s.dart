@@ -1,64 +1,95 @@
 import 'dart:convert';
 
-import 'package:abs_up/domain/core/failures.dart';
-import 'package:abs_up/domain/interfaces/exercise.i.dart';
-import 'package:abs_up/domain/models/exercise.dart';
-import 'package:abs_up/services/p_data.s.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:injectable/injectable.dart';
 
+import '../domain/core/failures.dart';
+import '../domain/interfaces/exercise.i.dart';
+import '../domain/models/exercise.dart';
+
+@singleton
+@RegisterAs(ExerciseInterface)
 class ExerciseService implements ExerciseInterface {
-  final Box<Exercise> exercisesBox = PDataService.exercisesBox;
-  final CollectionReference exercisesCollection =
-      Firestore.instance.collection('exercises');
+  final Box<Exercise> exercisesBox;
+
+  ExerciseService(this.exercisesBox);
+  @factoryMethod
+  static Future<ExerciseService> init(Box<Exercise> exercisesBox) async {
+    final singleton = ExerciseService(exercisesBox);
+
+    //= initialize exercises
+    if (singleton.exercisesBox.isEmpty) {
+      //= fetch and save exercises from local JSON
+      final Either<CoreFailure<String>, Map<String, Exercise>> localExercises =
+          await singleton.fetchLocalExercises();
+      await localExercises.foldRight(
+        null,
+        (exerciseMap, previous) async {
+          exerciseMap.forEach((key, exercise) async {
+            await singleton.saveNewExercise(key, exercise);
+          });
+        },
+      );
+    }
+    return singleton;
+  }
 
   @override
-  ValueListenable<Box<Exercise>> get exercisesListenable =>
-      exercisesBox.listenable();
+  List<Exercise> get allExercises => exercisesBox.values.toList();
 
   @override
-  Future<Either<CoreFailure<String>, Map<String, dynamic>>>
+  void registerListener(void Function() listener) =>
+      exercisesBox.listenable().addListener(listener);
+
+  @override
+  Future<Either<CoreFailure<String>, Map<String, Exercise>>>
       fetchLocalExercises() async {
     try {
       final Map<String, dynamic> localExercises = jsonDecode(await rootBundle
               .loadString("assets/data/exercises.json", cache: false))
           as Map<String, dynamic>;
-
-      if (exercisesBox.isOpen && exercisesBox.isEmpty) {
-        localExercises.forEach((key, value) async => Exercise()
-                .hasExerciseKeys(value as Map<String, dynamic>)
-            ? await exercisesBox.put(
-                key, Exercise().exerciseFromMap(value as Map<String, dynamic>))
-            : null);
-      }
-      return right(localExercises);
+      return right(localExercises.map<String, Exercise>((key, value) =>
+          MapEntry(key, Exercise.fromMap(value as Map<String, dynamic>))));
     } catch (e) {
       return left(CoreFailure<String>.internalError(message: e.toString()));
     }
   }
 
-  Future<Either<CoreFailure<String>, Map<String, dynamic>>>
-      fetchLocalEx() async {
-    try {
-      final Map<String, dynamic> localExercises = jsonDecode(await rootBundle
-              .loadString("assets/data/exercises.json", cache: false))
-          as Map<String, dynamic>;
-      return right(localExercises);
-    } catch (e) {
-      return left(CoreFailure<String>.internalError(message: e.toString()));
+  @override
+  Future<Either<CoreFailure<String>, String>> saveNewExercise(
+      String key, Exercise exercise) async {
+    if (key == null || exercise == null) {
+      return left(const CoreFailure.internalError(
+          message: 'The exercise provided to save is invalid'));
     }
+    final List<String> exerciseKey = exercisesBox.keys.toList().cast<String>();
+    if (exerciseKey.contains(key)) {
+      return left(const CoreFailure<String>.internalError(
+          message: 'The key provided is already present in the local storage'));
+    }
+    await setExercise(key, exercise);
+    return right(key);
   }
 
-  // TODO implement update exercise list from server data
   @override
-  Future<void> updateExerciseList() async {}
+  Exercise exerciseFromKey(String exerciseKey) => exercisesBox.get(exerciseKey);
 
   @override
-  List<Exercise> get allExercises => exercisesBox.values
-      .where((exercise) => !exercise.name.contains(RegExp('Rest')))
-      .toList();
+  Future<void> setExercise(String exerciseKey, Exercise exercise) async =>
+      exercisesBox.put(exerciseKey, exercise);
+
+  @override
+  Future<void> setFavorite(String exerciseKey) async =>
+      setExercise(exerciseKey, exerciseFromKey(exerciseKey).copyWith(tag: 1));
+
+  @override
+  Future<void> setBlacklist(String exerciseKey) async =>
+      setExercise(exerciseKey, exerciseFromKey(exerciseKey).copyWith(tag: 2));
+
+  @override
+  Future<void> removeTag(String exerciseKey) async =>
+      setExercise(exerciseKey, exerciseFromKey(exerciseKey).copyWith(tag: 0));
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
+import '../../constants.dart';
+import '../models/exercise.dart';
 import '../models/workout.dart';
 import '../models/workout_settings.dart';
 
 abstract class WorkoutInterface {
-  final Workout currentWorkout = Workout();
-
   final List<String> availableTargets = [
     'Core',
     'Lower',
@@ -15,35 +15,40 @@ abstract class WorkoutInterface {
     'Kegel'
   ];
 
-  //: Getters _________________________________________________
-  /// Returns the current workout settings
-  WorkoutSettings get workoutSettings;
-
-  ValueListenable get workoutsListenable;
+  /// Get all stored workouts
   List<Workout> get allWorkouts;
 
-  /// Returns a rough amount exercises to include by the length set in settings
-  int get roughtExerciseAmount;
+  /// Get all user's workouts
+  List<Workout> get allUserWorkouts;
 
-  //: Methods _________________________________________________
+  /// Fetches a workout by its key, if key is null or the workout was not found
+  /// it will return the default workout object stored at CURRENT_WORKOUT_KEY
+  Workout getWorkout([String key = CURRENT_WORKOUT_KEY]);
 
-  /// defaultWorkout initializer
-  Future<void> initWorkoutSettings();
+  /// Register listener for changes in workouts
+  void registerListener(void Function() listener);
 
-  /// Generates a new workout based on current settings
-  Workout generateWorkout();
+  /// Saves a workout to the given key. If no key is provided it uses CURRENT_WORKOUT_KEY
+  Future<void> saveWorkout({
+    String key = CURRENT_WORKOUT_KEY,
+    @required Workout workout,
+  });
 
-  /// Generates a new workout based on current settings
-  /// and saves it into the currentWorkout key of the workouts box
-  Future<void> generateCurrentWorkout();
+  /// Duplicates the workout at CURRENT_WORKOUT_KEY with the given name into a new key
+  Future<String> saveCurrentWorkoutAs(String name);
 
-  /// Saves the current generated workout with the given name
-  Future<void> saveCurrentWorkoutAs(String name);
+  /// Deletes a saved workout
+  Future<void> deleteWorkout(String workoutKey);
 
-  /// * to deprecate
-  /// Create a ne workout log entry with the current workout
-  Future<void> saveNewWorkoutLogEntry();
+  /// Generate a new workout with provided exercises and workout settings
+  Workout generateWorkout(
+    List<Exercise> exercises,
+    WorkoutSettings settings,
+  );
 
-  /// return the status of a single equipment in workout settings
-  bool checkEquipmentStatus(String equipmentKey);
+  /// Filter exercises base on current workout settings
+  List<Exercise> getAvailableExercises(
+    List<Exercise> exercises,
+    WorkoutSettings settings,
+  );
 }

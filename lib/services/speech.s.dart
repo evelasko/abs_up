@@ -1,79 +1,97 @@
 import 'package:abs_up/domain/interfaces/speech.i.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
+@RegisterAs(SpeechInterface)
 class SpeechService implements SpeechInterface {
-  FlutterTts _flutterTts;
+  final FlutterTts flutterTts;
   dynamic languages;
   String language;
   double volume = 1.0;
   double pitch = 1.0;
   double rate = 0.5;
+
+  @override
   SpeechState speechState;
+  @override
   void Function() startHandler;
+  @override
   void Function() completionHandler;
+  @override
   void Function() errorHandler;
+  @override
+  void Function() doOnceOnCompletion;
+  @override
+  void Function() doOnceOnStart;
 
-  void Function() _doOnceOnCompletion;
-  void Function() _doOnceOnStart;
-
-  SpeechService() {
-    _flutterTts = FlutterTts();
-
+  SpeechService(this.flutterTts) {
     _getLanguages();
 
-    _flutterTts.setStartHandler(() {
+    flutterTts.setStartHandler(() {
       speechState = SpeechState.playing;
       if (startHandler != null) startHandler();
-      if (_doOnceOnStart != null) {
-        _doOnceOnStart();
-        _doOnceOnStart = null;
+      if (doOnceOnStart != null) {
+        doOnceOnStart();
+        doOnceOnStart = null;
       }
     });
 
-    _flutterTts.setCompletionHandler(() {
+    flutterTts.setCompletionHandler(() {
       speechState = SpeechState.stopped;
       if (completionHandler != null) completionHandler();
-      if (_doOnceOnCompletion != null) {
-        _doOnceOnCompletion();
-        _doOnceOnCompletion = null;
+      if (doOnceOnCompletion != null) {
+        doOnceOnCompletion();
+        doOnceOnCompletion = null;
       }
     });
 
-    _flutterTts.setErrorHandler((msg) {
+    flutterTts.setErrorHandler((msg) {
       speechState = SpeechState.stopped;
       if (errorHandler != null) errorHandler();
     });
   }
 
   Future<void> _getLanguages() async {
-    final dynamic _languages = await _flutterTts.getLanguages;
+    final dynamic _languages = await flutterTts.getLanguages;
     if (_languages != null) languages = _languages;
   }
 
   @override
   Future<void> speak(String newVoiceText) async {
-    await _flutterTts.setVolume(volume);
-    await _flutterTts.setSpeechRate(rate);
-    await _flutterTts.setPitch(pitch);
+    await flutterTts.setVolume(volume);
+    await flutterTts.setSpeechRate(rate);
+    await flutterTts.setPitch(pitch);
 
     if (newVoiceText != null) {
       if (newVoiceText.isNotEmpty) {
-        final result = await _flutterTts.speak(newVoiceText);
+        final result = await flutterTts.speak(newVoiceText);
         if (result == 1) speechState = SpeechState.playing;
       }
     }
   }
 
   @override
+  Future<void> doAndSpeak(
+    String textToSpeak,
+    void Function() effectBeforeStart,
+  ) async {
+    doOnceOnStart = effectBeforeStart;
+    await speak(textToSpeak);
+  }
+
+  @override
   Future<void> speakAndDo(
-      String newVoiceText, void Function() effectWhenStop) async {
-    _doOnceOnCompletion = effectWhenStop;
-    await speak(newVoiceText);
+    String textToSpeak,
+    void Function() effectWhenStop,
+  ) async {
+    doOnceOnCompletion = effectWhenStop;
+    await speak(textToSpeak);
   }
 
   @override
   Future<void> stop() async {
-    final result = await _flutterTts.stop();
+    final result = await flutterTts.stop();
     if (result == 1) speechState = SpeechState.stopped;
   }
 }
