@@ -27,7 +27,7 @@ Either<ValueFailure<String>, String> validatePassword(String input) {
 /// Validate string length
 Either<ValueFailure<String>, String> validateMaxStringLength(
         String input, int maxLength) =>
-    input.length < maxLength
+    input.length <= maxLength
         ? right(input)
         : left(
             ValueFailure.textTooLong(fieldValue: input, maxLength: maxLength));
