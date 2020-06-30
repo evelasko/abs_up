@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/domain/state/perform_states.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
@@ -14,17 +16,6 @@ import '../models/workout.dart';
 import '../models/workout_item.dart';
 
 part 'perform_store.g.dart';
-
-enum WorkoutItemStatus {
-  initial,
-  presenting,
-  ready,
-  started,
-  paused,
-  done,
-  performed
-}
-enum PerformState { loading, welcoming, initial, presenting, started, paused }
 
 @lazySingleton
 class PerformStore extends _PerformStore with _$PerformStore {
@@ -338,5 +329,17 @@ abstract class _PerformStore with Store {
   @action
   void dispose() {
     // TODO implement the dispose method for performStore
+  }
+
+  ///-------------------------------------------------------
+  ///-------------------------------------------------------
+  ///-------------------------------------------------------
+
+  @observable
+  String sourceWorkoutKey = CURRENT_WORKOUT_KEY;
+
+  @action
+  void initializePerformanceOf([String key = CURRENT_WORKOUT_KEY]) {
+    sourceWorkoutKey = key ?? CURRENT_WORKOUT_KEY;
   }
 }
