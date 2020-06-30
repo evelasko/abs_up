@@ -207,14 +207,25 @@ class BoxedSmallIconButton extends StatelessWidget {
           child: Ink(
             decoration: buttonTypeCase<BoxDecoration>(
                 type: buttonType,
-                primary: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
+                //= primary button decoration
+                primary: onTap != null
+                    //= enabled
+                    ? BoxDecoration(
+                        gradient: AppColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(6.0),
+                      )
+                    //= disabled
+                    : BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(6.0),
+                        border:
+                            Border.all(color: AppColors.greyLight, width: 2)),
+                //= secondary button decoration
                 secondary: BoxDecoration(
                     border: Border.all(color: AppColors.rudy, width: 2),
                     borderRadius: BorderRadius.circular(6.0),
                     color: Colors.transparent),
+                //= other button decoration
                 other: BoxDecoration(
                   color: AppColors.greyLight,
                   borderRadius: BorderRadius.circular(6.0),
@@ -233,7 +244,8 @@ class BoxedSmallIconButton extends StatelessWidget {
                     size: text != null ? 26 : 33,
                     color: buttonTypeCase<Color>(
                         type: buttonType,
-                        primary: Colors.white,
+                        primary:
+                            onTap != null ? Colors.white : AppColors.greyLight,
                         secondary: AppColors.rudy,
                         other: AppColors.greyDark),
                   ),
@@ -243,7 +255,9 @@ class BoxedSmallIconButton extends StatelessWidget {
                           style: TextStyle(
                               color: buttonTypeCase<Color>(
                                   type: buttonType,
-                                  primary: Colors.white,
+                                  primary: onTap != null
+                                      ? Colors.white
+                                      : AppColors.greyLight,
                                   secondary: AppColors.rudy,
                                   other: AppColors.greyDark),
                               fontSize: 10,
