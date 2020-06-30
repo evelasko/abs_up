@@ -109,6 +109,7 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
                     child: _performStore.workoutItems.isEmpty
                         ? const CircularProgressIndicator()
                         : PageView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             controller: _pageController,
                             itemCount: _performStore.workoutItems.length,
                             itemBuilder: (context, index) =>
