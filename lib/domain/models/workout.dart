@@ -27,22 +27,16 @@ class Workout extends HiveObject {
 
   /// Update workout item
   Future<void> updateWorkoutItem(int index,
-      {Exercise exercise,
-      int order,
-      int duration,
-      double weight,
-      int progress}) async {
+      {Exercise exercise, int order, int duration, int side}) async {
+    if (index + 1 > items.length) return;
     final WorkoutItem oldItem = items[index];
     if (oldItem == null) return;
-    items.replaceRange(index, index + 1, [
-      oldItem.copyWith(
-        exercise: exercise,
-        order: order,
-        duration: duration,
-        weight: weight,
-        progress: progress,
-      )
-    ]);
+    items[index] = oldItem.copyWith(
+      exercise: exercise,
+      order: order,
+      duration: duration,
+      side: side,
+    );
     if (isInBox) await save();
   }
 

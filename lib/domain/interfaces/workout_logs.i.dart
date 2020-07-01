@@ -1,6 +1,7 @@
-import 'package:abs_up/domain/models/workout_item.dart';
-import 'package:abs_up/domain/models/workout_log.dart';
 import 'package:flutter/foundation.dart';
+
+import '../models/perform_item.dart';
+import '../models/workout_log.dart';
 
 abstract class WorkoutLogsInterface {
   /// Returns all workout log entries
@@ -8,5 +9,5 @@ abstract class WorkoutLogsInterface {
 
   /// Saves a new workout log entry for a given performed workout
   Future<void> saveNewWorkoutLogEntry(
-      {@required List<WorkoutItem> items, @required String sourceWorkoutKey});
+      {@required List<PerformItem> items, @required String sourceWorkoutKey});
 }

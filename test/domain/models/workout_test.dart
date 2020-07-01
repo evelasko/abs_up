@@ -46,16 +46,12 @@ void main() {
       await workout.updateWorkoutItem(
         0,
         duration: 60,
-        weight: 100,
-        progress: 10,
         exercise: tExercise,
         order: 2,
       );
       final wItem = workout.items[0];
       //= assert
       expect(wItem.duration, 60);
-      expect(wItem.weight, 100);
-      expect(wItem.progress, 10);
     });
     test(
         'should return the total duration of the workout as duration and as string',

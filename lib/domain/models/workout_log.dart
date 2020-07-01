@@ -1,17 +1,18 @@
 import 'package:abs_up/constants.dart';
+import 'package:abs_up/domain/models/perform_item.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:hive/hive.dart';
 
 part 'workout_log.g.dart';
 
-@HiveType(typeId: 5, adapterName: 'WorkoutLogAdapter')
+@HiveType(typeId: 6, adapterName: 'WorkoutLogAdapter')
 class WorkoutLog extends HiveObject {
   @HiveField(0)
   final String name;
   @HiveField(1)
-  final List<WorkoutItem> items;
+  final List<PerformItem> items;
   @HiveField(2)
-  DateTime performedAt;
+  final DateTime performedAt;
   @HiveField(3)
   final String sourceWorkoutName;
   @HiveField(4)
@@ -21,9 +22,8 @@ class WorkoutLog extends HiveObject {
       {this.name = 'untitled',
       this.items,
       this.sourceWorkoutName,
-      this.sourceWorkoutId}) {
-    performedAt = DateTime.now();
-  }
+      this.sourceWorkoutId})
+      : performedAt = DateTime.now();
 
   /// Getters
   Duration get totalDuration {
