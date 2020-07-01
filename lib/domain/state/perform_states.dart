@@ -1,3 +1,6 @@
+import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/workout_item.dart';
+
 enum WorkoutItemStatus {
   initial,
   presenting,
@@ -7,4 +10,12 @@ enum WorkoutItemStatus {
   done,
   performed
 }
-enum PerformState { loading, welcoming, initial, presenting, started, paused }
+enum PerformState {
+  idle,
+  loading,
+  welcoming,
+  initial,
+  presenting,
+  started,
+  paused
+}

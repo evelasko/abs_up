@@ -23,6 +23,26 @@ mixin _$PerformStore on _PerformStore, Store {
       (_$workoutProgressComputed ??= Computed<int>(() => super.workoutProgress,
               name: '_PerformStore.workoutProgress'))
           .value;
+  Computed<Workout> _$workoutComputed;
+
+  @override
+  Workout get workout => (_$workoutComputed ??=
+          Computed<Workout>(() => super.workout, name: '_PerformStore.workout'))
+      .value;
+  Computed<Duration> _$durationComputed;
+
+  @override
+  Duration get duration =>
+      (_$durationComputed ??= Computed<Duration>(() => super.duration,
+              name: '_PerformStore.duration'))
+          .value;
+  Computed<Duration> _$remainingComputed;
+
+  @override
+  Duration get remaining =>
+      (_$remainingComputed ??= Computed<Duration>(() => super.remaining,
+              name: '_PerformStore.remaining'))
+          .value;
 
   final _$sourceWorkoutAtom = Atom(name: '_PerformStore.sourceWorkout');
 
@@ -250,6 +270,36 @@ mixin _$PerformStore on _PerformStore, Store {
     });
   }
 
+  final _$sourceWorkoutKeyAtom = Atom(name: '_PerformStore.sourceWorkoutKey');
+
+  @override
+  String get sourceWorkoutKey {
+    _$sourceWorkoutKeyAtom.reportRead();
+    return super.sourceWorkoutKey;
+  }
+
+  @override
+  set sourceWorkoutKey(String value) {
+    _$sourceWorkoutKeyAtom.reportWrite(value, super.sourceWorkoutKey, () {
+      super.sourceWorkoutKey = value;
+    });
+  }
+
+  final _$itemIndexAtom = Atom(name: '_PerformStore.itemIndex');
+
+  @override
+  int get itemIndex {
+    _$itemIndexAtom.reportRead();
+    return super.itemIndex;
+  }
+
+  @override
+  set itemIndex(int value) {
+    _$itemIndexAtom.reportWrite(value, super.itemIndex, () {
+      super.itemIndex = value;
+    });
+  }
+
   final _$presentCurrentItemAsyncAction =
       AsyncAction('_PerformStore.presentCurrentItem');
 
@@ -268,11 +318,11 @@ mixin _$PerformStore on _PerformStore, Store {
         .run(() => super.prepareToAbandonWorkout(silently: silently));
   }
 
-  final _$stopSpeechAsyncAction = AsyncAction('_PerformStore.stopSpeech');
+  final _$_stopSpeechAsyncAction = AsyncAction('_PerformStore._stopSpeech');
 
   @override
-  Future<void> stopSpeech() {
-    return _$stopSpeechAsyncAction.run(() => super.stopSpeech());
+  Future<void> _stopSpeech() {
+    return _$_stopSpeechAsyncAction.run(() => super._stopSpeech());
   }
 
   final _$_PerformStoreActionController =
@@ -378,6 +428,17 @@ mixin _$PerformStore on _PerformStore, Store {
   }
 
   @override
+  void replaceAndResetWorkoutItemExercise(Exercise exercise) {
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.replaceAndResetWorkoutItemExercise');
+    try {
+      return super.replaceAndResetWorkoutItemExercise(exercise);
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void abandonWorkout() {
     final _$actionInfo = _$_PerformStoreActionController.startAction(
         name: '_PerformStore.abandonWorkout');
@@ -400,6 +461,39 @@ mixin _$PerformStore on _PerformStore, Store {
   }
 
   @override
+  void initializePerformanceOf([String key = CURRENT_WORKOUT_KEY]) {
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.initializePerformanceOf');
+    try {
+      return super.initializePerformanceOf(key);
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeCurrentItemIndex(int index) {
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.changeCurrentItemIndex');
+    try {
+      return super.changeCurrentItemIndex(index);
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void goToNextItem() {
+    final _$actionInfo = _$_PerformStoreActionController.startAction(
+        name: '_PerformStore.goToNextItem');
+    try {
+      return super.goToNextItem();
+    } finally {
+      _$_PerformStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 sourceWorkout: ${sourceWorkout},
@@ -416,8 +510,13 @@ speechState: ${speechState},
 currentTimer: ${currentTimer},
 performing: ${performing},
 errorMessage: ${errorMessage},
+sourceWorkoutKey: ${sourceWorkoutKey},
+itemIndex: ${itemIndex},
 timeRemainingString: ${timeRemainingString},
-workoutProgress: ${workoutProgress}
+workoutProgress: ${workoutProgress},
+workout: ${workout},
+duration: ${duration},
+remaining: ${remaining}
     ''';
   }
 }

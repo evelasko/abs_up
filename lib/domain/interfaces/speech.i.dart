@@ -15,6 +15,9 @@ abstract class SpeechInterface {
   /// Stops if currently speaking
   Future<void> stop();
 
+  /// Clears registered callbacks and stops if currently speaking
+  Future<void> panic();
+
   /// Speaks a given string and register a callback to run only once before speaking
   Future<void> doAndSpeak(
       String textToSpeak, void Function() effectBeforeStart);
