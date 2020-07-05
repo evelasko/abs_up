@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:abs_up/domain/interfaces/speech.i.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:injectable/injectable.dart';
@@ -21,9 +23,9 @@ class SpeechService implements SpeechInterface {
   @override
   void Function() errorHandler;
   @override
-  void Function() doOnceOnCompletion;
+  FutureOr<void> Function() doOnceOnCompletion;
   @override
-  void Function() doOnceOnStart;
+  FutureOr<void> Function() doOnceOnStart;
 
   SpeechService(this.flutterTts) {
     _getLanguages();
@@ -41,6 +43,8 @@ class SpeechService implements SpeechInterface {
       speechState = SpeechState.stopped;
       if (completionHandler != null) completionHandler();
       if (doOnceOnCompletion != null) {
+        print('running doOnceOnStart:');
+        print(doOnceOnCompletion.toString());
         doOnceOnCompletion();
         doOnceOnCompletion = null;
       }
@@ -63,11 +67,9 @@ class SpeechService implements SpeechInterface {
     await flutterTts.setSpeechRate(rate);
     await flutterTts.setPitch(pitch);
 
-    if (newVoiceText != null) {
-      if (newVoiceText.isNotEmpty) {
-        final result = await flutterTts.speak(newVoiceText);
-        if (result == 1) speechState = SpeechState.playing;
-      }
+    if (newVoiceText != null && newVoiceText.isNotEmpty) {
+      final result = await flutterTts.speak(newVoiceText);
+      if (result == 1) speechState = SpeechState.playing;
     }
   }
 
@@ -83,7 +85,7 @@ class SpeechService implements SpeechInterface {
   @override
   Future<void> speakAndDo(
     String textToSpeak,
-    void Function() effectWhenStop,
+    FutureOr<void> Function() effectWhenStop,
   ) async {
     doOnceOnCompletion = effectWhenStop;
     await speak(textToSpeak);

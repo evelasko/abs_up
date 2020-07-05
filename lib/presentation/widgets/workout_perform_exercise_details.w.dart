@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:native_video_view/native_video_view.dart';
 
 import '../../domain/models/exercise.dart';
-import '../../domain/models/workout_item.dart';
+import '../../domain/models/perform_item.dart';
 import '../theme/colors.t.dart';
 
 class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
@@ -13,7 +13,7 @@ class WorkoutPerformPageViewExerciseDetails extends StatelessWidget {
       @required this.progress})
       : super(key: key);
 
-  final WorkoutItem workoutItem;
+  final PerformItem workoutItem;
   final Exercise exercise;
   final int progress;
 

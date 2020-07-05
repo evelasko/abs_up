@@ -1,11 +1,9 @@
-import 'package:abs_up/domain/state/perform_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 
 import '../../domain/core/utils.dart';
 import '../../domain/models/exercise.dart';
-import '../../domain/models/workout_item.dart';
+import '../../domain/state/perform_states.dart';
 import '../../domain/state/perform_store.dart';
 import '../../injection.dart';
 import '../theme/colors.t.dart';
@@ -37,18 +35,17 @@ class _WorkoutItemPerformPageViewState
   /// Build
   @override
   Widget build(BuildContext context) {
-    final WorkoutItem workoutItem =
-        _performStore.workoutItems[widget.pageIndex];
+    final PerformingItem workoutItem = _performStore.items[widget.pageIndex];
     final Exercise exercise = workoutItem.exercise;
     final Exercise nextExercise =
-        widget.pageIndex + 1 >= _performStore.workoutItems.length
+        widget.pageIndex + 1 >= _performStore.items.length
             ? null
-            : _performStore.workoutItems[widget.pageIndex + 1]?.exercise;
+            : _performStore.items[widget.pageIndex + 1]?.exercise;
 
     /// generate the function to map progress bar animation values
     const double generalWidthPadding = 20.0;
     final double availablelWidth = MediaQuery.of(context).size.width;
-    final int duration = _performStore.workoutItems[widget.pageIndex].duration;
+    final int duration = _performStore.items[widget.pageIndex].duration;
     final mapProgressBarLength = generateMapper(
         inputStart: 0,
         inputEnd: duration.toDouble(),
@@ -57,32 +54,44 @@ class _WorkoutItemPerformPageViewState
 
     //= Reaction: When the current workout item is the same as the one of the page and is in initial state
     //= Effect:   Present workout item
-    when(
+    /*
+     when(
         (_) =>
-            _performStore.currentItemIndex == widget.pageIndex &&
-            _performStore.currentItemStatus == WorkoutItemStatus.initial,
+            _performStore.itemIndex == widget.pageIndex &&
+            _performStore.items[_performStore.itemIndex].status ==
+                PerformingItemStatus.initial,
         () => _performStore.presentCurrentItem());
+    */
 
     //= Reaction: When the item of this page is in ready state
     //= Effect:   Start performing this workout item
-    when(
+    /*
+     when(
         (_) =>
-            _performStore.currentItemIndex == widget.pageIndex &&
-            _performStore.currentItemStatus == WorkoutItemStatus.ready, () {
-      _performStore.currentItemStatus = WorkoutItemStatus.started;
+            _performStore.itemIndex == widget.pageIndex &&
+            _performStore.items[_performStore.itemIndex].status ==
+                PerformingItemStatus.ready, () {
+      _performStore.items[_performStore.itemIndex] = _performStore
+          .items[_performStore.itemIndex]
+          .copyWith(status: PerformingItemStatus.started);
       if (!_performStore.performing) _performStore.performCurrentItem();
     });
+    */
 
     //= Reaction: If item has been marked as done
     //= Effect:   Switch to next workout item
+    /* 
     when(
         (_) =>
-            _performStore.currentItemIndex == widget.pageIndex &&
-            _performStore.currentItemStatus == WorkoutItemStatus.done &&
-            !_performStore.performing, () {
-      _performStore.currentItemStatus = WorkoutItemStatus.performed;
+            _performStore.itemIndex == widget.pageIndex &&
+            _performStore.items[_performStore.itemIndex].status ==
+                PerformingItemStatus.done && !_performStore.performing, () {
+      _performStore.items[_performStore.itemIndex] = _performStore
+          .items[_performStore.itemIndex]
+          .copyWith(status: PerformingItemStatus.performed);
       if (!_performStore.currentItemIsLast) goToNext();
     });
+    */
 
     /// build return
     return Observer(
@@ -103,8 +112,8 @@ class _WorkoutItemPerformPageViewState
             WorkoutPerformPageViewExerciseDetails(
               workoutItem: workoutItem,
               exercise: exercise,
-              progress: _performStore.workoutItems[widget.pageIndex].duration -
-                  _performStore.currentItemProgress,
+              progress: _performStore.items[widget.pageIndex].duration -
+                  _performStore.items[widget.pageIndex].progress,
             ),
             //= Time Indicator
             Container(
@@ -118,7 +127,7 @@ class _WorkoutItemPerformPageViewState
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   height: 38,
                   width: mapProgressBarLength(_performStore
-                      .workoutItems[widget.pageIndex].progress
+                      .items[widget.pageIndex].progress
                       .toDouble()),
                   duration: const Duration(seconds: 1),
                 )
@@ -130,12 +139,11 @@ class _WorkoutItemPerformPageViewState
             WorkoutPerformPageViewMenu(
               moreInfo: () {}, // TODO show exercise details
               replaceExercise: () {}, // TODO replace exercise
-              shuffleExercise: () =>
-                  _performStore.shuffleCurrentItemsExercise(),
-              skipToNext: _performStore.currentItemStatus ==
-                          WorkoutItemStatus.presenting ||
-                      _performStore.currentItemStatus ==
-                          WorkoutItemStatus.initial
+              shuffleExercise: () => _performStore.shuffleCurrentItemExercise(),
+              skipToNext: _performStore.items[widget.pageIndex].status ==
+                          PerformingItemStatus.presenting ||
+                      _performStore.items[widget.pageIndex].status ==
+                          PerformingItemStatus.initial
                   ? null
                   : () {}, // TODO skip to next exercise
             )

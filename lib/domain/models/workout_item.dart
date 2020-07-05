@@ -33,13 +33,12 @@ class WorkoutItem extends HiveObject {
         o.side == side;
   }
 
-  WorkoutItem copyWith(
-          {Exercise exercise,
-          int order,
-          int duration,
-          double weight,
-          int progress,
-          int side}) =>
+  WorkoutItem copyWith({
+    Exercise exercise,
+    int order,
+    int duration,
+    int side,
+  }) =>
       WorkoutItem(
         exercise: exercise ?? this.exercise,
         order: order ?? this.order,

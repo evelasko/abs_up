@@ -21,21 +21,18 @@ class WorkoutPerformPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PerformStore performStore = getIt.get<PerformStore>();
     performStore
-      ..initializeFor(sourceWorkoutKey ?? CURRENT_WORKOUT_KEY)
+      ..initializePerformanceOf(sourceWorkoutKey ?? CURRENT_WORKOUT_KEY)
       ..welcomeWorkout();
 
     return Observer(
       builder: (BuildContext context) => AnimatedCrossFade(
         firstChild: WorkoutPerformWelcome(
           duration: performStore.timeRemainingString,
-          equipmentIcons: Set<IconData>.from(performStore.workoutItems
+          equipmentIcons: Set<IconData>.from(performStore.items
                   ?.map((wItem) => wItem.exercise.equipmentIcon)).toList() ??
               [],
         ),
-        secondChild: Provider<PerformStore>(
-          create: (_) => performStore,
-          child: const WorkoutPerformView(),
-        ),
+        secondChild: const WorkoutPerformView(),
         layoutBuilder: (
           Widget top,
           Key topKey,

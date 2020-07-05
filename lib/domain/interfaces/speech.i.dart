@@ -1,3 +1,5 @@
+import 'dart:async';
+
 enum SpeechState { playing, stopped }
 
 abstract class SpeechInterface {
@@ -23,5 +25,6 @@ abstract class SpeechInterface {
       String textToSpeak, void Function() effectBeforeStart);
 
   /// Speaks a given string and register a callback to run only once after speak completion
-  Future<void> speakAndDo(String textToSpeak, void Function() effectWhenStop);
+  Future<void> speakAndDo(
+      String textToSpeak, FutureOr<void> Function() effectWhenStop);
 }

@@ -53,13 +53,13 @@ class FinishWorkoutDialog extends StatelessWidget {
         SecondaryActionButton(
             text: 'Home',
             icon: Icons.home,
-            onTap: () => _performStore.saveWorkoutLogEntry().then(
+            onTap: () => _performStore.finishWorkout().then(
                 (value) => Navigator.popAndPushNamed(context, HOME_LINK))),
         SecondaryActionButton(
             buttonType: ButtonTypes.secondary,
             text: 'Share progress',
             icon: Icons.share,
-            onTap: () => _performStore.saveWorkoutLogEntry().then((value) {
+            onTap: () => _performStore.finishWorkout().then((value) {
                   // TODO (late) implement sharing progress when finishing workout
                   Navigator.popAndPushNamed(context, HOME_LINK);
                 }))

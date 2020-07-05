@@ -1,9 +1,10 @@
-import 'package:abs_up/domain/models/workout_item.dart';
-import 'package:abs_up/presentation/theme/colors.t.dart';
 import 'package:flutter/material.dart';
 
+import '../../../domain/models/perform_item.dart';
+import '../../theme/colors.t.dart';
+
 class WorkoutPerformGeneralIndicator extends StatelessWidget {
-  final List<WorkoutItem> workoutItems;
+  final List<PerformItem> workoutItems;
   final String timeRemainingString;
   final int currentPage;
 

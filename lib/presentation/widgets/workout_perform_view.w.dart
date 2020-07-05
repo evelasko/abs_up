@@ -25,8 +25,8 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
   void initState() {
     super.initState();
     _pageController = PageController();
-    _pageController.addListener(
-        () => _performStore.switchCurrentItem(_pageController.page.round()));
+    _pageController.addListener(() =>
+        _performStore.changeCurrentItemIndex(_pageController.page.round()));
   }
 
   @override
@@ -35,10 +35,12 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
 
     //= Reaction: when the current item is the last one and has been performed
     //= Do: (_finishWorkout) show final dialog
+    // TODO !!! register this action in the store
     when(
         (_) =>
             _performStore.currentItemIsLast &&
-            _performStore.currentItemStatus == WorkoutItemStatus.performed,
+            _performStore.items[_performStore.itemIndex].status ==
+                PerformingItemStatus.performed,
         _finishWorkout);
   }
 
@@ -50,7 +52,6 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
       false;
 
   Future<bool> _onWillPop() async {
-    _performStore.stopCurrentTimer();
     await _performStore.prepareToAbandonWorkout(silently: true);
     return (await showDialog(
             context: context,
@@ -62,7 +63,6 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
   @override
   void dispose() {
     _pageController?.dispose();
-    _performStore.dispose();
     super.dispose();
   }
 
@@ -75,18 +75,16 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
                 title: const Text('Performing workout'),
                 // = General workout controller (pause/fforward/resume)
                 actions: <Widget>[
-                  _performStore.performing
+                  _performStore.state == PerformState.performing
                       ? IconButton(
                           icon: const Icon(Icons.pause),
-                          onPressed: () => _performStore.stopCurrentTimer())
-                      : _performStore.currentItemStatus ==
-                              WorkoutItemStatus.presenting
+                          onPressed: () => _performStore.pause())
+                      : _performStore.items[_performStore.itemIndex].status ==
+                              PerformingItemStatus.presenting
                           ? IconButton(
                               icon: const Icon(Icons.fast_forward),
                               onPressed: () {
-                                _performStore.stopSpeech();
-                                _performStore.currentItemStatus =
-                                    WorkoutItemStatus.ready;
+                                _performStore.goToNextItem();
                               },
                             )
                           : IconButton(
@@ -101,18 +99,18 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
                 children: <Widget>[
                   // = General Progress Indicator
                   WorkoutPerformGeneralIndicator(
-                    workoutItems: _performStore.workoutItems,
-                    currentPage: _performStore.currentItemIndex,
+                    workoutItems: _performStore.items,
+                    currentPage: _performStore.itemIndex,
                     timeRemainingString: _performStore.timeRemainingString,
                   ),
                   // = Workout Items Page View
                   Expanded(
-                    child: _performStore.workoutItems.isEmpty
+                    child: _performStore.items.isEmpty
                         ? const CircularProgressIndicator()
                         : PageView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             controller: _pageController,
-                            itemCount: _performStore.workoutItems.length,
+                            itemCount: _performStore.items.length,
                             itemBuilder: (context, index) =>
                                 WorkoutItemPerformPageView(
                                   pageIndex: index,
