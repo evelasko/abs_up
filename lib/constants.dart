@@ -161,3 +161,14 @@ int lengthToInt(String strValue) =>
 
 String impactToString(bool boolValue, {bool defaultValue = IMPACT_DEFAULT}) =>
     boolValue ? 'Include' : 'Ignore';
+
+const int COUNTDOWN_DEFAULT_SECONDS = 3;
+const String AUTORUN_REACTION_NAME = 'autorun-state-manager';
+const String PERFORM_VOICE_START_MARK = 'go!';
+
+const String PERFORM_VOICE_GREETING_CONGRATS_COMPLETED =
+    'Congratulations! You have completed this workout';
+const String PERFORM_VOICE_GREETING_HALF_COMPLETED =
+    'Your workout has ended, but you completed less than its half...';
+const String PERFORM_VOICE_GREETING_ALMOST_COMPLETED =
+    'Great! You completed the workout... but I know you cand do better';
