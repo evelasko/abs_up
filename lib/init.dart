@@ -1,3 +1,4 @@
+import 'package:abs_up/domain/models/perform_item.dart';
 import 'package:abs_up/domain/models/workout.dart';
 import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:abs_up/domain/models/workout_log.dart';
@@ -45,6 +46,7 @@ Future<void> initializeHive() async {
   Hive.registerAdapter<Exercise>(ExerciseAdapter());
   Hive.registerAdapter<WorkoutSettings>(WorkoutSettingsAdapter());
   Hive.registerAdapter<WorkoutItem>(WorkoutItemAdapter());
+  Hive.registerAdapter<PerformItem>(PerformItemAdapter());
   Hive.registerAdapter<Workout>(WorkoutAdapter());
   Hive.registerAdapter<WorkoutLog>(WorkoutLogAdapter());
 

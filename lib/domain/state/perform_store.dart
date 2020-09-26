@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:abs_up/constants.dart';
+import 'package:abs_up/domain/state/perform_states.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
 
@@ -14,17 +16,6 @@ import '../models/workout.dart';
 import '../models/workout_item.dart';
 
 part 'perform_store.g.dart';
-
-enum WorkoutItemStatus {
-  initial,
-  presenting,
-  ready,
-  started,
-  paused,
-  done,
-  performed
-}
-enum PerformState { loading, welcoming, initial, presenting, started, paused }
 
 @lazySingleton
 class PerformStore extends _PerformStore with _$PerformStore {
@@ -133,11 +124,12 @@ abstract class _PerformStore with Store {
   /// Actions
 
   /// Welcome workout
+  //*v2
   @action
   void welcomeWorkout() {
-    final minutes = timeRemaining.inMinutes;
-    final seconds = (Duration(seconds: timeRemaining.inSeconds) -
-            Duration(minutes: timeRemaining.inMinutes))
+    final minutes = remaining.inMinutes;
+    final seconds = (Duration(seconds: remaining.inSeconds) -
+            Duration(minutes: remaining.inMinutes))
         .inSeconds;
     speechService.speakAndDo(
         'You are about to start an abs training session of $minutes minutes and $seconds seconds... make sure to have your equipment ready',
@@ -169,13 +161,13 @@ abstract class _PerformStore with Store {
 
         // = halfway alert
         if (duration > 30 && progress == (duration / 2).round()) {
-          stopSpeech().then((_) =>
+          _stopSpeech().then((_) =>
               speechService.speak('${(duration / 2).round()} seconds left'));
         }
 
         // = 10 second alert
         if (progress == duration - 10) {
-          stopSpeech().then((_) =>
+          _stopSpeech().then((_) =>
               speechService.speak('${duration - progress} seconds left'));
         }
 
@@ -199,7 +191,7 @@ abstract class _PerformStore with Store {
       return;
     }
     if (performing) stopCurrentTimer();
-    if (speechService.speechState == SpeechState.playing) stopSpeech();
+    if (speechService.speechState == SpeechState.playing) _stopSpeech();
 
     currentItemIsLast = itemIndex == workoutItems.length - 1;
     currentItemIndex = itemIndex;
@@ -220,7 +212,7 @@ abstract class _PerformStore with Store {
   /// Speak the presentation of the current item's exercise and follow up to countdown
   @action
   Future presentCurrentItem() async {
-    await stopSpeech();
+    await _stopSpeech();
     try {
       errorMessage = null;
       currentItemStatus = WorkoutItemStatus.presenting;
@@ -275,10 +267,10 @@ abstract class _PerformStore with Store {
   }
 
   /// Stop timers and speaking before abandoning or completing the workout
+  //* v2
   @action
   Future<void> prepareToAbandonWorkout({bool silently = false}) async {
-    await stopSpeech();
-    stopCurrentTimer();
+    _panic();
     if (silently) return;
     String greeting = 'Congratulations! You have completed this workout';
     if (workoutProgress < 50) {
@@ -293,27 +285,27 @@ abstract class _PerformStore with Store {
 
   /// Stop any running speaking action
   @action
-  Future<void> stopSpeech() async {
+  Future<void> _stopSpeech() async {
     if (speechService.speechState != SpeechState.playing) return;
-    speechService.completionHandler = null;
-    await speechService.stop();
+    await speechService.panic();
   }
 
   /// Change current item's exercise for a random one
+  //* v2
   @action
   void shuffleCurrentItemsExercise() {
-    stopSpeech();
-    stopCurrentTimer();
+    _panic();
     currentItemStatus = WorkoutItemStatus.paused;
     final List<Exercise> availableExercises =
         workoutService.getAvailableExercises(
       exerciseService.allExercises,
       userSettings.workoutSettings,
     )..shuffle();
-    updateCurrentItemsExercise(availableExercises.last);
+    replaceAndResetWorkoutItemExercise(availableExercises.last);
   }
 
   /// Update the current item's exercises and switches back to it
+  //! deprecated -> use replaceAndResetWorkoutItemExercise
   @action
   void updateCurrentItemsExercise(Exercise exercise) {
     workoutItems.replaceRange(currentItemIndex, currentItemIndex + 1,
@@ -321,16 +313,28 @@ abstract class _PerformStore with Store {
     switchCurrentItem(currentItemIndex);
   }
 
+  /// Replace the currently performing workout item's exercise
+  /// and reset its progress to 0
+  //* v2
+  @action
+  void replaceAndResetWorkoutItemExercise(Exercise exercise) {
+    items[itemIndex] =
+        items[itemIndex].copyWith(exercise: exercise, progress: 0);
+  }
+
   /// Saves the entire state as a new workout log entry and resets the store
+  //* v2
   Future<void> saveWorkoutLogEntry() async =>
       workoutLogsService.saveNewWorkoutLogEntry(
-        items: workoutItems,
+        items: items,
         sourceWorkoutKey: sourceWorkout,
       );
 
   /// Abandon and reset the store (it might not be needed)
+  //* v2
   @action
   void abandonWorkout() {
+    _reset();
     // TODO implement abandon workout
   }
 
@@ -338,5 +342,60 @@ abstract class _PerformStore with Store {
   @action
   void dispose() {
     // TODO implement the dispose method for performStore
+  }
+
+  ///-------------------------------------------------------
+  ///-------------------------------------------------------
+  ///-------------------------------------------------------
+
+  @observable
+  String sourceWorkoutKey = CURRENT_WORKOUT_KEY;
+  @computed
+  Workout get workout => workoutService.getWorkout(sourceWorkoutKey);
+
+  final items = ObservableList<WorkoutItem>.of([]);
+  @observable
+  int itemIndex = 0;
+
+  @computed
+  Duration get duration =>
+      Duration(seconds: items.fold(0, (prev, item) => prev + item.duration));
+  @computed
+  Duration get remaining =>
+      Duration(seconds: duration.inSeconds) -
+      Duration(seconds: items.fold(0, (prev, item) => prev + item.progress));
+
+  @action
+  void initializePerformanceOf([String key = CURRENT_WORKOUT_KEY]) {
+    state = PerformState.loading;
+    //= clear or reset main properties
+    sourceWorkoutKey = key ?? CURRENT_WORKOUT_KEY;
+    items.clear();
+    items.insertAll(0, workout.items.map((item) => item.copyWith(progress: 0)));
+    itemIndex = 0;
+    //= set state to welcome
+    state = PerformState.welcoming;
+  }
+
+  @action
+  void changeCurrentItemIndex(int index) {
+    if (index + 1 == items.length) return;
+    itemIndex = index;
+  }
+
+  @action
+  void goToNextItem() => changeCurrentItemIndex(itemIndex + 1);
+
+  /// Clear the store to idle
+  void _reset() {
+    sourceWorkoutKey = CURRENT_WORKOUT_KEY;
+    state = PerformState.idle;
+    items.clear();
+  }
+
+  /// Panic method
+  void _panic() {
+    _stopSpeech();
+    stopCurrentTimer();
   }
 }

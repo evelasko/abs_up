@@ -94,4 +94,12 @@ class SpeechService implements SpeechInterface {
     final result = await flutterTts.stop();
     if (result == 1) speechState = SpeechState.stopped;
   }
+
+  @override
+  Future<void> panic() async {
+    doOnceOnCompletion = null;
+    doOnceOnStart = null;
+    final result = await flutterTts.stop();
+    if (result == 1) speechState = SpeechState.stopped;
+  }
 }

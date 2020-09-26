@@ -20,15 +20,14 @@ class WorkoutItemAdapter extends TypeAdapter<WorkoutItem> {
       exercise: fields[0] as Exercise,
       order: fields[1] as int,
       duration: fields[2] as int,
-      weight: fields[3] as double,
-      progress: fields[4] as int,
+      side: fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.exercise)
       ..writeByte(1)
@@ -36,9 +35,7 @@ class WorkoutItemAdapter extends TypeAdapter<WorkoutItem> {
       ..writeByte(2)
       ..write(obj.duration)
       ..writeByte(3)
-      ..write(obj.weight)
-      ..writeByte(4)
-      ..write(obj.progress);
+      ..write(obj.side);
   }
 
   @override

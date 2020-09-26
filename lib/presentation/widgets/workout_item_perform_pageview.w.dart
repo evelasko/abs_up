@@ -1,3 +1,4 @@
+import 'package:abs_up/domain/state/perform_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -85,60 +86,62 @@ class _WorkoutItemPerformPageViewState
 
     /// build return
     return Observer(
-        builder: (context) => Container(
-              padding: const EdgeInsets.only(
-                  left: generalWidthPadding,
-                  right: generalWidthPadding,
-                  top: 15,
-                  bottom: 40),
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  //= Exercise Details
-                  WorkoutPerformPageViewExerciseDetails(
-                    workoutItem: workoutItem,
-                    exercise: exercise,
-                    progress:
-                        _performStore.workoutItems[widget.pageIndex].duration -
-                            _performStore.currentItemProgress,
-                  ),
-                  //= Time Indicator
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    child: Stack(alignment: Alignment.centerLeft, children: [
-                      AnimatedContainer(
-                        alignment: Alignment.centerRight,
-                        decoration: const BoxDecoration(
-                            color: AppColors.coquelicot,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: 38,
-                        width: mapProgressBarLength(_performStore
-                            .workoutItems[widget.pageIndex].progress
-                            .toDouble()),
-                        duration: const Duration(seconds: 1),
-                      )
-                    ]),
-                  ),
-                  //= Next exercise row info
-                  WorkoutPerformPageViewNextExerciseInfo(
-                      nextExercise: nextExercise),
-                  //= Menu Buttons
-                  WorkoutPerformPageViewMenu(
-                    moreInfo: () {}, // TODO show exercise details
-                    replaceExercise: () {}, // TODO replace exercise
-                    shuffleExercise: () =>
-                        _performStore.shuffleCurrentItemsExercise(),
-                    skipToNext: () {}, // TODO skip to next exercise
-                  )
-                ],
-              ),
-            ));
+      builder: (context) => Container(
+        padding: const EdgeInsets.only(
+            left: generalWidthPadding,
+            right: generalWidthPadding,
+            top: 15,
+            bottom: 40),
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            //= Exercise Details
+            WorkoutPerformPageViewExerciseDetails(
+              workoutItem: workoutItem,
+              exercise: exercise,
+              progress: _performStore.workoutItems[widget.pageIndex].duration -
+                  _performStore.currentItemProgress,
+            ),
+            //= Time Indicator
+            Container(
+              width: double.infinity,
+              height: 40,
+              child: Stack(alignment: Alignment.centerLeft, children: [
+                AnimatedContainer(
+                  alignment: Alignment.centerRight,
+                  decoration: const BoxDecoration(
+                      color: AppColors.coquelicot,
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  height: 38,
+                  width: mapProgressBarLength(_performStore
+                      .workoutItems[widget.pageIndex].progress
+                      .toDouble()),
+                  duration: const Duration(seconds: 1),
+                )
+              ]),
+            ),
+            //= Next exercise row info
+            WorkoutPerformPageViewNextExerciseInfo(nextExercise: nextExercise),
+            //= Menu Buttons
+            WorkoutPerformPageViewMenu(
+              moreInfo: () {}, // TODO show exercise details
+              replaceExercise: () {}, // TODO replace exercise
+              shuffleExercise: () =>
+                  _performStore.shuffleCurrentItemsExercise(),
+              skipToNext: _performStore.currentItemStatus ==
+                          WorkoutItemStatus.presenting ||
+                      _performStore.currentItemStatus ==
+                          WorkoutItemStatus.initial
+                  ? null
+                  : () {}, // TODO skip to next exercise
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

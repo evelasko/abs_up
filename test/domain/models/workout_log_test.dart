@@ -1,6 +1,6 @@
 import 'package:abs_up/domain/models/exercise.dart';
+import 'package:abs_up/domain/models/perform_item.dart';
 import 'package:abs_up/domain/models/workout_log.dart';
-import 'package:abs_up/domain/models/workout_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -26,7 +26,7 @@ void main() {
     final WorkoutLog tWorkoutLog = WorkoutLog(
         items: List.generate(
             4,
-            (index) => WorkoutItem(
+            (index) => PerformItem(
                   exercise: tExercise,
                   duration: 30,
                   order: index,

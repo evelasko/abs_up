@@ -13,16 +13,14 @@ class WorkoutItem extends HiveObject {
   @HiveField(2)
   final int duration;
   @HiveField(3)
-  double weight;
-  @HiveField(4)
-  int progress;
+  final int side;
 
-  WorkoutItem(
-      {this.exercise,
-      this.order,
-      this.duration,
-      this.weight = 0,
-      this.progress = 0});
+  WorkoutItem({
+    this.exercise,
+    this.order,
+    this.duration,
+    this.side = 0,
+  });
 
   /// Class overrides
   @override
@@ -32,8 +30,7 @@ class WorkoutItem extends HiveObject {
         o.exercise == exercise &&
         o.order == order &&
         o.duration == duration &&
-        o.weight == weight &&
-        o.progress == progress;
+        o.side == side;
   }
 
   WorkoutItem copyWith(
@@ -41,13 +38,14 @@ class WorkoutItem extends HiveObject {
           int order,
           int duration,
           double weight,
-          int progress}) =>
+          int progress,
+          int side}) =>
       WorkoutItem(
-          exercise: exercise ?? this.exercise,
-          order: order ?? this.order,
-          duration: duration ?? this.duration,
-          weight: weight ?? this.weight,
-          progress: progress ?? this.progress);
+        exercise: exercise ?? this.exercise,
+        order: order ?? this.order,
+        duration: duration ?? this.duration,
+        side: side ?? this.side,
+      );
 
   @override
   int get hashCode => exercise.name.hashCode;

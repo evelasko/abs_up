@@ -1,3 +1,4 @@
+import 'package:abs_up/domain/state/perform_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -109,6 +110,7 @@ class _WorkoutPerformViewState extends State<WorkoutPerformView> {
                     child: _performStore.workoutItems.isEmpty
                         ? const CircularProgressIndicator()
                         : PageView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             controller: _pageController,
                             itemCount: _performStore.workoutItems.length,
                             itemBuilder: (context, index) =>

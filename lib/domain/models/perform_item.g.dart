@@ -1,43 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'workout_log.dart';
+part of 'perform_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class WorkoutLogAdapter extends TypeAdapter<WorkoutLog> {
+class PerformItemAdapter extends TypeAdapter<PerformItem> {
   @override
-  final typeId = 6;
+  final typeId = 5;
 
   @override
-  WorkoutLog read(BinaryReader reader) {
+  PerformItem read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return WorkoutLog(
-      name: fields[0] as String,
-      items: (fields[1] as List)?.cast<PerformItem>(),
-      sourceWorkoutName: fields[3] as String,
-      sourceWorkoutId: fields[4] as String,
+    return PerformItem(
+      exercise: fields[0] as Exercise,
+      order: fields[1] as int,
+      duration: fields[2] as int,
+      side: fields[3] as int,
+      weight: fields[4] as double,
+      progress: fields[5] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, WorkoutLog obj) {
+  void write(BinaryWriter writer, PerformItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.exercise)
       ..writeByte(1)
-      ..write(obj.items)
+      ..write(obj.order)
       ..writeByte(2)
-      ..write(obj.performedAt)
+      ..write(obj.duration)
       ..writeByte(3)
-      ..write(obj.sourceWorkoutName)
+      ..write(obj.side)
       ..writeByte(4)
-      ..write(obj.sourceWorkoutId);
+      ..write(obj.weight)
+      ..writeByte(5)
+      ..write(obj.progress);
   }
 
   @override
@@ -46,7 +50,7 @@ class WorkoutLogAdapter extends TypeAdapter<WorkoutLog> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is WorkoutLogAdapter &&
+      other is PerformItemAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
