@@ -1,0 +1,27 @@
+name: abs_up_datamodel
+description: Data model and core classes for Abs Up App
+version: 0.0.1
+author: Enrique Velasco
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.17.0 <2.0.0"
+
+dependencies:
+  # flutter:
+  #   sdk: flutter
+  copy_with_extension: ">=1.0.0 <2.0.0"
+  dartz: ^0.9.2
+  equatable: ^1.2.5
+  freezed_annotation: ^0.12.0
+  uuid: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.10.2
+  copy_with_extension_gen: ">=1.0.0 <2.0.0"
+  freezed: ^0.12.1
+  json_serializable: ^3.4.1
+  lint: ^1.2.0
+  mockito: ^4.1.2
