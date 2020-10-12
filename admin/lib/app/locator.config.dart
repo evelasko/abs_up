@@ -5,21 +5,16 @@
 // **************************************************************************
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flamingo/flamingo.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hive/hive.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/auth/auth.i.dart';
 import '../services/auth/auth.s.dart';
 import '../services/modules.dart';
-
-/// Environment names
-const _dev = 'dev';
-const _prod = 'prod';
 
 /// adds generated dependencies
 /// to the provided [GetIt] instance
@@ -33,14 +28,8 @@ Future<GetIt> $initGetIt(
   final thirdPartyServicesModule = _$ThirdPartyServicesModule();
   gh.lazySingleton<DialogService>(() => thirdPartyServicesModule.dialogService);
   gh.lazySingleton<FirebaseAuth>(() => thirdPartyServicesModule.firebaseAuth);
-  gh.lazySingleton<FirebaseFirestore>(
-      () => thirdPartyServicesModule.firestoreDev,
-      registerFor: {_dev});
-  gh.lazySingleton<FirebaseFirestore>(
-      () => thirdPartyServicesModule.firestoreProd,
-      registerFor: {_prod});
+  gh.lazySingleton<Flamingo>(() => thirdPartyServicesModule.flamingo);
   gh.lazySingleton<GoogleSignIn>(() => thirdPartyServicesModule.googleSignIn);
-  gh.lazySingleton<HiveInterface>(() => thirdPartyServicesModule.hive);
   gh.lazySingleton<NavigationService>(
       () => thirdPartyServicesModule.navigationService);
   final sharedPreferences = await thirdPartyServicesModule.preferences;

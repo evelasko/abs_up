@@ -9,36 +9,17 @@ part of 'workout_item.m.dart';
 extension WorkoutItemCopyWithExtension on WorkoutItem {
   WorkoutItem copyWith({
     int duration,
-    Exercise exercise,
+    String exerciseId,
     int order,
     int side,
+    Map<String, dynamic> values,
   }) {
     return WorkoutItem(
       duration: duration ?? this.duration,
-      exercise: exercise ?? this.exercise,
+      exerciseId: exerciseId ?? this.exerciseId,
       order: order ?? this.order,
       side: side ?? this.side,
+      values: values ?? this.values,
     );
   }
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-WorkoutItem _$WorkoutItemFromJson(Map<String, dynamic> json) {
-  return WorkoutItem(
-    exercise: Exercise.fromJson(json['exercise'] as Map<String, dynamic>),
-    order: json['order'] as int,
-    duration: json['duration'] as int,
-    side: json['side'] as int,
-  );
-}
-
-Map<String, dynamic> _$WorkoutItemToJson(WorkoutItem instance) =>
-    <String, dynamic>{
-      'exercise': instance.exercise,
-      'order': instance.order,
-      'duration': instance.duration,
-      'side': instance.side,
-    };

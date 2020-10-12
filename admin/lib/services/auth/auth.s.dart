@@ -1,3 +1,4 @@
+import 'package:abs_up_datamodel/abs_up_datamodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -6,8 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:observable_ish/value/value.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../app/core/failures.dart';
-import '../../app/core/logger.dart';
 import 'auth.i.dart';
 
 @Singleton(

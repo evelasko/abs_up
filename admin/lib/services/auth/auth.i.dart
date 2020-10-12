@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-
-import '../../app/core/failures.dart';
+import 'package:abs_up_datamodel/abs_up_datamodel.dart';
 
 enum UserDomainRole { teacher, student, admin, guest }
 

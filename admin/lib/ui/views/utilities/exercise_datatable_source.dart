@@ -1,3 +1,4 @@
+import 'package:abs_up_datamodel/abs_up_datamodel.dart';
 import 'package:flutter/material.dart';
 
 typedef OnRowSelect = void Function(int index);

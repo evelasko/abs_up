@@ -1,14 +1,34 @@
-import 'package:dartz/dartz.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flamingo/flamingo.dart';
+import 'package:flamingo_annotation/flamingo_annotation.dart';
+import '../workout_log/workout_log.m.dart';
+import '../workout_settings/workout_settings.m.dart';
 
-import '../../core/value_objects.dart';
+part 'user.m.flamingo.dart';
 
-part 'user.m.freezed.dart';
+class User extends Document<User> {
+  @Field()
+  String displayName;
+  @ModelField()
+  WorkoutSettings workoutSettings;
+  @SubCollection()
+  Collection<WorkoutLog> workoutLog;
 
-@freezed
-abstract class User with _$User {
-  const factory User({
-    @required UniqueId id,
-    @required Option<String> displayName,
-  }) = _User;
+  User({
+    String id,
+    DocumentSnapshot snapshot,
+    Map<String, dynamic> values,
+    CollectionReference collectionRef,
+  }) : super(
+          id: id,
+          snapshot: snapshot,
+          values: values,
+          collectionRef: collectionRef,
+        ) {
+    workoutLog = Collection(this, UserKey.workoutLog.value);
+  }
+
+  @override
+  Map<String, dynamic> toData() => _$toData(this);
+  @override
+  void fromData(Map<String, dynamic> data) => _$fromData(this, data);
 }

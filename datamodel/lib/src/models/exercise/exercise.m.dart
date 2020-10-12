@@ -1,71 +1,51 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flamingo/flamingo.dart';
+import 'package:flamingo_annotation/flamingo_annotation.dart';
 
 import '../../constants/constants.dart';
 
-part 'exercise.m.g.dart';
+part 'exercise.m.flamingo.dart';
 
 enum ExerciseTag { exercise, favorited, blacklisted }
 
-@immutable
-@CopyWith()
-@JsonSerializable()
-class Exercise extends Equatable {
-  final String name;
-  final int difficulty;
-  final int intensity;
-  final String target;
-  final String equipment;
-  final bool weighted;
-  final bool sided;
-  final bool impact;
-  final String group;
-  final String description;
-  final String media;
-  final String thumb;
-  final String owner;
+class Exercise extends Document<Exercise> {
+  @Field()
+  String name;
+  @Field()
+  int difficulty;
+  @Field()
+  int intensity;
+  @Field()
+  String target;
+  @Field()
+  String equipment;
+  @Field()
+  bool weighted;
+  @Field()
+  bool sided;
+  @Field()
+  bool impact;
+  @Field()
+  String group;
+  @Field()
+  String description;
+  @Field()
+  String media;
+  @Field()
+  String thumb;
+  @Field()
+  String owner;
 
-  const Exercise({
-    this.owner,
-    this.description = '',
-    this.media = '',
-    this.thumb = '',
-    this.impact,
-    this.group = 'Free',
-    this.name,
-    this.difficulty,
-    this.intensity,
-    this.target,
-    this.equipment,
-    this.weighted,
-    this.sided,
-  });
+  Exercise({
+    String id,
+    DocumentSnapshot snapshot,
+    Map<String, dynamic> values,
+  }) : super(id: id, snapshot: snapshot, values: values);
 
-  factory Exercise.fromJson(Map<String, dynamic> json) =>
-      _$ExerciseFromJson(json);
-  Map<String, dynamic> toJson() => _$ExerciseToJson(this);
+  @override
+  Map<String, dynamic> toData() => _$toData(this);
+  @override
+  void fromData(Map<String, dynamic> data) => _$fromData(this, data);
 
   String get intensityString => intensityToString(intensity);
   String get difficultyString => difficultyToString(difficulty);
-
-  @override
-  List<Object> get props => [
-        owner,
-        description,
-        media,
-        thumb,
-        impact,
-        group,
-        name,
-        difficulty,
-        intensity,
-        target,
-        equipment,
-        weighted,
-        sided,
-      ];
-
-  @override
-  bool get stringify => true;
 }

@@ -1,46 +1,37 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flamingo/flamingo.dart';
+import 'package:flamingo_annotation/flamingo_annotation.dart';
 
-import '../exercise/exercise.m.dart';
-
+part 'perform_item.m.flamingo.dart';
 part 'perform_item.m.g.dart';
 
-@immutable
 @CopyWith()
-@JsonSerializable(nullable: false)
-class PerformItem extends Equatable {
-  final Exercise exercise;
-  final int order;
-  final int duration;
-  final int side;
-  final double weight;
-  final int progress;
+class PerformItem extends Model {
+  @Field()
+  String exerciseId;
+  @Field()
+  int order;
+  @Field()
+  int duration;
+  @Field()
+  int side;
+  @Field()
+  double weight;
+  @Field()
+  int progress;
 
-  const PerformItem({
-    this.exercise,
+  PerformItem({
+    this.exerciseId,
     this.order,
     this.duration,
     this.side = 0,
     this.weight = 0,
     this.progress = 0,
+    Map<String, dynamic> values,
   });
 
-  factory PerformItem.fromJson(Map<String, dynamic> json) =>
-      _$PerformItemFromJson(json);
-  Map<String, dynamic> toJson() => _$PerformItemToJson(this);
-
   @override
-  List<Object> get props => [
-        exercise,
-        order,
-        duration,
-        side,
-        weight,
-        progress,
-      ];
-
+  Map<String, dynamic> toData() => _$toData(this);
   @override
-  bool get stringify => true;
+  void fromData(Map<String, dynamic> data) => _$fromData(this, data);
 }

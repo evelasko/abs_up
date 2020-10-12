@@ -1,11 +1,11 @@
-import 'package:abs_up_data_manager/ui/views/utilities/exercise_datatable_source.dart';
-import 'package:abs_up_data_manager/ui/widgets/custom_paginated_datatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../app/locator.dart';
 import '../../../services/auth/auth.i.dart';
+import '../../widgets/custom_paginated_datatable.dart';
+import '../utilities/exercise_datatable_source.dart';
 import 'main.vm.dart';
 
 class MainView extends StatelessWidget {
@@ -46,7 +46,6 @@ class MainView extends StatelessWidget {
                   )),
         viewModelBuilder: () => MainViewModel(
           getIt<AuthInterface>(),
-          getIt<FirebaseFirestore>(),
         ),
       );
 }
